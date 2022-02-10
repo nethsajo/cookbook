@@ -1,0 +1,62 @@
+.header {
+  background-color: var(--color-white-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 10rem;
+  padding: 0 5.6rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    z-index: 11;
+  }
+
+  &__logo span {
+    @include gradient(
+      to right top,
+      var(--color-primary),
+      var(--color-secondary)
+    );
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  &__menu {
+  }
+
+  &__menu-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 3.2rem;
+  }
+
+  &__menu-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+  }
+
+  &__menu-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    fill: var(--color-primary-light);
+    margin-right: 0.8rem;
+  }
+
+  &__menu-name {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--color-grey-light);
+    text-transform: uppercase;
+  }
+}
