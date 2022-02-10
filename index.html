@@ -26,22 +26,64 @@
         <div class="header__menu">
           <ul class="header__menu-list">
             <li class="header__menu-item">
-              <svg class="header__menu-icon">
-                <use xlink:href="./src/icons/icons.svg#icon-search"></use>
-              </svg>
-              <span class="header__menu-name">Search</span>
+              <button class="header__menu-btn header__menu-search">
+                <svg class="header__menu-icon">
+                  <use xlink:href="./src/icons/icons.svg#icon-search"></use>
+                </svg>
+                <span class="header__menu-name">Search</span>
+              </button>
             </li>
             <li class="header__menu-item">
-              <svg class="header__menu-icon">
-                <use xlink:href="./src/icons/icons.svg#icon-edit"></use>
-              </svg>
-              <span class="header__menu-name">Add Recipe</span>
+              <button class="header__menu-btn header__menu-add">
+                <svg class="header__menu-icon">
+                  <use xlink:href="./src/icons/icons.svg#icon-edit"></use>
+                </svg>
+                <span class="header__menu-name">Add Recipe</span>
+              </button>
             </li>
             <li class="header__menu-item">
-              <svg class="header__menu-icon">
-                <use xlink:href="./src/icons/icons.svg#icon-bookmark"></use>
-              </svg>
-              <span class="header__menu-name">Bookmarks</span>
+              <button class="header__menu-btn header__menu-bookmark">
+                <svg class="header__menu-icon">
+                  <use xlink:href="./src/icons/icons.svg#icon-bookmark"></use>
+                </svg>
+                <span class="header__menu-name">Bookmarks</span>
+              </button>
+              <div class="bookmarks">
+                <ul class="bookmarks__list">
+                  <li class="bookmarks__view">
+                    <a href="#" class="bookmarks__link">
+                      <figure class="bookmarks__figure"></figure>
+                      <div class="bookmarks__data">
+                        <h4 class="bookmarks__title">Pasta Carbonara</h4>
+                        <p class="bookmarks__publisher">The Publisher</p>
+                        <div class="bookmarks__user-generated">
+                          <svg>
+                            <use
+                              xlink:href="./src/icons/icons.svg#icon-user"
+                            ></use>
+                          </svg>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="bookmarks__view">
+                    <a href="#" class="bookmarks__link">
+                      <figure class="bookmarks__figure"></figure>
+                      <div class="bookmarks__data">
+                        <h4 class="bookmarks__title">Pasta Carbonara</h4>
+                        <p class="bookmarks__publisher">The Publisher</p>
+                        <div class="bookmarks__user-generated">
+                          <svg>
+                            <use
+                              xlink:href="./src/icons/icons.svg#icon-user"
+                            ></use>
+                          </svg>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </li>
             <li class="header__menu-item">
               <svg class="header__menu-icon">

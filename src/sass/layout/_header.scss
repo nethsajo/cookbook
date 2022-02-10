@@ -29,6 +29,10 @@
     font-weight: 600;
   }
 
+  &__menu {
+    align-items: stretch;
+  }
+
   &__menu-list {
     list-style: none;
     display: flex;
@@ -37,17 +41,28 @@
   }
 
   &__menu-item {
+    position: relative;
+  }
+
+  &__menu-btn {
     display: flex;
     align-items: center;
     cursor: pointer;
-    position: relative;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-weight: inherit;
   }
 
   &__menu-icon {
     width: 2.4rem;
     height: 2.4rem;
     fill: var(--color-primary-light);
-    margin-right: 0.8rem;
+
+    &:not(:last-child) {
+      margin-right: 0.8rem;
+    }
   }
 
   &__menu-name {
@@ -56,6 +71,7 @@
     color: var(--color-grey-light);
     text-transform: uppercase;
     transition: var(--transition);
+    letter-spacing: 0.03rem;
 
     &:hover {
       color: var(--color-primary-light);
