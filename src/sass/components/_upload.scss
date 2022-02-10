@@ -1,0 +1,19 @@
+.upload {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 6.4rem;
+
+  &__column {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  &__heading {
+    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: 500;
+  }
+}
