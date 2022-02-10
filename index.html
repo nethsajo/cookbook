@@ -53,5 +53,30 @@
       </nav>
     </header>
     <main class="main"></main>
+    <div class="search">
+      <button class="search__btn search__close">
+        <svg class="search__icon">
+          <use xlink:href="./src/icons/icons.svg#icon-x"></use>
+        </svg>
+      </button>
+      <div class="search__container">
+        <h2 class="search__heading u-mb-md">Search over 1,000,000 recipes</h2>
+        <form class="search__form">
+          <input
+            type="text"
+            name="search"
+            id="search"
+            class="search__field"
+            placeholder="Steak..."
+          />
+          <button class="search__btn search__find">
+            <svg class="search__icon">
+              <use xlink:href="./src/icons/icons.svg#icon-search"></use>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- <div class="overlay"></div> -->
   </body>
 </html>

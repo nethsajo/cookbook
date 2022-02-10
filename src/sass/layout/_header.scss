@@ -29,9 +29,6 @@
     font-weight: 600;
   }
 
-  &__menu {
-  }
-
   &__menu-list {
     list-style: none;
     display: flex;
@@ -58,5 +55,10 @@
     font-weight: 500;
     color: var(--color-grey-light);
     text-transform: uppercase;
+    transition: var(--transition);
+
+    &:hover {
+      color: var(--color-primary-light);
+    }
   }
 }
