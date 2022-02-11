@@ -122,11 +122,7 @@
     <div class="modal">
       <div class="modal__header">
         <div class="modal__heading">
-          <h2 class="modal__title u-mb-xs">Add New Recipes</h2>
-          <p class="modal__subheading">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia,
-            accusamus.
-          </p>
+          <h2 class="modal__title">Add New Recipes</h2>
         </div>
         <button class="modal__close-btn btn--close-modal">
           <svg class="modal__close-icon">
@@ -137,7 +133,7 @@
       <div class="modal__body">
         <form class="upload">
           <div class="upload__column">
-            <h2 class="upload__heading u-full-col-grid u-mb-xs">Recipe Data</h2>
+            <h2 class="upload__heading u-full-col-grid">Recipe Data</h2>
             <div class="input__group">
               <label for="" class="input__label">Title</label>
               <input type="text" name="title" id="title" class="input__form" />
@@ -189,7 +185,7 @@
             </div>
           </div>
           <div class="upload__column">
-            <h2 class="upload__heading u-full-col-grid u-mb-xs">Ingredients</h2>
+            <h2 class="upload__heading u-full-col-grid">Ingredients</h2>
             <div class="input__group">
               <label for="" class="input__label">Ingredient 1</label>
               <input
@@ -246,6 +242,15 @@
             </div>
           </div>
         </form>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--normal btn--close-modal">Cancel</button>
+        <button class="btn btn--primary btn--sm">
+          <span class="btn__text">Upload</span>
+          <svg class="btn__icon">
+            <use xlink:href="./src/icons/icons.svg#icon-upload-cloud"></use>
+          </svg>
+        </button>
       </div>
     </div>
     <div class="overlay"></div>

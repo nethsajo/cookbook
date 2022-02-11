@@ -1,14 +1,14 @@
 .upload {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: 6.4rem;
+  gap: 4.8rem;
 
   &__column {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     align-items: center;
-    gap: 1.4rem;
+    gap: 2.4rem;
   }
 
   &__heading {

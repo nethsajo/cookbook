@@ -53,4 +53,13 @@
   &__body {
     padding: 2.4rem 3.2rem;
   }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 2.4rem 3.2rem;
+    margin-left: auto;
+    border-top: 1px solid var(--color-white-dark);
+  }
 }

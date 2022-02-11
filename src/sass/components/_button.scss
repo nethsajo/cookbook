@@ -1,0 +1,56 @@
+%btn {
+  font-family: inherit;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--b-radius-5);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  @extend %btn;
+
+  &--primary {
+    background-color: var(--color-secondary-dark);
+    color: var(--color-white);
+
+    &:hover {
+      background-color: var(--color-secondary);
+    }
+  }
+
+  &--normal {
+    background-color: transparent;
+    color: var(--color-grey-light);
+
+    &:hover {
+      color: var(--color-grey-dark);
+    }
+  }
+
+  &--sm {
+    padding: 0.8rem 1.6rem;
+  }
+
+  &--md {
+    padding: 1.2rem 2.4rem;
+  }
+
+  &--lg {
+    padding: 1.6rem 3.2rem;
+  }
+
+  &__icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    fill: currentColor;
+    margin-left: 0.8rem;
+  }
+
+  &:not(:last-child) {
+    margin-right: 2.4rem;
+  }
+}
