@@ -2,7 +2,7 @@
   &__content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 6.4rem;
     padding: 8rem 0;
@@ -10,6 +10,10 @@
 }
 
 .intro {
+  &__content {
+    align-self: center;
+  }
+
   &__img {
     width: 80%;
   }

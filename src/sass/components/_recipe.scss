@@ -1,0 +1,14 @@
+.recipe {
+  &__img {
+    display: block;
+    width: 100%;
+    height: 38rem;
+    object-fit: cover;
+    border-radius: var(--b-radius-5);
+  }
+
+  &__name {
+    font-size: 3rem;
+    font-weight: 500;
+  }
+}
