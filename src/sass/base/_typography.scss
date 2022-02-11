@@ -4,3 +4,31 @@ body {
   line-height: 1;
   color: var(--color-grey-dark);
 }
+
+.heading__primary {
+  font-size: 5.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  @include gradient(
+    to right bottom,
+    var(--color-primary-light),
+    var(--color-secondary)
+  );
+  position: relative;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: -2rem;
+    left: 0;
+    width: 8rem;
+    height: 0.3rem;
+    border-radius: 10rem;
+    background-image: linear-gradient(
+      to right bottom,
+      var(--color-primary-light),
+      var(--color-secondary)
+    );
+  }
+}
