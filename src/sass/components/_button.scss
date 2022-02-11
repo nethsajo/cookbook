@@ -53,4 +53,21 @@
   &:not(:last-child) {
     margin-right: 2.4rem;
   }
+
+  &__bookmark {
+    width: 4.8rem;
+    height: 4.8rem;
+    background-color: var(--color-primary-light);
+    outline: none;
+    border: none;
+    border-radius: 50%;
+    padding: 1.2rem;
+    cursor: pointer;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--color-white);
+    }
+  }
 }

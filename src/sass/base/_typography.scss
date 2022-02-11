@@ -32,3 +32,15 @@ body {
     );
   }
 }
+
+.heading__secondary {
+  font-size: 4.4rem;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.heading__tertiary {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-primary-light);
+}
