@@ -30,6 +30,7 @@
 
   &__info {
     font-size: 1.6rem;
+    text-transform: uppercase;
 
     &:not(:last-child) {
       margin-right: 3.6rem;
@@ -90,7 +91,6 @@
 
   &__ingredient {
     display: flex;
-    align-items: center;
   }
 
   &__icon {
