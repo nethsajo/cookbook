@@ -29,26 +29,16 @@ class RecipeView {
   _generateMarkup() {
     return `
       <div class="recipe__img-box">
+        <div class="recipe__heading">
+          <h2 class="heading__secondary u-mb-md t-center">
+            ${this.#data.title}
+          </h2>
+        </div>
         <img
           src="${this.#data.image}"
           alt="${this.#data.title}"
           class="recipe__img"
         />
-      </div>
-      <div class="recipe__content">
-        <div class="recipe__heading">
-          <h2 class="heading__secondary u-mb-xxs">
-            ${this.#data.title}
-          </h2>
-          <p class="recipe__publisher u-mb-md">By: ${this.#data.publisher}</p>
-          <div class="recipe__bookmark">
-            <button class="btn__round btn__bookmark">
-              <svg>
-                <use xlink:href="${icons}#icon-bookmark"></use>
-              </svg>
-            </button>
-          </div>
-        </div>
         <div class="recipe__details">
           <div class="recipe__info">
             <svg class="recipe__info-icon">
@@ -84,8 +74,17 @@ class RecipeView {
               </button>
             </div>
           </div>
+          <div class="recipe__bookmark">
+            <button class="btn__round btn__bookmark">
+              <svg>
+                <use xlink:href="${icons}#icon-bookmark"></use>
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="recipe__ingredients">
+      </div>
+      <div class="recipe__content">
+        <div class="recipe__ingredients u-mb-lg">
           <h2 class="heading__tertiary t-uppercase t-center u-mb-md">
             Recipe Ingredients
           </h2>
@@ -108,6 +107,21 @@ class RecipeView {
               })
               .join('')}
           </ul>
+        </div>
+        <div class="recipe__directions">
+          <h2 class="heading__tertiary t-uppercase t-center u-mb-md">
+            How to cook it
+          </h2>
+          <p class="recipe__directions-text u-mb-sm">This recipe was carefully designed and tested by <span class="recipe__publisher">${
+            this.#data.publisher
+          }</span>. Please check out directions at their website.
+          </p>
+          <a href="${this.#data.sourceUrl}" class="btn btn--primary btn--sm">
+            <span class="btn__text u-mr-xs">Directions</span>
+            <svg class="btn__icon">
+              <use xlink:href="${icons}#icon-arrow-right"></use>
+            </svg>
+          </a>
         </div>
       </div>
     `;

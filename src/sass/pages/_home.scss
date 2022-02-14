@@ -1,4 +1,8 @@
 .section {
+  &__top {
+    padding: 3.2rem 0;
+  }
+
   &__content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));

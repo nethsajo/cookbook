@@ -12,14 +12,17 @@
   }
 
   &__bookmark {
-    position: absolute;
-    top: 2rem;
-    right: 1.4rem;
+    margin-left: auto;
   }
 
   &__publisher {
     font-size: 1.6rem;
     line-height: 1.6;
+    font-weight: 500;
+  }
+
+  &__details {
+    margin-top: 2.4rem;
   }
 
   &__details,
@@ -73,7 +76,6 @@
   }
 
   &__ingredients {
-    padding: 4.8rem 0;
     display: flex;
     flex-direction: column;
 
@@ -85,7 +87,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2.4rem 3.2rem;
-    align-items: center;
     list-style: none;
   }
 
@@ -104,5 +105,21 @@
   &__quantity {
     flex: 0 0 auto;
     margin-right: 0.8rem;
+  }
+
+  &__directions {
+    padding-bottom: 4.8rem;
+    font-size: 1.6rem;
+    line-height: 1.6;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__directions-text {
+    max-width: 50rem;
+    margin: 0 auto;
   }
 }

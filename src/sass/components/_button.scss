@@ -9,16 +9,20 @@
 }
 
 .btn {
-  display: flex;
-  align-items: center;
-  @extend %btn;
+  &,
+  &:link,
+  &:visited {
+    display: flex;
+    align-items: center;
+    @extend %btn;
+  }
 
   &--primary {
-    background-color: var(--color-secondary-dark);
+    background-color: var(--color-primary-light);
     color: var(--color-white);
 
     &:hover {
-      background-color: var(--color-secondary);
+      background-color: #fc9292;
     }
   }
 
@@ -29,6 +33,11 @@
     &:hover {
       color: var(--color-grey-dark);
     }
+  }
+
+  &--light {
+    background-color: var(--color-white-dark);
+    color: inherit;
   }
 
   &--sm {
@@ -44,10 +53,9 @@
   }
 
   &__icon {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 2.4rem;
+    height: 2.4rem;
     fill: currentColor;
-    margin-left: 0.8rem;
   }
 
   &:not(:last-child) {
