@@ -7,9 +7,7 @@ import 'regenerator-runtime/runtime';
 const timeout = function (seconds) {
   return new Promise(function (_, reject) {
     setTimeout(function () {
-      reject(
-        new Error(`Request took too long! Timeout after ${seconds} seconds`)
-      );
+      reject(new Error(`Request took too long! Timeout after ${seconds} seconds`));
     }, seconds * 1000);
   });
 };
@@ -28,10 +26,8 @@ const controlRecipe = async function () {
     //2. Rendering recipe
     RecipeView.render(Model.state.recipe);
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 };
 
-['hashchange', 'load'].forEach(event =>
-  window.addEventListener(event, controlRecipe)
-);
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));

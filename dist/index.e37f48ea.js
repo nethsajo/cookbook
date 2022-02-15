@@ -543,7 +543,7 @@ const controlRecipe = async function() {
         //2. Rendering recipe
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
     } catch (error) {
-        alert(error);
+        console.log(error);
     }
 };
 [
