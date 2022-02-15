@@ -1,16 +1,8 @@
-import * as Model from './Model.js';
+import * as model from './Model.js';
 import RecipeView from './views/recipeView.js';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-
-const timeout = function (seconds) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${seconds} seconds`));
-    }, seconds * 1000);
-  });
-};
 
 //Fetch data from api
 const controlRecipe = async function () {
@@ -21,13 +13,17 @@ const controlRecipe = async function () {
     RecipeView.renderSpinner();
 
     //1. Loading recipe
-    await Model.loadRecipe(id);
+    await model.loadRecipe(id);
 
     //2. Rendering recipe
-    RecipeView.render(Model.state.recipe);
+    RecipeView.render(model.state.recipe);
   } catch (error) {
     console.log(error);
   }
 };
 
-['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+const init = function () {
+  RecipeView.addHandlerRender(controlRecipe);
+};
+
+init();

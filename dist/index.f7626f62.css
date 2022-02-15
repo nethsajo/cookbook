@@ -369,6 +369,26 @@ strong {
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 0 3.2rem;
+}
+
+.message__text {
+  font-size: 1.8rem;
+  line-height: 1.8;
+}
+
+.message__icon {
+  width: 4.8rem;
+  height: 4.8rem;
+  fill: var(--color-secondary);
+}
+
 .modal {
   position: fixed;
   top: 50%;

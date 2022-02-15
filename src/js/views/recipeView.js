@@ -27,6 +27,26 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
+  renderError() {
+    const markup = `
+      <div class="message">
+        <div class="message__icon-box">
+          <svg class="message__icon u-mb-xs">
+            <use xlink:href="${icons}#icon-alert-triangle "></use>
+          </svg>
+        </div>
+        <p class="message__text">We could not find that recipe. Please try another one!</p>
+      </div>
+    `;
+
+    this.#parentElement.innerHTML = '';
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  addHandlerRender(handler) {
+    ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler));
+  }
+
   _generateMarkup() {
     return `
       <section class="recipe">

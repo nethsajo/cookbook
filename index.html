@@ -26,7 +26,7 @@
         <div class="header__menu">
           <ul class="header__menu-list">
             <li class="header__menu-item">
-              <button class="header__menu-btn header__menu-search">
+              <button class="header__menu-btn btn__search">
                 <svg class="header__menu-icon">
                   <use xlink:href="./src/icons/icons.svg#icon-search"></use>
                 </svg>
@@ -58,9 +58,7 @@
                         <p class="bookmarks__publisher">The Publisher</p>
                         <div class="bookmarks__user-generated">
                           <svg>
-                            <use
-                              xlink:href="./src/icons/icons.svg#icon-user"
-                            ></use>
+                            <use xlink:href="./src/icons/icons.svg#icon-user"></use>
                           </svg>
                         </div>
                       </div>
@@ -74,9 +72,7 @@
                         <p class="bookmarks__publisher">The Publisher</p>
                         <div class="bookmarks__user-generated">
                           <svg>
-                            <use
-                              xlink:href="./src/icons/icons.svg#icon-user"
-                            ></use>
+                            <use xlink:href="./src/icons/icons.svg#icon-user"></use>
                           </svg>
                         </div>
                       </div>
@@ -96,15 +92,24 @@
     </header>
 
     <main class="main">
+      <!-- MESSAGE -->
+      <!-- <div class="message">
+        <div class="message__icon-box">
+          <svg class="message__icon u-mb-xs">
+            <use xlink:href="./src/icons/icons.svg#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p class="message__text">We could not find that recipe. Please try another one!</p>
+      </div> -->
       <!-- INTRO -->
       <section class="intro">
         <div class="intro__content">
           <h1 class="heading__primary u-mb-xs t-center">Are you hungry?</h1>
           <p class="intro__text t-center u-mb-lg">
-            Start by searching for a recipe or an ingredient. Discover recipes,
-            cooks and how-to's based on the food you love.
+            Start by searching for a recipe or an ingredient. Discover recipes, cooks and how-to's based on the food you
+            love.
           </p>
-          <button class="intro__btn-search">
+          <button class="intro__btn-search btn__search">
             <svg class="intro__btn-icon">
               <use xlink:href="./src/icons/icons.svg#icon-search"></use>
             </svg>
@@ -132,13 +137,7 @@
       <div class="search__container">
         <h2 class="search__heading u-mb-md">Search over 1,000,000 recipes</h2>
         <form class="search__form">
-          <input
-            type="text"
-            name="search"
-            id="search"
-            class="search__field"
-            placeholder="Find a recipe..."
-          />
+          <input type="text" name="search" id="search" class="search__field" placeholder="Find a recipe..." />
           <button class="search__btn search__find">
             <svg class="search__icon">
               <use xlink:href="./src/icons/icons.svg#icon-search"></use>
