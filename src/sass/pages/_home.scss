@@ -2,28 +2,56 @@
   &__top {
     padding: 3.2rem 0;
   }
-
-  &__content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
-    align-items: flex-start;
-    justify-content: center;
-    gap: 6.4rem;
-    padding: 8rem 0;
-  }
 }
 
 .intro {
-  &__content {
-    align-self: center;
-  }
+  height: 85vh;
+  background-image: linear-gradient(
+      rgba(34, 34, 34, 0.6),
+      rgba(34, 34, 34, 0.6)
+    ),
+    url(../images/hero.jpg);
+  background-size: cover;
+  background-position: center;
 
-  &__img {
-    width: 80%;
+  &__content {
+    max-width: 110rem;
+    min-height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3.2rem;
   }
 
   &__text {
+    max-width: 60rem;
     font-size: 1.8rem;
+    color: var(--color-white-light);
     line-height: 1.8;
+  }
+
+  &__btn-search {
+    cursor: pointer;
+    width: 55%;
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: var(--b-radius-5);
+
+    &:hover > .intro__btn-icon {
+      fill: var(--color-white-light);
+    }
+  }
+
+  &__btn-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    fill: var(--color-grey-light);
+    transition: var(--transition);
   }
 }

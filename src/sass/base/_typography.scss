@@ -9,38 +9,19 @@ body {
   font-size: 5.2rem;
   font-weight: 700;
   line-height: 1.2;
-  @include gradient(
-    to right bottom,
-    var(--color-primary-light),
-    var(--color-secondary)
-  );
+  color: var(--color-white);
   position: relative;
-
-  &:before {
-    content: '';
-    display: inline-block;
-    position: absolute;
-    top: -2rem;
-    left: 0;
-    width: 8rem;
-    height: 0.3rem;
-    border-radius: 10rem;
-    background-image: linear-gradient(
-      to right bottom,
-      var(--color-primary-light),
-      var(--color-secondary)
-    );
-  }
 }
 
 .heading__secondary {
-  font-size: 3.6rem;
+  font-size: 4.4rem;
   line-height: 1.2;
   font-weight: 500;
 }
 
 .heading__tertiary {
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 600;
+  letter-spacing: 0.07rem;
   color: var(--color-primary-light);
 }
