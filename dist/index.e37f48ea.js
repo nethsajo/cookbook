@@ -2228,6 +2228,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../icons/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+var _fracty = require("fracty");
+var _fractyDefault = parcelHelpers.interopDefault(_fracty);
 class RecipeView {
     #parentElement = document.querySelector('.main');
     #data;
@@ -2254,12 +2256,6 @@ class RecipeView {
       <section class="recipe">
         <div class="recipe__header">
           <div class="recipe__header-textbox">
-            <button class="btn btn--light btn--md u-mb-md btn__back">
-              <svg class="btn__icon">
-                <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-left"></use>
-              </svg>
-              <span class="btn__text u-ml-xs">Back</span>
-            </button>
             <div class="recipe__heading u-mb-md">
               <h2 class="heading__secondary u-mb-sm t-center">
                 ${this.#data.title}
@@ -2293,13 +2289,13 @@ class RecipeView {
               </button>
             </div>
           </div>
-          <div class="recipe__img-box">
+          <figure class="recipe__img-box">
             <img src="${this.#data.image}" alt="${this.#data.title}" class="recipe__img"/>
-          </div>
+          </figure>
         </div>
         <div class="recipe__content">
           <div class="container">
-            <div class="recipe__ingredients u-mb-lg">
+            <div class="recipe__ingredients">
               <h2 class="heading__tertiary t-uppercase t-center u-mb-md">
                 Recipe Ingredients
               </h2>
@@ -2322,21 +2318,7 @@ class RecipeView {
                 </button>
               </div>
               <ul class="recipe__ingredient-list">
-                ${this.#data.ingredients.map((ingredient)=>{
-            const { quantity , unit , description  } = ingredient;
-            return `
-                    <li class="recipe__ingredient">
-                      <svg class="recipe__icon">
-                        <use xlink:href="${_iconsSvgDefault.default}#icon-check"></use>
-                      </svg>
-                      ${quantity ? `<div class="recipe__quantity">${quantity}</div>` : ''}
-                      <div class="recipe__description">
-                        <span class="recipe__unit">${unit}</span>
-                        ${description}
-                      </div>
-                    </li>
-                  `;
-        }).join('')}
+                ${this.#data.ingredients.map(this._generateMarkupIngredients).join('')}
               </ul>
             </div>
           </div>
@@ -2357,10 +2339,25 @@ class RecipeView {
       </section>
     `;
     }
+    _generateMarkupIngredients(ingredient) {
+        const { quantity , unit , description  } = ingredient;
+        return `
+      <li class="recipe__ingredient">
+        <svg class="recipe__icon">
+          <use xlink:href="${_iconsSvgDefault.default}#icon-check"></use>
+        </svg>
+        ${quantity ? `<div class="recipe__quantity">${_fractyDefault.default(quantity).toString()}</div>` : ''}
+        <div class="recipe__description">
+          <span class="recipe__unit">${unit}</span>
+          ${description}
+        </div>
+      </li>
+    `;
+    }
 }
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../icons/icons.svg":"b6QPC"}],"b6QPC":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../icons/icons.svg":"b6QPC","fracty":"hJO4d"}],"b6QPC":[function(require,module,exports) {
 module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "icons.fc114240.svg" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
@@ -2397,6 +2394,101 @@ function getOrigin(url) {
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
+
+},{}],"hJO4d":[function(require,module,exports) {
+// FRACTY CONVERTS DECIMAL NUMBERS TO FRACTIONS BY ASSUMING THAT TRAILING PATTERNS FROM 10^-2 CONTINUE TO REPEAT
+// The assumption is based on the most standard numbering conventions
+// e.g. 3.51 will convert to 3 51/100 while 3.511 will convert to 3 23/45
+// Throw any number up to 16 digits long at fracty and let fracy do the work.
+// If number is beyond 16 digits fracty will truncate at 15 digits to compensate for roundoff errors created in IEEE 754 Floating Point conversion.
+module.exports = function(number) {
+    let type;
+    if (number < 0) {
+        number = Math.abs(number);
+        type = '-';
+    } else type = '';
+    if (number === undefined) return `Your input was undefined.`;
+    if (isNaN(number)) return `"${number}" is not a number.`;
+    if (number == 10000000000000000) return `${type}9999999999999999`;
+    if (number > 10000000000000000) return `Too many digits in your integer to maintain IEEE 754 Floating Point conversion accuracy.`;
+    if (Number.isInteger(number)) return `${type}${number}`;
+    if (number < 0.000001) return '0';
+    const numberString = number.toString();
+    const entry = numberString.split('.');
+    let integer = entry[0];
+    let decimal;
+    if (decimal == '0' && integer !== '0') return integer;
+    else if (decimal == '0' && integer == '0') return '0';
+    else if (numberString.length >= 17) decimal = entry[1].slice(0, entry[1].length - 1);
+    else decimal = entry[1];
+    if (decimal == '99' && integer !== '0') return `${integer} 99/100`;
+    else if (decimal == '99' && integer == '0') return `99/100`;
+    else if (1 - parseFloat(`.${decimal}`) < 0.0011) decimal = '999';
+    if (decimal == undefined) return integer;
+    const decimalRev = decimal.split('').reverse().join(''); //Reverse the string to look for patterns.
+    const patternSearch = /^(\d+)\1{1,2}/; //This greedy regex matches the biggest pattern that starts at the beginning of the string (at the end, in the case of the reversed string). A lazy regex doesn't work because it only identifies subpatterns in cases where subpatterns exist (e.g. '88' in '388388388388'), thus pattern capture must be greedy.
+    let pattern = decimalRev.match(patternSearch); //If there's a pattern, it's full sequence is in [0] of this array and the single unit is in [1] but it may still need to be reduced further.
+    if (pattern && decimal.length > 2) {
+        patternSequence = pattern[0].split('').reverse().join('');
+        endPattern = pattern[1].split('').reverse().join('');
+        if (endPattern.length > 1) {
+            let endPatternArray = endPattern.split('');
+            let testSingleUnit = 1;
+            for(i = 0; i < endPatternArray.length; i++)testSingleUnit /= endPatternArray[0] / endPatternArray[i];
+            if (testSingleUnit === 1) endPattern = endPatternArray[0];
+        }
+        if (endPattern.length > 1 && endPattern.length % 2 === 0) endPattern = parseInt(endPattern.slice(0, endPattern.length / 2), 10) - parseInt(endPattern.slice(endPattern.length / 2, endPattern.length), 10) === 0 ? endPattern.slice(0, endPattern.length / 2) : endPattern;
+        return yesRepeat(decimal, endPattern, patternSequence, integer, type); //Begin calculating the numerator and denominator for decimals that have a pattern.
+    } else return noRepeat(decimal, integer, type); //Begin calculating the numerator and denominator for decimals that don't have a pattern.
+};
+//IF THERE'S A TRAILING PATTERN FRACTY DIVIDES THE INPUT BY ONE SUBTRACTED FROM THE NEAREST BASE 10 NUMBER WITH NUMBER OF ZEROS EQUAL TO THE LENGTH OF THE REPEATED PATTERN (I.E. A SERIES OF 9'S) MULTIPLIED BY THE BASE 10 NUMBER GREATER THAN AND CLOSEST TO THE INPUT.
+function yesRepeat(decimal, endPattern, patternSequence, integer, type) {
+    const rep = true; //The numerator repeats.
+    const nonPatternLength = decimal.length - patternSequence.length >= 1 ? decimal.length - patternSequence.length : 1; //Does the length of the non pattern segment of the input = 0? If it does, that's incorrect since we know it must equal at least 1, otherwise it's the length of the decimal input minus the length of the full pattern.
+    const decimalMultiplier2 = Math.pow(10, nonPatternLength); //Second multiplier to use.
+    const float = parseFloat(`0.${decimal}`); //Convert the decimal input to a floating point number.
+    const decimalMultiplier1 = Math.pow(10, endPattern.length); //Find the right multiplier to use for both numerator and denominator, which will later have 1 subtracted from it in the case of the denominator.
+    const numerator = Math.round((float * decimalMultiplier1 - float) * Math.pow(10, nonPatternLength)); //Find the numerator to be used in calculating the fraction that contains a repeating trailing sequence.
+    const denominator = (decimalMultiplier1 - 1) * decimalMultiplier2; //Caluculate the denominator using the equation for repeating trailing sequences.
+    return reduce(numerator, denominator, integer, type, rep); //Further reduce the numerator and denominator.
+}
+//IF THERE'S NO TRAILING PATTERN FRACTY DIVIDES THE INPUT BY THE NEAREST BASE 10 INTEGER GREATER THAN THE NUMERATOR.
+function noRepeat(decimal, integer, type) {
+    const rep = false; //The numerator doesn't repeat.
+    const numerator = parseInt(decimal, 10); //Numerator begins as decimal input converted into an integer.
+    const denominator = Math.pow(10, decimal.length); //Denominator begins as 10 to the power of the length of the numerator.
+    return reduce(numerator, denominator, integer, type, rep); //Reduce the numerator and denominator.
+}
+//FRACTY REDUCES THE FRACTION.
+function reduce(numerator, denominator, integer, type, rep) {
+    const primeNumberArray = [
+        2,
+        3,
+        5
+    ]; //If the numerator isn't from a repeating decimal case, the initialized array of prime numbers will suffice to find the common denominators.
+    if (rep === true) {
+        for(i = 3; i * i <= numerator; i += 2)if (numerator % i === 0) primeNumberArray.push(i);
+    }
+    let j = 0; //Initialize counter over the prime number array for the while loop.
+    let comDenom = 1; //Initialize the common denominator.
+    let num = numerator; //Initialize the numerator.
+    let den = denominator; //Initialize the denominator.
+    while(j <= primeNumberArray.length)if (num % primeNumberArray[j] === 0 && den % primeNumberArray[j] === 0) {
+        comDenom = comDenom * primeNumberArray[j];
+        num = num / primeNumberArray[j];
+        den = den / primeNumberArray[j];
+    } else j++;
+    return returnStrings(den, num, integer, type);
+}
+//FRACTY RETURNS THE REDUCED FRACTION AS A STRING.
+function returnStrings(den, num, integer, type) {
+    if (den === 1 && num === 1) {
+        integer = `${type}${(parseInt(integer) + 1).toString()}`; //Add 1 to the integer and return a string without a fraction.
+        return `${integer}`;
+    } else if (num === 0) return `${type}${integer}`;
+    else if (integer == '0') return `${type}${num}/${den}`;
+    else return `${type}${integer} ${num}/${den}`; //If there's an integer and a fraction return both.
+}
 
 },{}],"lOKu8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

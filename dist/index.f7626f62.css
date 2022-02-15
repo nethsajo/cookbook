@@ -598,6 +598,7 @@ strong {
 }
 
 .recipe__ingredients {
+  padding: 6.4rem 0;
   display: flex;
   flex-direction: column;
   font-size: 1.6rem;
@@ -826,7 +827,7 @@ strong {
 .container {
   max-width: 90rem;
   margin: 0 auto;
-  padding: 3.2rem;
+  padding: 0 3.2rem;
 }
 
 .section__top {

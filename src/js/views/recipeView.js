@@ -1,4 +1,5 @@
 import icons from 'url:../../icons/icons.svg';
+import fracty from 'fracty';
 
 class RecipeView {
   #parentElement = document.querySelector('.main');
@@ -31,19 +32,11 @@ class RecipeView {
       <section class="recipe">
         <div class="recipe__header">
           <div class="recipe__header-textbox">
-            <button class="btn btn--light btn--md u-mb-md btn__back">
-              <svg class="btn__icon">
-                <use xlink:href="${icons}#icon-arrow-left"></use>
-              </svg>
-              <span class="btn__text u-ml-xs">Back</span>
-            </button>
             <div class="recipe__heading u-mb-md">
               <h2 class="heading__secondary u-mb-sm t-center">
                 ${this.#data.title}
               </h2>
-              <p class="recipe__publisher t-center">By: ${
-                this.#data.publisher
-              }</p>
+              <p class="recipe__publisher t-center">By: ${this.#data.publisher}</p>
             </div>
             <div class="recipe__details u-mb-lg">
               <div class="recipe__info">
@@ -59,9 +52,7 @@ class RecipeView {
                 <svg class="recipe__info-icon">
                   <use xlink:href="${icons}#icon-users"></use>
                 </svg>
-                <span class="recipe__info-data recipe__info-data-people">${
-                  this.#data.servings
-                }</span>
+                <span class="recipe__info-data recipe__info-data-people">${this.#data.servings}</span>
                 <span class="recipe__info-text">servings</span>
               </div>
             </div>
@@ -74,15 +65,13 @@ class RecipeView {
               </button>
             </div>
           </div>
-          <div class="recipe__img-box">
-            <img src="${this.#data.image}" alt="${
-      this.#data.title
-    }" class="recipe__img"/>
-          </div>
+          <figure class="recipe__img-box">
+            <img src="${this.#data.image}" alt="${this.#data.title}" class="recipe__img"/>
+          </figure>
         </div>
         <div class="recipe__content">
           <div class="container">
-            <div class="recipe__ingredients u-mb-lg">
+            <div class="recipe__ingredients">
               <h2 class="heading__tertiary t-uppercase t-center u-mb-md">
                 Recipe Ingredients
               </h2>
@@ -105,27 +94,7 @@ class RecipeView {
                 </button>
               </div>
               <ul class="recipe__ingredient-list">
-                ${this.#data.ingredients
-                  .map(ingredient => {
-                    const { quantity, unit, description } = ingredient;
-                    return `
-                    <li class="recipe__ingredient">
-                      <svg class="recipe__icon">
-                        <use xlink:href="${icons}#icon-check"></use>
-                      </svg>
-                      ${
-                        quantity
-                          ? `<div class="recipe__quantity">${quantity}</div>`
-                          : ''
-                      }
-                      <div class="recipe__description">
-                        <span class="recipe__unit">${unit}</span>
-                        ${description}
-                      </div>
-                    </li>
-                  `;
-                  })
-                  .join('')}
+                ${this.#data.ingredients.map(this._generateMarkupIngredients).join('')}
               </ul>
             </div>
           </div>
@@ -138,9 +107,7 @@ class RecipeView {
             this.#data.publisher
           }</span>. Please check out directions at their website.
           </p>
-          <a href="${
-            this.#data.sourceUrl
-          }" class="btn btn--primary btn--sm" target="_blank">
+          <a href="${this.#data.sourceUrl}" class="btn btn--primary btn--sm" target="_blank">
             <span class="btn__text t-uppercase u-mr-xs">Directions</span>
             <svg class="btn__icon">
               <use xlink:href="${icons}#icon-arrow-right"></use>
@@ -148,6 +115,22 @@ class RecipeView {
           </a>
         </div>
       </section>
+    `;
+  }
+
+  _generateMarkupIngredients(ingredient) {
+    const { quantity, unit, description } = ingredient;
+    return `
+      <li class="recipe__ingredient">
+        <svg class="recipe__icon">
+          <use xlink:href="${icons}#icon-check"></use>
+        </svg>
+        ${quantity ? `<div class="recipe__quantity">${fracty(quantity).toString()}</div>` : ''}
+        <div class="recipe__description">
+          <span class="recipe__unit">${unit}</span>
+          ${description}
+        </div>
+      </li>
     `;
   }
 }
