@@ -521,22 +521,25 @@ function hmrAcceptRun(bundle, id) {
 },{}],"aenu9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
-var _modelJs = require("./Model.js");
+var _modelJs = require("./model.js");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
+//Polyfilling async/await
 var _runtime = require("regenerator-runtime/runtime");
-//Fetch data from api
+//Recipe control
 const controlRecipe = async function() {
     try {
+        //Get the id and remove the first character (#)
         const id = window.location.hash.slice(1);
+        //If there is no id or id is false then return immediately
         if (!id) return;
         _recipeViewJsDefault.default.renderSpinner();
-        //1. Loading recipe
+        //1. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise. So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
         await _modelJs.loadRecipe(id);
-        //2. Rendering recipe
+        //2. Rendering recipe and pass the state object to the recipe view
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
     } catch (error) {
-        console.log(error);
+        _recipeViewJsDefault.default.renderError();
     }
 };
 const init = function() {
@@ -544,7 +547,7 @@ const init = function() {
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./Model.js":"lOKu8"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -2225,6 +2228,8 @@ var _fractyDefault = parcelHelpers.interopDefault(_fracty);
 class RecipeView {
     #parentElement = document.querySelector('.main');
     #data;
+    #errorMessage = `We couldn't find that recipe. Please try another one!`;
+    #successMessage = '';
     render(data) {
         this.#data = data;
         const markup = this._generateMarkup();
@@ -2240,21 +2245,35 @@ class RecipeView {
         <div class="lds-dual-ring"></div>
       </div>
     `;
-        this.#parentElement.innerHTML = '';
+        this.#clear();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
-    renderError() {
+    renderError(message = this.#errorMessage) {
         const markup = `
       <div class="message">
         <div class="message__icon-box">
-          <svg class="message__icon u-mb-xs">
+          <svg class="message__icon message__icon--error u-mb-xs">
             <use xlink:href="${_iconsSvgDefault.default}#icon-alert-triangle "></use>
           </svg>
         </div>
-        <p class="message__text">We could not find that recipe. Please try another one!</p>
+        <p class="message__text">${message}</p>
       </div>
     `;
-        this.#parentElement.innerHTML = '';
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+    renderSuccess(message = this.#successMessage) {
+        const markup = `
+      <div class="message">
+        <div class="message__icon-box">
+          <svg class="message__icon message__icon--success u-mb-xs">
+            <use xlink:href="${_iconsSvgDefault.default}#icon-check-circle"></use>
+          </svg>
+        </div>
+        <p class="message__text">${message}</p>
+      </div>
+    `;
+        this.#clear();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     addHandlerRender(handler) {
@@ -2503,7 +2522,7 @@ function returnStrings(den, num, integer, type) {
     else return `${type}${integer} ${num}/${den}`; //If there's an integer and a fraction return both.
 }
 
-},{}],"lOKu8":[function(require,module,exports) {
+},{}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state
@@ -2533,10 +2552,11 @@ const loadRecipe = async function(id) {
         console.log(state.recipe);
     } catch (error) {
         console.error(`${error} 💥💥💥`);
+        throw error;
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helpers":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
+},{"./config":"k5Hzs","./helpers":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL
@@ -2573,6 +2593,6 @@ const getJSON = async function(url) {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"./config":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map

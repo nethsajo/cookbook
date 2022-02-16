@@ -1,10 +1,12 @@
 import { API_URL } from './config';
 import { getJSON } from './helpers';
 
+//Contains an object for recipe, search and bookmarks
 export const state = {
   recipe: {},
 };
 
+//This function will be the one responsible for actually fetching the recipe data from the api
 export const loadRecipe = async function (id) {
   try {
     const data = await getJSON(`${API_URL}/${id}`);
@@ -24,5 +26,6 @@ export const loadRecipe = async function (id) {
     console.log(state.recipe);
   } catch (error) {
     console.error(`${error} 💥💥💥`);
+    throw error;
   }
 };

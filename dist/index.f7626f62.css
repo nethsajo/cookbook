@@ -12,6 +12,8 @@
   --color-white-lightest: #fdfdfd;
   --color-white-dark: #f0f0f0;
   --color-white-darkest: #ebebeb;
+  --color-success: #37b24d;
+  --color-error: #f03e3e;
   --b-radius-5: 0.5rem;
   --b-radius-11: 1.1rem;
   --transition: all 0.3s ease-in-out;
@@ -376,17 +378,25 @@ strong {
   justify-content: center;
   min-height: 70vh;
   padding: 0 3.2rem;
+  text-align: center;
 }
 
 .message__text {
-  font-size: 1.8rem;
-  line-height: 1.8;
+  font-size: 2rem;
+  line-height: 1.6;
 }
 
 .message__icon {
   width: 4.8rem;
   height: 4.8rem;
-  fill: var(--color-secondary);
+}
+
+.message__icon--error {
+  fill: var(--color-error);
+}
+
+.message__icon--success {
+  fill: var(--color-success);
 }
 
 .modal {

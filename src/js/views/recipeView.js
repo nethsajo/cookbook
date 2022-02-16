@@ -4,6 +4,8 @@ import fracty from 'fracty';
 class RecipeView {
   #parentElement = document.querySelector('.main');
   #data;
+  #errorMessage = `We couldn't find that recipe. Please try another one!`;
+  #successMessage = '';
 
   render(data) {
     this.#data = data;
@@ -23,23 +25,39 @@ class RecipeView {
       </div>
     `;
 
-    this.#parentElement.innerHTML = '';
+    this.#clear();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  renderError() {
+  renderError(message = this.#errorMessage) {
     const markup = `
       <div class="message">
         <div class="message__icon-box">
-          <svg class="message__icon u-mb-xs">
+          <svg class="message__icon message__icon--error u-mb-xs">
             <use xlink:href="${icons}#icon-alert-triangle "></use>
           </svg>
         </div>
-        <p class="message__text">We could not find that recipe. Please try another one!</p>
+        <p class="message__text">${message}</p>
       </div>
     `;
 
-    this.#parentElement.innerHTML = '';
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  renderSuccess(message = this.#successMessage) {
+    const markup = `
+      <div class="message">
+        <div class="message__icon-box">
+          <svg class="message__icon message__icon--success u-mb-xs">
+            <use xlink:href="${icons}#icon-check-circle"></use>
+          </svg>
+        </div>
+        <p class="message__text">${message}</p>
+      </div>
+    `;
+
+    this.#clear();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
