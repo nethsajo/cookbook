@@ -17,6 +17,7 @@
   --b-radius-5: 0.5rem;
   --b-radius-11: 1.1rem;
   --transition: all 0.3s ease-in-out;
+  --nav-height: 8rem;
 }
 
 @keyframes lds-dual-ring {
@@ -475,20 +476,41 @@ strong {
   padding: 6.4rem 3.2rem;
 }
 
+.preview__link {
+  color: inherit;
+}
+
+.preview__results {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--color-grey-light);
+  text-transform: uppercase;
+}
+
 .preview__box {
   display: flex;
   flex-direction: column;
   border-radius: var(--b-radius-5);
   overflow: hidden;
-  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.07);
   cursor: pointer;
 }
 
+.preview__img-box {
+  overflow: hidden;
+}
+
 .preview__img {
+  display: block;
   width: 100%;
   height: 25rem;
   object-fit: cover;
-  display: block;
+  filter: brightness(0.6);
+  transition: var(--transition);
+}
+
+.preview__img:hover {
+  transform: scale(1.07);
 }
 
 .preview__text-box {
@@ -496,8 +518,12 @@ strong {
 }
 
 .preview__title {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.8;
 }
 
 .preview__publisher {
@@ -521,7 +547,7 @@ strong {
 .preview__duration {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 0.4rem;
 }
 
 .preview__duration-icon {
@@ -530,14 +556,16 @@ strong {
   fill: var(--color-primary);
 }
 
-.preview__time {
+.preview__view-text {
   font-size: 1.4rem;
+  font-weight: 500;
   color: var(--color-grey-light);
 }
 
 .recipe__header {
   display: flex;
   align-items: center;
+  border-top: 1px solid var(--color-white-darkest);
   border-bottom: 1px solid var(--color-white-darkest);
 }
 
@@ -553,6 +581,7 @@ strong {
 .recipe__img {
   display: block;
   width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -789,7 +818,7 @@ strong {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 8rem;
+  height: var(--nav-height);
   padding: 0 5.6rem;
   position: relative;
   top: 0;
@@ -875,7 +904,7 @@ strong {
 }
 
 .intro {
-  height: 85vh;
+  height: calc(100vh - var(--nav-height));
   background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url("hero.22dc911d.jpg");
   background-size: cover;
   background-position: center;

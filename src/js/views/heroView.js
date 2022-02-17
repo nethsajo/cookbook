@@ -34,56 +34,6 @@ class HeroView {
           </button>
         </div>
       </section>
-      <a href="#5ed6604591c37cdc054bcd09">RECIPE 1</a>
-      <a href="#5ed6604591c37cdc054bcb37">RECIPE 2</a>
-
-      <!-- <section class="preview">
-        <article class="preview__box">
-          <img src="${image}" alt="Preview Name" class="preview__img" />
-          <div class="preview__text-box">
-            <span class="preview__publisher">The Pioneer Woman</span>
-            <h3 class="preview__title u-mb-xs">Teriyaki Salmon</h3>
-            <div class="preview__footer">
-              <div class="preview__duration">
-                <svg class="preview__duration-icon">
-                  <use xlink:href="${icons}#icon-clock"></use>
-                </svg>
-                <span class="preview__time">45 minutes</span>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article class="preview__box">
-          <img src="${image}" alt="Preview Name" class="preview__img" />
-          <div class="preview__text-box">
-            <span class="preview__publisher">The Pioneer Woman</span>
-            <h3 class="preview__title u-mb-xs">Teriyaki Salmon</h3>
-            <div class="preview__footer">
-              <div class="preview__duration">
-                <svg class="preview__duration-icon">
-                  <use xlink:href="${icons}#icon-clock"></use>
-                </svg>
-                <span class="preview__time">45 minutes</span>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article class="preview__box">
-          <img src="${image}" alt="Preview Name" class="preview__img" />
-          <div class="preview__text-box">
-            <span class="preview__publisher">The Pioneer Woman</span>
-            <h3 class="preview__title u-mb-xs">Teriyaki Salmon</h3>
-            <div class="preview__footer">
-              <div class="preview__duration">
-                <svg class="preview__duration-icon">
-                  <use xlink:href="${icons}#icon-clock"></use>
-                </svg>
-                <span class="preview__time">45 minutes</span>
-              </div>
-            </div>
-          </div>
-        </article>
-      </section> -->
     `;
   }
 }

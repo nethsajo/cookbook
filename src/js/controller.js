@@ -2,11 +2,19 @@ import * as model from './model.js';
 import HeroView from './views/heroView.js';
 import RecipeView from './views/recipeView.js';
 import SearchView from './views/searchView.js';
+import ResultsView from './views/resultsView.js';
+
+//Config
+import { SEARCH_POPUP_SEC } from './config.js';
 
 //Polyfilling everything
 import 'core-js/stable';
 //Polyfilling async/await
 import 'regenerator-runtime/runtime';
+
+if (module.hot) {
+  module.hot.accept();
+}
 
 //Recipe control
 const controlRecipes = async function () {
@@ -31,15 +39,30 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
-    await model.loadSearchResults('pizza');
-    console.log(model.state.search.results);
-  } catch (error) {}
-};
+    ResultsView.renderSpinner();
+    console.log(ResultsView);
 
-controlSearchResults();
+    //1. Get search query
+    const query = SearchView.getQuery();
+
+    if (!query) return;
+
+    //2. Load search results
+    await model.loadSearchResults(query);
+
+    setTimeout(function () {
+      SearchView.toggleWindow();
+    }, SEARCH_POPUP_SEC * 1000);
+
+    ResultsView.render(model.state.search);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const init = function () {
   RecipeView.addHandlerRender(controlRecipes);
+  SearchView.addHandlerSearch(controlSearchResults);
 };
 
 init();

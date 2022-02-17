@@ -5,12 +5,8 @@
 }
 
 .intro {
-  height: 85vh;
-  background-image: linear-gradient(
-      rgba(34, 34, 34, 0.6),
-      rgba(34, 34, 34, 0.6)
-    ),
-    url(../images/hero.jpg);
+  height: calc(100vh - var(--nav-height));
+  background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url(../images/hero.jpg);
   background-size: cover;
   background-position: center;
 

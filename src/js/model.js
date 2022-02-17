@@ -13,7 +13,7 @@ export const state = {
 //This function will be the one responsible for actually fetching the recipe data from the api
 export const loadRecipe = async function (id) {
   try {
-    const data = await getJSON(`${API_URL}/${id}`);
+    const data = await getJSON(`${API_URL}${id}`);
 
     const { recipe } = data.data;
 
@@ -41,7 +41,7 @@ export const loadSearchResults = async function (query) {
 
     const { recipes } = data.data;
 
-    recipes.map(recipe => {
+    state.search.results = recipes.map(recipe => {
       return {
         id: recipe.id,
         title: recipe.title,
@@ -50,7 +50,6 @@ export const loadSearchResults = async function (query) {
       };
     });
 
-    state.search.results = recipes;
     console.log(state.search);
   } catch (error) {
     console.error(`${error} 💥💥💥`);

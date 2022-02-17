@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 8rem;
+  height: var(--nav-height);
   padding: 0 5.6rem;
   position: relative;
   top: 0;
@@ -20,11 +20,7 @@
   }
 
   &__logo span {
-    @include gradient(
-      to right top,
-      var(--color-primary),
-      var(--color-secondary)
-    );
+    @include gradient(to right top, var(--color-primary), var(--color-secondary));
     font-size: 2rem;
     font-weight: 600;
   }

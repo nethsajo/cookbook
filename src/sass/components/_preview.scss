@@ -7,20 +7,41 @@
   margin: 0 auto;
   padding: 6.4rem 3.2rem;
 
+  &__link {
+    color: inherit;
+  }
+
+  &__results {
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--color-grey-light);
+    text-transform: uppercase;
+  }
+
   &__box {
     display: flex;
     flex-direction: column;
     border-radius: var(--b-radius-5);
     overflow: hidden;
-    box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.07);
     cursor: pointer;
   }
 
+  &__img-box {
+    overflow: hidden;
+  }
+
   &__img {
+    display: block;
     width: 100%;
     height: 25rem;
     object-fit: cover;
-    display: block;
+    filter: brightness(0.6);
+    transition: var(--transition);
+
+    &:hover {
+      transform: scale(1.07);
+    }
   }
 
   &__text-box {
@@ -28,8 +49,12 @@
   }
 
   &__title {
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 1.8;
   }
 
   &__publisher {
@@ -53,7 +78,7 @@
   &__duration {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 0.4rem;
   }
 
   &__duration-icon {
@@ -62,8 +87,9 @@
     fill: var(--color-primary);
   }
 
-  &__time {
+  &__view-text {
     font-size: 1.4rem;
+    font-weight: 500;
     color: var(--color-grey-light);
   }
 }

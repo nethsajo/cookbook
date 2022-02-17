@@ -9,8 +9,25 @@ class SearchView {
     this._addHandlerHideSearch();
   }
 
+  getQuery() {
+    const query = this._parentElement.querySelector('.search__field').value;
+    return query;
+  }
+
+  _clearInput() {
+    this._parentElement.querySelector('.search__field').value = '';
+  }
+
+  addHandlerSearch(handler) {
+    this._parentElement.addEventListener('submit', function (e) {
+      e.preventDefault();
+      handler();
+    });
+  }
+
   toggleWindow() {
     this._window.classList.toggle('active');
+    this._clearInput();
   }
 
   _addHandlerShowSearch() {
