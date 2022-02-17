@@ -2,20 +2,21 @@ import icons from 'url:../../icons/icons.svg';
 import fracty from 'fracty';
 
 class RecipeView {
-  #parentElement = document.querySelector('.main');
+  _parentElement = document.querySelector('.main');
   #data;
   #errorMessage = `We couldn't find that recipe. Please try another one!`;
   #successMessage = '';
 
+  //Render method takes the data (state) and stores it inside of this.#data that can be access all over the place inside of this object
   render(data) {
     this.#data = data;
     const markup = this._generateMarkup();
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  #clear() {
-    this.#parentElement.innerHTML = '';
+  _clear() {
+    this._parentElement.innerHTML = '';
   }
 
   renderSpinner() {
@@ -25,15 +26,15 @@ class RecipeView {
       </div>
     `;
 
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
   renderError(message = this.#errorMessage) {
     const markup = `
       <div class="message">
-        <div class="message__icon-box">
-          <svg class="message__icon message__icon--error u-mb-xs">
+        <div class="message__icon-box  u-mb-xs">
+          <svg class="message__icon message__icon--error">
             <use xlink:href="${icons}#icon-alert-triangle "></use>
           </svg>
         </div>
@@ -41,15 +42,15 @@ class RecipeView {
       </div>
     `;
 
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
   renderSuccess(message = this.#successMessage) {
     const markup = `
       <div class="message">
-        <div class="message__icon-box">
-          <svg class="message__icon message__icon--success u-mb-xs">
+        <div class="message__icon-box  u-mb-xs">
+          <svg class="message__icon message__icon--success">
             <use xlink:href="${icons}#icon-check-circle"></use>
           </svg>
         </div>
@@ -57,8 +58,8 @@ class RecipeView {
       </div>
     `;
 
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
   addHandlerRender(handler) {

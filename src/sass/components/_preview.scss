@@ -1,10 +1,20 @@
 .preview {
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--b-radius-5);
-  overflow: hidden;
-  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.03);
-  cursor: pointer;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 9.6rem 6.4rem;
+  align-items: center;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 6.4rem 3.2rem;
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--b-radius-5);
+    overflow: hidden;
+    box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+  }
 
   &__img {
     width: 100%;

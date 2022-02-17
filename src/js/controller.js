@@ -1,5 +1,7 @@
 import * as model from './model.js';
+import HeroView from './views/heroView.js';
 import RecipeView from './views/recipeView.js';
+import SearchView from './views/searchView.js';
 
 //Polyfilling everything
 import 'core-js/stable';
@@ -7,7 +9,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 //Recipe control
-const controlRecipe = async function () {
+const controlRecipes = async function () {
   try {
     //Get the id and remove the first character (#)
     const id = window.location.hash.slice(1);
@@ -27,8 +29,17 @@ const controlRecipe = async function () {
   }
 };
 
+const controlSearchResults = async function () {
+  try {
+    await model.loadSearchResults('pizza');
+    console.log(model.state.search.results);
+  } catch (error) {}
+};
+
+controlSearchResults();
+
 const init = function () {
-  RecipeView.addHandlerRender(controlRecipe);
+  RecipeView.addHandlerRender(controlRecipes);
 };
 
 init();

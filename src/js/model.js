@@ -1,9 +1,13 @@
-import { API_URL } from './config';
-import { getJSON } from './helpers';
+import { API_URL } from './config.js';
+import { getJSON } from './helpers.js';
 
 //Contains an object for recipe, search and bookmarks
 export const state = {
   recipe: {},
+  search: {
+    query: '',
+    results: [],
+  },
 };
 
 //This function will be the one responsible for actually fetching the recipe data from the api
@@ -24,6 +28,30 @@ export const loadRecipe = async function (id) {
       ingredients: recipe.ingredients,
     };
     console.log(state.recipe);
+  } catch (error) {
+    console.error(`${error} 💥💥💥`);
+    throw error;
+  }
+};
+
+export const loadSearchResults = async function (query) {
+  try {
+    state.search.query = query;
+    const data = await getJSON(`${API_URL}?search=${query}`);
+
+    const { recipes } = data.data;
+
+    recipes.map(recipe => {
+      return {
+        id: recipe.id,
+        title: recipe.title,
+        publisher: recipe.publisher,
+        image: recipe.image_url,
+      };
+    });
+
+    state.search.results = recipes;
+    console.log(state.search);
   } catch (error) {
     console.error(`${error} 💥💥💥`);
     throw error;

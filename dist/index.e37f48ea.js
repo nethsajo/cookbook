@@ -522,12 +522,16 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _modelJs = require("./model.js");
+var _heroViewJs = require("./views/heroView.js");
+var _heroViewJsDefault = parcelHelpers.interopDefault(_heroViewJs);
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
+var _searchViewJs = require("./views/searchView.js");
+var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 //Polyfilling async/await
 var _runtime = require("regenerator-runtime/runtime");
 //Recipe control
-const controlRecipe = async function() {
+const controlRecipes = async function() {
     try {
         //Get the id and remove the first character (#)
         const id = window.location.hash.slice(1);
@@ -542,12 +546,20 @@ const controlRecipe = async function() {
         _recipeViewJsDefault.default.renderError();
     }
 };
+const controlSearchResults = async function() {
+    try {
+        await _modelJs.loadSearchResults('pizza');
+        console.log(_modelJs.state.search.results);
+    } catch (error) {
+    }
+};
+controlSearchResults();
 const init = function() {
-    _recipeViewJsDefault.default.addHandlerRender(controlRecipe);
+    _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/searchView.js":"9OQAM","./views/heroView.js":"8UYUH"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -2226,18 +2238,19 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _fracty = require("fracty");
 var _fractyDefault = parcelHelpers.interopDefault(_fracty);
 class RecipeView {
-    #parentElement = document.querySelector('.main');
+    _parentElement = document.querySelector('.main');
     #data;
     #errorMessage = `We couldn't find that recipe. Please try another one!`;
     #successMessage = '';
+    //Render method takes the data (state) and stores it inside of this.#data that can be access all over the place inside of this object
     render(data) {
         this.#data = data;
         const markup = this._generateMarkup();
-        this.#clear();
-        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+        this._clear();
+        this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
-     #clear() {
-        this.#parentElement.innerHTML = '';
+    _clear() {
+        this._parentElement.innerHTML = '';
     }
     renderSpinner() {
         const markup = `
@@ -2245,36 +2258,36 @@ class RecipeView {
         <div class="lds-dual-ring"></div>
       </div>
     `;
-        this.#clear();
-        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+        this._clear();
+        this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     renderError(message = this.#errorMessage) {
         const markup = `
       <div class="message">
-        <div class="message__icon-box">
-          <svg class="message__icon message__icon--error u-mb-xs">
+        <div class="message__icon-box  u-mb-xs">
+          <svg class="message__icon message__icon--error">
             <use xlink:href="${_iconsSvgDefault.default}#icon-alert-triangle "></use>
           </svg>
         </div>
         <p class="message__text">${message}</p>
       </div>
     `;
-        this.#clear();
-        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+        this._clear();
+        this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     renderSuccess(message = this.#successMessage) {
         const markup = `
       <div class="message">
-        <div class="message__icon-box">
-          <svg class="message__icon message__icon--success u-mb-xs">
+        <div class="message__icon-box  u-mb-xs">
+          <svg class="message__icon message__icon--success">
             <use xlink:href="${_iconsSvgDefault.default}#icon-check-circle"></use>
           </svg>
         </div>
         <p class="message__text">${message}</p>
       </div>
     `;
-        this.#clear();
-        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+        this._clear();
+        this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
     addHandlerRender(handler) {
         [
@@ -2529,15 +2542,21 @@ parcelHelpers.export(exports, "state", ()=>state
 );
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe
 );
-var _config = require("./config");
-var _helpers = require("./helpers");
+parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults
+);
+var _configJs = require("./config.js");
+var _helpersJs = require("./helpers.js");
 const state = {
     recipe: {
+    },
+    search: {
+        query: '',
+        results: []
     }
 };
 const loadRecipe = async function(id) {
     try {
-        const data = await _helpers.getJSON(`${_config.API_URL}/${id}`);
+        const data = await _helpersJs.getJSON(`${_configJs.API_URL}/${id}`);
         const { recipe  } = data.data;
         state.recipe = {
             id: recipe.id,
@@ -2555,8 +2574,28 @@ const loadRecipe = async function(id) {
         throw error;
     }
 };
+const loadSearchResults = async function(query) {
+    try {
+        state.search.query = query;
+        const data = await _helpersJs.getJSON(`${_configJs.API_URL}?search=${query}`);
+        const { recipes  } = data.data;
+        recipes.map((recipe)=>{
+            return {
+                id: recipe.id,
+                title: recipe.title,
+                publisher: recipe.publisher,
+                image: recipe.image_url
+            };
+        });
+        state.search.results = recipes;
+        console.log(state.search);
+    } catch (error) {
+        console.error(`${error} 💥💥💥`);
+        throw error;
+    }
+};
 
-},{"./config":"k5Hzs","./helpers":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL
@@ -2571,7 +2610,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON
 );
-var _config = require("./config");
+var _configJs = require("./config.js");
 const timeout = function(seconds) {
     return new Promise(function(_, reject) {
         setTimeout(function() {
@@ -2583,16 +2622,136 @@ const getJSON = async function(url) {
     try {
         const response = await Promise.race([
             fetch(url),
-            timeout(_config.TIMEOUT_SEC)
+            timeout(_configJs.TIMEOUT_SEC)
         ]);
         const data = await response.json();
         if (!response.ok) throw new Error(`${data.message} (${response.status})`);
         return data;
     } catch (error) {
+        //Re-throw error
         throw error;
     }
 };
 
-},{"./config":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs"}],"9OQAM":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class SearchView {
+    _parentElement = document.querySelector('.search__form');
+    _window = document.querySelector('.search');
+    _btnOpenSearch = document.querySelectorAll('.btn__search');
+    _btnCloseSearch = document.querySelector('.search__close-btn');
+    constructor(){
+        this._addHandlerShowSearch();
+        this._addHandlerHideSearch();
+    }
+    toggleWindow() {
+        this._window.classList.toggle('active');
+    }
+    _addHandlerShowSearch() {
+        this._btnOpenSearch.forEach((btn)=>btn.addEventListener('click', this.toggleWindow.bind(this))
+        );
+    }
+    _addHandlerHideSearch() {
+        this._btnCloseSearch.addEventListener('click', this.toggleWindow.bind(this));
+    }
+}
+exports.default = new SearchView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8UYUH":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _iconsSvg = require("url:../../icons/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+var _testImgJpg = require("url:../../images/test-img.jpg");
+var _testImgJpgDefault = parcelHelpers.interopDefault(_testImgJpg);
+class HeroView {
+    _parentElement = document.querySelector('.main');
+    constructor(){
+        this.render();
+    }
+    render() {
+        const markup = this._generateMarkup();
+        this._clear();
+        this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+    _clear() {
+        this._parentElement.innerHTML = '';
+    }
+    _generateMarkup() {
+        return `
+      <section class="intro">
+        <div class="intro__content">
+          <h1 class="heading__primary u-mb-xs t-center">Are you hungry?</h1>
+          <p class="intro__text t-center u-mb-lg">
+            Start by searching for a recipe or an ingredient. Discover recipes, cooks and how-to's based on the food you
+            love.
+          </p>
+          <button class="intro__btn-search btn__search">
+            <svg class="intro__btn-icon">
+              <use xlink:href="${_iconsSvgDefault.default}#icon-search"></use>
+            </svg>
+          </button>
+        </div>
+      </section>
+      <a href="#5ed6604591c37cdc054bcd09">RECIPE 1</a>
+      <a href="#5ed6604591c37cdc054bcb37">RECIPE 2</a>
+
+      <!-- <section class="preview">
+        <article class="preview__box">
+          <img src="${_testImgJpgDefault.default}" alt="Preview Name" class="preview__img" />
+          <div class="preview__text-box">
+            <span class="preview__publisher">The Pioneer Woman</span>
+            <h3 class="preview__title u-mb-xs">Teriyaki Salmon</h3>
+            <div class="preview__footer">
+              <div class="preview__duration">
+                <svg class="preview__duration-icon">
+                  <use xlink:href="${_iconsSvgDefault.default}#icon-clock"></use>
+                </svg>
+                <span class="preview__time">45 minutes</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="preview__box">
+          <img src="${_testImgJpgDefault.default}" alt="Preview Name" class="preview__img" />
+          <div class="preview__text-box">
+            <span class="preview__publisher">The Pioneer Woman</span>
+            <h3 class="preview__title u-mb-xs">Teriyaki Salmon</h3>
+            <div class="preview__footer">
+              <div class="preview__duration">
+                <svg class="preview__duration-icon">
+                  <use xlink:href="${_iconsSvgDefault.default}#icon-clock"></use>
+                </svg>
+                <span class="preview__time">45 minutes</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="preview__box">
+          <img src="${_testImgJpgDefault.default}" alt="Preview Name" class="preview__img" />
+          <div class="preview__text-box">
+            <span class="preview__publisher">The Pioneer Woman</span>
+            <h3 class="preview__title u-mb-xs">Teriyaki Salmon</h3>
+            <div class="preview__footer">
+              <div class="preview__duration">
+                <svg class="preview__duration-icon">
+                  <use xlink:href="${_iconsSvgDefault.default}#icon-clock"></use>
+                </svg>
+                <span class="preview__time">45 minutes</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section> -->
+    `;
+    }
+}
+exports.default = new HeroView();
+
+},{"url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../images/test-img.jpg":"j9BLF"}],"j9BLF":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "test-img.012cc18b.jpg" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map
