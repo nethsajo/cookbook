@@ -543,7 +543,8 @@ const controlRecipes = async function() {
         //If there is no id or id is false then return immediately
         if (!id) return;
         _recipeViewJsDefault.default.renderSpinner();
-        //1. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise. So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
+        //1. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
+        //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
         await _modelJs.loadRecipe(id);
         //2. Rendering recipe and pass the state object to the recipe view
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
@@ -557,13 +558,17 @@ const controlSearchResults = async function() {
         console.log(_resultsViewJsDefault.default);
         //1. Get search query
         const query = _searchViewJsDefault.default.getQuery();
+        console.log(query);
         if (!query) return;
         //2. Load search results
         await _modelJs.loadSearchResults(query);
+        _resultsViewJsDefault.default.render(_modelJs.state.search);
         setTimeout(function() {
             _searchViewJsDefault.default.toggleWindow();
         }, _configJs.SEARCH_POPUP_SEC * 1000);
-        _resultsViewJsDefault.default.render(_modelJs.state.search);
+        history.pushState({
+            query: _modelJs.state.search.query
+        }, '', `/${_modelJs.state.search.query}/`);
     } catch (error) {
         console.log(error);
     }
@@ -574,7 +579,7 @@ const init = function() {
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/searchView.js":"9OQAM","./views/heroView.js":"8UYUH","./config.js":"k5Hzs","./views/resultsView.js":"cSbZE"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/heroView.js":"8UYUH","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./config.js":"k5Hzs"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -2565,7 +2570,7 @@ class View {
 }
 exports.default = View;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../icons/icons.svg":"b6QPC"}],"Y4A21":[function(require,module,exports) {
+},{"url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state
@@ -2665,7 +2670,46 @@ const getJSON = async function(url) {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs"}],"9OQAM":[function(require,module,exports) {
+},{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8UYUH":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _iconsSvg = require("url:../../icons/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class HeroView {
+    _parentElement = document.querySelector('.main');
+    constructor(){
+        this.render();
+    }
+    render() {
+        const markup = this._generateMarkup();
+        this._clear();
+        this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+    _clear() {
+        this._parentElement.innerHTML = '';
+    }
+    _generateMarkup() {
+        return `
+      <section class="intro">
+        <div class="intro__content">
+          <h1 class="heading__primary u-mb-xs t-center">Are you hungry?</h1>
+          <p class="intro__text t-center u-mb-lg">
+            Start by searching for a recipe or an ingredient. Discover recipes, cooks and how-to's based on the food you
+            love.
+          </p>
+          <button class="intro__btn-search btn__search">
+            <svg class="intro__btn-icon">
+              <use xlink:href="${_iconsSvgDefault.default}#icon-search"></use>
+            </svg>
+          </button>
+        </div>
+      </section>
+    `;
+    }
+}
+exports.default = new HeroView();
+
+},{"url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9OQAM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class SearchView {
@@ -2704,51 +2748,7 @@ class SearchView {
 }
 exports.default = new SearchView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8UYUH":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _iconsSvg = require("url:../../icons/icons.svg");
-var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
-var _testImgJpg = require("url:../../images/test-img.jpg");
-var _testImgJpgDefault = parcelHelpers.interopDefault(_testImgJpg);
-class HeroView {
-    _parentElement = document.querySelector('.main');
-    constructor(){
-        this.render();
-    }
-    render() {
-        const markup = this._generateMarkup();
-        this._clear();
-        this._parentElement.insertAdjacentHTML('afterbegin', markup);
-    }
-    _clear() {
-        this._parentElement.innerHTML = '';
-    }
-    _generateMarkup() {
-        return `
-      <section class="intro">
-        <div class="intro__content">
-          <h1 class="heading__primary u-mb-xs t-center">Are you hungry?</h1>
-          <p class="intro__text t-center u-mb-lg">
-            Start by searching for a recipe or an ingredient. Discover recipes, cooks and how-to's based on the food you
-            love.
-          </p>
-          <button class="intro__btn-search btn__search">
-            <svg class="intro__btn-icon">
-              <use xlink:href="${_iconsSvgDefault.default}#icon-search"></use>
-            </svg>
-          </button>
-        </div>
-      </section>
-    `;
-    }
-}
-exports.default = new HeroView();
-
-},{"url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../images/test-img.jpg":"j9BLF"}],"j9BLF":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "test-img.012cc18b.jpg" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"cSbZE":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cSbZE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _viewJs = require("./View.js");
@@ -2766,6 +2766,21 @@ class ResultsView extends _viewJsDefault.default {
         <h2 class="preview__results u-full-col-grid">${this._data.results.length} ${this._data.results.length > 1 ? 'results' : 'result'} for "${this._data.query}"
         </h2>
         ${this._data.results.map(this._generateMarkupRecipe).join('')}
+
+        <div class="pagination u-full-col-grid">
+          <button data-goto="1" class="pagination__btn pagination__btn--next">
+            <svg class="pagination__icon">
+              <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-left"></use>
+            </svg>
+            <span class="pagination__text u-ml-xs">Page 1</span>
+          </button>
+          <button data-goto="2" class="pagination__btn pagination__btn--prev">
+            <span class="pagination__text u-mr-xs">Page 2</span>
+            <svg class="pagination__icon">
+              <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-right"></use>
+            </svg>
+          </button>
+        </div>
       </section>
     `;
     }
@@ -2796,6 +2811,6 @@ class ResultsView extends _viewJsDefault.default {
 }
 exports.default = new ResultsView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS","url:../../icons/icons.svg":"b6QPC"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"./View.js":"5cUXS","url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map

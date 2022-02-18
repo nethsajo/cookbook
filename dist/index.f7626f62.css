@@ -466,6 +466,37 @@ strong {
   border-top: 1px solid var(--color-white-dark);
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.pagination__btn {
+  font-size: 1.6rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-primary-light);
+  cursor: pointer;
+  border: none;
+  border-radius: 10rem;
+  padding: 0.8rem 2.4rem;
+  background-color: var(--color-white-light-2);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.pagination__btn:hover {
+  background-color: var(--color-white-dark);
+}
+
+.pagination__icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  fill: currentColor;
+}
+
 .preview {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
@@ -576,6 +607,7 @@ strong {
 
 .recipe__img-box {
   flex: 1;
+  height: 50rem;
 }
 
 .recipe__img {

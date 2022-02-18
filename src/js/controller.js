@@ -27,7 +27,8 @@ const controlRecipes = async function () {
 
     RecipeView.renderSpinner();
 
-    //1. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise. So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
+    //1. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
+    //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
     await model.loadRecipe(id);
 
     //2. Rendering recipe and pass the state object to the recipe view
@@ -44,17 +45,19 @@ const controlSearchResults = async function () {
 
     //1. Get search query
     const query = SearchView.getQuery();
+    console.log(query);
 
     if (!query) return;
 
     //2. Load search results
     await model.loadSearchResults(query);
+    ResultsView.render(model.state.search);
 
     setTimeout(function () {
       SearchView.toggleWindow();
     }, SEARCH_POPUP_SEC * 1000);
 
-    ResultsView.render(model.state.search);
+    history.pushState({ query: model.state.search.query }, '', `/${model.state.search.query}/`);
   } catch (error) {
     console.log(error);
   }

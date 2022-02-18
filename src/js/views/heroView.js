@@ -1,5 +1,4 @@
 import icons from 'url:../../icons/icons.svg';
-import image from 'url:../../images/test-img.jpg';
 
 class HeroView {
   _parentElement = document.querySelector('.main');

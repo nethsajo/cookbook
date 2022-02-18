@@ -15,6 +15,21 @@ class ResultsView extends View {
     } for "${this._data.query}"
         </h2>
         ${this._data.results.map(this._generateMarkupRecipe).join('')}
+
+        <div class="pagination u-full-col-grid">
+          <button data-goto="1" class="pagination__btn pagination__btn--next">
+            <svg class="pagination__icon">
+              <use xlink:href="${icons}#icon-arrow-left"></use>
+            </svg>
+            <span class="pagination__text u-ml-xs">Page 1</span>
+          </button>
+          <button data-goto="2" class="pagination__btn pagination__btn--prev">
+            <span class="pagination__text u-mr-xs">Page 2</span>
+            <svg class="pagination__icon">
+              <use xlink:href="${icons}#icon-arrow-right"></use>
+            </svg>
+          </button>
+        </div>
       </section>
     `;
   }
