@@ -568,7 +568,8 @@ const controlSearchResults = async function() {
         await _modelJs.loadSearchResults(query);
         //3. Render results
         // ResultsView.render(model.state.search);
-        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(5));
+        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
+        console.log(_modelJs.getSearchResultsPage());
         setTimeout(function() {
             _searchViewJsDefault.default.toggleWindow();
         }, _configJs.SEARCH_POPUP_SEC * 1000);
@@ -581,9 +582,16 @@ const controlSearchResults = async function() {
         console.log(error);
     }
 };
+const controlPagination = function(goToPage) {
+    //1. Render NEW results
+    _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(goToPage));
+    //2. Render NEW pagination buttons
+    _paginationViewJsDefault.default.render(_modelJs.state.search);
+};
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
     _searchViewJsDefault.default.addHandlerSearch(controlSearchResults);
+    _paginationViewJsDefault.default.addHandlerClick(controlPagination);
 };
 init();
 
@@ -2840,6 +2848,14 @@ class PaginationView {
     _clear() {
         this._parentElement.innerHTML = '';
     }
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener('click', function(e) {
+            const btnElement = e.target.closest('.pagination__btn');
+            if (!btnElement) return;
+            const goToPage = +btnElement.dataset.goto;
+            handler(goToPage);
+        });
+    }
     _generateMarkupPagination() {
         const element = document.createElement('div');
         const classes = [
@@ -2855,7 +2871,7 @@ class PaginationView {
         console.log(numPages);
         //Page 1, and there are other pages
         if (currentPage === 1 && numPages > 1) return `
-        <button data-goto="2" class="pagination__btn pagination__btn--next">
+        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
           <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
           <svg class="pagination__icon">
             <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-right"></use>
@@ -2864,7 +2880,7 @@ class PaginationView {
       `;
         //Last Page
         if (currentPage === numPages && numPages > 1) return `
-        <button data-goto="1" class="pagination__btn pagination__btn--prev">
+        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
           <svg class="pagination__icon">
             <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-left"></use>
           </svg>
@@ -2873,14 +2889,14 @@ class PaginationView {
       `;
         //Other Page
         if (currentPage < numPages) return `
-        <button data-goto="1" class="pagination__btn pagination__btn--prev">
+        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
           <svg class="pagination__icon">
             <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-left"></use>
           </svg>
           <span class="pagination__text u-ml-xs">Page ${currentPage - 1}</span>
         </button>
 
-        <button data-goto="2" class="pagination__btn pagination__btn--next">
+        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
           <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
           <svg class="pagination__icon">
             <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-right"></use>

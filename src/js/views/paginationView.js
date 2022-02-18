@@ -19,6 +19,18 @@ class PaginationView {
     this._parentElement.innerHTML = '';
   }
 
+  addHandlerClick(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btnElement = e.target.closest('.pagination__btn');
+
+      if (!btnElement) return;
+
+      const goToPage = +btnElement.dataset.goto;
+
+      handler(goToPage);
+    });
+  }
+
   _generateMarkupPagination() {
     const element = document.createElement('div');
     const classes = ['pagination', 'container'];
@@ -35,7 +47,7 @@ class PaginationView {
     //Page 1, and there are other pages
     if (currentPage === 1 && numPages > 1) {
       return `
-        <button data-goto="2" class="pagination__btn pagination__btn--next">
+        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
           <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
           <svg class="pagination__icon">
             <use xlink:href="${icons}#icon-arrow-right"></use>
@@ -47,7 +59,7 @@ class PaginationView {
     //Last Page
     if (currentPage === numPages && numPages > 1) {
       return `
-        <button data-goto="1" class="pagination__btn pagination__btn--prev">
+        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
           <svg class="pagination__icon">
             <use xlink:href="${icons}#icon-arrow-left"></use>
           </svg>
@@ -59,14 +71,14 @@ class PaginationView {
     //Other Page
     if (currentPage < numPages) {
       return `
-        <button data-goto="1" class="pagination__btn pagination__btn--prev">
+        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
           <svg class="pagination__icon">
             <use xlink:href="${icons}#icon-arrow-left"></use>
           </svg>
           <span class="pagination__text u-ml-xs">Page ${currentPage - 1}</span>
         </button>
 
-        <button data-goto="2" class="pagination__btn pagination__btn--next">
+        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
           <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
           <svg class="pagination__icon">
             <use xlink:href="${icons}#icon-arrow-right"></use>
