@@ -9,27 +9,12 @@ class ResultsView extends View {
 
   _generateMarkup() {
     return `
-      <section class="preview">
-        <h2 class="preview__results u-full-col-grid">${this._data.results.length} ${
-      this._data.results.length > 1 ? 'results' : 'result'
+      <section class="preview container">
+        <h2 class="preview__results u-full-col-grid">${this._data.result} ${
+      this._data.result > 1 ? 'results' : 'result'
     } for "${this._data.query}"
         </h2>
-        ${this._data.results.map(this._generateMarkupRecipe).join('')}
-
-        <div class="pagination u-full-col-grid">
-          <button data-goto="1" class="pagination__btn pagination__btn--next">
-            <svg class="pagination__icon">
-              <use xlink:href="${icons}#icon-arrow-left"></use>
-            </svg>
-            <span class="pagination__text u-ml-xs">Page 1</span>
-          </button>
-          <button data-goto="2" class="pagination__btn pagination__btn--prev">
-            <span class="pagination__text u-mr-xs">Page 2</span>
-            <svg class="pagination__icon">
-              <use xlink:href="${icons}#icon-arrow-right"></use>
-            </svg>
-          </button>
-        </div>
+        ${this._data.recipes.map(this._generateMarkupRecipe).join('')}
       </section>
     `;
   }

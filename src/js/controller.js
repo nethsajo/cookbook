@@ -3,6 +3,7 @@ import HeroView from './views/heroView.js';
 import RecipeView from './views/recipeView.js';
 import SearchView from './views/searchView.js';
 import ResultsView from './views/resultsView.js';
+import PaginationView from './views/paginationView.js';
 
 //Config
 import { SEARCH_POPUP_SEC } from './config.js';
@@ -12,9 +13,9 @@ import 'core-js/stable';
 //Polyfilling async/await
 import 'regenerator-runtime/runtime';
 
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 //Recipe control
 const controlRecipes = async function () {
@@ -51,13 +52,20 @@ const controlSearchResults = async function () {
 
     //2. Load search results
     await model.loadSearchResults(query);
-    ResultsView.render(model.state.search);
+
+    //3. Render results
+    // ResultsView.render(model.state.search);
+
+    ResultsView.render(model.getSearchResultsPage(5));
 
     setTimeout(function () {
       SearchView.toggleWindow();
     }, SEARCH_POPUP_SEC * 1000);
 
     history.pushState({ query: model.state.search.query }, '', `/${model.state.search.query}/`);
+
+    //4. Render initial pagination buttons
+    PaginationView.render(model.state.search);
   } catch (error) {
     console.log(error);
   }

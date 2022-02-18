@@ -122,6 +122,10 @@
 
   &__ingredient {
     display: flex;
+
+    &:nth-child(odd) {
+      justify-self: end;
+    }
   }
 
   &__icon {

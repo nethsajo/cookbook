@@ -3,9 +3,8 @@
   grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
   gap: 9.6rem 6.4rem;
   align-items: center;
-  max-width: 120rem;
-  margin: 0 auto;
-  padding: 6.4rem 3.2rem;
+  padding-top: 6.4rem !important;
+  padding-bottom: 6.4rem !important;
 
   &__link {
     color: inherit;

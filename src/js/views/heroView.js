@@ -20,7 +20,7 @@ class HeroView {
   _generateMarkup() {
     return `
       <section class="intro">
-        <div class="intro__content">
+        <div class="intro__content container">
           <h1 class="heading__primary u-mb-xs t-center">Are you hungry?</h1>
           <p class="intro__text t-center u-mb-lg">
             Start by searching for a recipe or an ingredient. Discover recipes, cooks and how-to's based on the food you
