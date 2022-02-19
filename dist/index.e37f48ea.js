@@ -532,6 +532,8 @@ var _resultsViewJs = require("./views/resultsView.js");
 var _resultsViewJsDefault = parcelHelpers.interopDefault(_resultsViewJs);
 var _paginationViewJs = require("./views/paginationView.js");
 var _paginationViewJsDefault = parcelHelpers.interopDefault(_paginationViewJs);
+var _bookmarksViewJs = require("./views/bookmarksView.js");
+var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
 //Config
 var _configJs = require("./config.js");
 //Polyfilling async/await
@@ -592,8 +594,11 @@ const controlServings = function(newServings) {
     //Update the recipe servings (in state)
     _modelJs.updateServings(newServings);
     //Update the recipe view
-    // RecipeView.render(model.state.recipe);
     _recipeViewJsDefault.default.update(_modelJs.state.recipe);
+};
+const controlAddBookmark = function() {
+    _modelJs.addBookmark(_modelJs.state.recipe);
+    console.log(_modelJs.state.recipe);
 };
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
@@ -603,7 +608,7 @@ const init = function() {
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/heroView.js":"8UYUH","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./config.js":"k5Hzs","./views/paginationView.js":"6z7bi"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/heroView.js":"8UYUH","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./config.js":"k5Hzs","./views/paginationView.js":"6z7bi","./views/bookmarksView.js":"4Lqzq"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -2333,7 +2338,7 @@ class RecipeView extends _viewJsDefault.default {
               </div>
             </div>
             <div class="recipe__bookmark">
-              <button class="btn btn--primary btn--sm" btn__bookmark">
+              <button class="btn btn--primary btn--sm btn__bookmark">
                 <svg class="btn__icon">
                   <use xlink:href="${_iconsSvgDefault.default}#icon-bookmark"></use>
                 </svg>
@@ -2549,7 +2554,8 @@ var _iconsSvg = require("url:../../icons/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
-    //Render method takes the data (state) and stores it inside of this._data that can be access all over the place inside of this object
+    //Render method takes the data (state) and stores it inside of this._data
+    //this._data can be access all over the place inside of this object
     render(data) {
         //if there is no data or if there is data, but that data is an array and it is empty
         if (!data || Array.isArray(data.recipes) && data.recipes.length === 0) return this.renderError();
@@ -2562,18 +2568,33 @@ class View {
     update(data) {
         this._data = data;
         const newMarkup = this._generateMarkup();
-        //convert markup string to a DOM object
+        //convert markup string to a DOM object.
+        //The createContextualFragment() will convert the string into real DOM node objects
+        //The newDOM will become like a big object
         const newDOM = document.createRange().createContextualFragment(newMarkup);
+        //get all the elements in the newDOM
+        //store the converted newDOM into an array (shallow-copy)
         const newElements = Array.from(newDOM.querySelectorAll('*'));
+        //get the actual elements that are currently on the page
+        //store the current elements to a real array
         const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
+        //Loop the newElements
         newElements.forEach((newElement, i)=>{
+            //The currentElement is eqaul currentElements at position i.
             const currentElement = currentElements[i];
-            //isEqualNode will compare the content of newElement and currentElement
             //Updates changed TEXT
+            //isEqualNode will compare the content of newElement and currentElement; returs true or false
+            //if newElement and currentElement is not equal or they are different
+            //Then change the text content of the currentElement to the textContent of the newElement
+            //Another check: select the firstChild of newElement that is actually what contains the text
             if (!newElement.isEqualNode(currentElement) && newElement.firstChild?.nodeValue.trim() !== '') // console.log('💥', newElement.firstChild.nodeValue.trim());
+            //This is essentially updating the DOM only in places where it has changed or where it was about to change
             currentElement.textContent = newElement.textContent;
             //Updates changed ATTRIBUTES
-            if (!newElement.isEqualNode(currentElement)) Array.from(newElement.attributes).forEach((attr)=>currentElement.setAttribute(attr.name, attr.value)
+            //if newElement and currentElement is not equal or they are different
+            if (!newElement.isEqualNode(currentElement)) //Convert it to an array and loop over newElement attributes
+            //For each of them is an attribute then on the currentElement set the attribute.
+            Array.from(newElement.attributes).forEach((attr)=>currentElement.setAttribute(attr.name, attr.value)
             );
         });
     }
@@ -2633,6 +2654,8 @@ parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage
 );
 parcelHelpers.export(exports, "updateServings", ()=>updateServings
 );
+parcelHelpers.export(exports, "addBookmark", ()=>addBookmark
+);
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
 const state = {
@@ -2643,7 +2666,8 @@ const state = {
         results: [],
         page: 1,
         resultsPerPage: _configJs.RESULT_PER_PAGE
-    }
+    },
+    bookmarks: []
 };
 const loadRecipe = async function(id) {
     try {
@@ -2678,7 +2702,7 @@ const loadSearchResults = async function(query) {
                 image: recipe.image_url
             };
         });
-        console.log(state.search);
+        state.search.page = 1;
     } catch (error) {
         console.error(`${error} 💥💥💥`);
         throw error;
@@ -2699,6 +2723,12 @@ const updateServings = function(newServings) {
         ingredient.quantity = ingredient.quantity * newServings / state.recipe.servings;
     });
     state.recipe.servings = newServings;
+};
+const addBookmark = function(recipe) {
+    //Add bookmark
+    state.bookmarks.push(recipe);
+    //Mark current recipe as bookmark
+    if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
@@ -2952,6 +2982,29 @@ class PaginationView {
 }
 exports.default = new PaginationView();
 
-},{"url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4Lqzq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class BookmarkView {
+    _parentElement = document.querySelector('.bookmarks');
+    _btnOpenBookmark = document.querySelector('.header__menu-bookmark');
+    _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
+    constructor(){
+        this._addShowBookmarks();
+        this._addHideBookmarks();
+    }
+    toggleWindow() {
+        this._parentElement.classList.toggle('active');
+    }
+    _addShowBookmarks() {
+        this._btnOpenBookmark.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    _addHideBookmarks() {
+        this._btnCloseBookmark.addEventListener('click', this.toggleWindow.bind(this));
+    }
+}
+exports.default = new BookmarkView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map

@@ -54,7 +54,7 @@ class RecipeView extends View {
               </div>
             </div>
             <div class="recipe__bookmark">
-              <button class="btn btn--primary btn--sm" btn__bookmark">
+              <button class="btn btn--primary btn--sm btn__bookmark">
                 <svg class="btn__icon">
                   <use xlink:href="${icons}#icon-bookmark"></use>
                 </svg>

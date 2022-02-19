@@ -4,6 +4,7 @@ import RecipeView from './views/recipeView.js';
 import SearchView from './views/searchView.js';
 import ResultsView from './views/resultsView.js';
 import PaginationView from './views/paginationView.js';
+import BookmarksView from './views/bookmarksView.js';
 
 //Config
 import { SEARCH_POPUP_SEC } from './config.js';
@@ -84,9 +85,12 @@ const controlServings = function (newServings) {
   model.updateServings(newServings);
 
   //Update the recipe view
-  // RecipeView.render(model.state.recipe);
-
   RecipeView.update(model.state.recipe);
+};
+
+const controlAddBookmark = function () {
+  model.addBookmark(model.state.recipe);
+  console.log(model.state.recipe);
 };
 
 const init = function () {

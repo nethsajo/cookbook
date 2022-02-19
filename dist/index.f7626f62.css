@@ -138,25 +138,55 @@ strong {
 }
 
 .bookmarks {
-  padding: 1.2rem 0;
-  position: absolute;
-  width: 35rem;
-  background-color: var(--color-white);
+  padding: 3.6rem 0;
+  position: fixed;
+  top: 0;
   right: 0;
-  top: 6.3rem;
-  box-shadow: 0 0 1.6rem rgba(0, 0, 0, 0.03);
-  border-bottom-left-radius: var(--b-radius-11);
-  border-bottom-right-radius: var(--b-radius-11);
-  opacity: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 40rem;
+  background-color: var(--color-white);
+  box-shadow: 0 0 1.6rem rgba(0, 0, 0, 0.15);
+  opacity: 1;
   visibility: hidden;
-  transform: translateY(-2rem);
+  transform: translateX(100%);
   transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
 }
 
 .bookmarks.active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+.bookmarks__heading {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-grey-light);
+}
+
+.bookmarks__btn {
+  width: 3.6rem;
+  height: 3.6rem;
+  margin-left: 3.2rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: var(--color-grey-light);
+  transition: var(--transition);
+}
+
+.bookmarks__btn:hover {
+  color: var(--color-grey-dark);
+}
+
+.bookmarks__btn-icon {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .bookmarks__list {

@@ -10,6 +10,7 @@ export const state = {
     page: 1,
     resultsPerPage: RESULT_PER_PAGE,
   },
+  bookmarks: [],
 };
 
 //This function will be the one responsible for actually fetching the recipe data from the api
@@ -51,8 +52,7 @@ export const loadSearchResults = async function (query) {
         image: recipe.image_url,
       };
     });
-
-    console.log(state.search);
+    state.search.page = 1;
   } catch (error) {
     console.error(`${error} 💥💥💥`);
     throw error;
@@ -77,4 +77,12 @@ export const updateServings = function (newServings) {
   });
 
   state.recipe.servings = newServings;
+};
+
+export const addBookmark = function (recipe) {
+  //Add bookmark
+  state.bookmarks.push(recipe);
+
+  //Mark current recipe as bookmark
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
 };
