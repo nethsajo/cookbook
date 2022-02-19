@@ -588,8 +588,16 @@ const controlPagination = function(goToPage) {
     //2. Render NEW pagination buttons
     _paginationViewJsDefault.default.render(_modelJs.state.search);
 };
+const controlServings = function(newServings) {
+    //Update the recipe servings (in state)
+    _modelJs.updateServings(newServings);
+    //Update the recipe view
+    // RecipeView.render(model.state.recipe);
+    _recipeViewJsDefault.default.update(_modelJs.state.recipe);
+};
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
+    _recipeViewJsDefault.default.addHandlerUpdateServings(controlServings);
     _searchViewJsDefault.default.addHandlerSearch(controlSearchResults);
     _paginationViewJsDefault.default.addHandlerClick(controlPagination);
 };
@@ -2287,6 +2295,14 @@ class RecipeView extends _viewJsDefault.default {
         ].forEach((event)=>window.addEventListener(event, handler)
         );
     }
+    addHandlerUpdateServings(handler) {
+        this._parentElement.addEventListener('click', function(e) {
+            const btnElement = e.target.closest('.recipe__btn');
+            if (!btnElement) return;
+            const updateServings = +btnElement.dataset.update;
+            if (updateServings > 0) handler(updateServings);
+        });
+    }
     _generateMarkup() {
         return `
       <section class="recipe">
@@ -2336,7 +2352,7 @@ class RecipeView extends _viewJsDefault.default {
                 Recipe Ingredients
               </h2>
               <div class="recipe__info-button">
-                <button class="recipe__btn recipe__btn--decrease">
+                <button class="recipe__btn recipe__btn--decrease" data-update="${this._data.servings - 1}">
                   <svg>
                     <use
                       xlink:href="${_iconsSvgDefault.default}#icon-minus-circle"
@@ -2344,7 +2360,7 @@ class RecipeView extends _viewJsDefault.default {
                   </svg>
                   <span>Decrease</span>
                 </button>
-                <button class="recipe__btn recipe__btn--increase">
+                <button class="recipe__btn recipe__btn--increase" data-update="${this._data.servings + 1}">
                   <svg>
                     <use
                       xlink:href="${_iconsSvgDefault.default}#icon-plus-circle"
@@ -2543,6 +2559,24 @@ class View {
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
+    update(data) {
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        //convert markup string to a DOM object
+        const newDOM = document.createRange().createContextualFragment(newMarkup);
+        const newElements = Array.from(newDOM.querySelectorAll('*'));
+        const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
+        newElements.forEach((newElement, i)=>{
+            const currentElement = currentElements[i];
+            //isEqualNode will compare the content of newElement and currentElement
+            //Updates changed TEXT
+            if (!newElement.isEqualNode(currentElement) && newElement.firstChild?.nodeValue.trim() !== '') // console.log('💥', newElement.firstChild.nodeValue.trim());
+            currentElement.textContent = newElement.textContent;
+            //Updates changed ATTRIBUTES
+            if (!newElement.isEqualNode(currentElement)) Array.from(newElement.attributes).forEach((attr)=>currentElement.setAttribute(attr.name, attr.value)
+            );
+        });
+    }
     _clear() {
         this._parentElement.innerHTML = '';
     }
@@ -2596,6 +2630,8 @@ parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe
 parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults
 );
 parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage
+);
+parcelHelpers.export(exports, "updateServings", ()=>updateServings
 );
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -2657,6 +2693,12 @@ const getSearchResultsPage = function(page = state.search.page) {
         result: state.search.results.length,
         recipes: state.search.results.slice(start, end)
     };
+};
+const updateServings = function(newServings) {
+    state.recipe.ingredients.forEach((ingredient)=>{
+        ingredient.quantity = ingredient.quantity * newServings / state.recipe.servings;
+    });
+    state.recipe.servings = newServings;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
@@ -2836,6 +2878,7 @@ var _iconsSvg = require("url:../../icons/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class PaginationView {
     _parentElement = document.querySelector('.main');
+    //Refactor this later!!
     render(data) {
         this._data = data;
         //For Pagination Container

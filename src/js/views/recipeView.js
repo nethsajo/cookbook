@@ -12,6 +12,18 @@ class RecipeView extends View {
     ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler));
   }
 
+  addHandlerUpdateServings(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btnElement = e.target.closest('.recipe__btn');
+
+      if (!btnElement) return;
+
+      const updateServings = +btnElement.dataset.update;
+
+      if (updateServings > 0) handler(updateServings);
+    });
+  }
+
   _generateMarkup() {
     return `
       <section class="recipe">
@@ -61,7 +73,7 @@ class RecipeView extends View {
                 Recipe Ingredients
               </h2>
               <div class="recipe__info-button">
-                <button class="recipe__btn recipe__btn--decrease">
+                <button class="recipe__btn recipe__btn--decrease" data-update="${this._data.servings - 1}">
                   <svg>
                     <use
                       xlink:href="${icons}#icon-minus-circle"
@@ -69,7 +81,7 @@ class RecipeView extends View {
                   </svg>
                   <span>Decrease</span>
                 </button>
-                <button class="recipe__btn recipe__btn--increase">
+                <button class="recipe__btn recipe__btn--increase" data-update="${this._data.servings + 1}">
                   <svg>
                     <use
                       xlink:href="${icons}#icon-plus-circle"

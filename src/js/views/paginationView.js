@@ -3,6 +3,7 @@ import icons from 'url:../../icons/icons.svg';
 class PaginationView {
   _parentElement = document.querySelector('.main');
 
+  //Refactor this later!!
   render(data) {
     this._data = data;
 
