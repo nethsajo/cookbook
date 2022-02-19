@@ -24,6 +24,18 @@ class RecipeView extends View {
     });
   }
 
+  addHandlerAddBookmark(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btnBookmark = e.target.closest('.btn__bookmark');
+
+      if (!btnBookmark) return;
+
+      console.log(btnBookmark);
+
+      handler();
+    });
+  }
+
   _generateMarkup() {
     return `
       <section class="recipe">
@@ -56,9 +68,11 @@ class RecipeView extends View {
             <div class="recipe__bookmark">
               <button class="btn btn--primary btn--sm btn__bookmark">
                 <svg class="btn__icon">
-                  <use xlink:href="${icons}#icon-bookmark"></use>
+                  <use xlink:href="${icons}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
                 </svg>
-                <span class="btn__text t-uppercase u-ml-xs">Add to bookmark</span>
+                <span class="btn__text t-uppercase u-ml-xs">${
+                  this._data.bookmarked ? 'Added to bookmark' : 'Add to bookmark'
+                }</span>
               </button>
             </div>
           </div>

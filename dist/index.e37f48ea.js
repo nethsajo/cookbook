@@ -598,11 +598,13 @@ const controlServings = function(newServings) {
 };
 const controlAddBookmark = function() {
     _modelJs.addBookmark(_modelJs.state.recipe);
+    _recipeViewJsDefault.default.update(_modelJs.state.recipe);
     console.log(_modelJs.state.recipe);
 };
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
     _recipeViewJsDefault.default.addHandlerUpdateServings(controlServings);
+    _recipeViewJsDefault.default.addHandlerAddBookmark(controlAddBookmark);
     _searchViewJsDefault.default.addHandlerSearch(controlSearchResults);
     _paginationViewJsDefault.default.addHandlerClick(controlPagination);
 };
@@ -2308,6 +2310,14 @@ class RecipeView extends _viewJsDefault.default {
             if (updateServings > 0) handler(updateServings);
         });
     }
+    addHandlerAddBookmark(handler) {
+        this._parentElement.addEventListener('click', function(e) {
+            const btnBookmark = e.target.closest('.btn__bookmark');
+            if (!btnBookmark) return;
+            console.log(btnBookmark);
+            handler();
+        });
+    }
     _generateMarkup() {
         return `
       <section class="recipe">
@@ -2340,9 +2350,9 @@ class RecipeView extends _viewJsDefault.default {
             <div class="recipe__bookmark">
               <button class="btn btn--primary btn--sm btn__bookmark">
                 <svg class="btn__icon">
-                  <use xlink:href="${_iconsSvgDefault.default}#icon-bookmark"></use>
+                  <use xlink:href="${_iconsSvgDefault.default}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
                 </svg>
-                <span class="btn__text t-uppercase u-ml-xs">Add to bookmark</span>
+                <span class="btn__text t-uppercase u-ml-xs">${this._data.bookmarked ? 'Added to bookmark' : 'Add to bookmark'}</span>
               </button>
             </div>
           </div>

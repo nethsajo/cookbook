@@ -90,12 +90,14 @@ const controlServings = function (newServings) {
 
 const controlAddBookmark = function () {
   model.addBookmark(model.state.recipe);
+  RecipeView.update(model.state.recipe);
   console.log(model.state.recipe);
 };
 
 const init = function () {
   RecipeView.addHandlerRender(controlRecipes);
   RecipeView.addHandlerUpdateServings(controlServings);
+  RecipeView.addHandlerAddBookmark(controlAddBookmark);
   SearchView.addHandlerSearch(controlSearchResults);
   PaginationView.addHandlerClick(controlPagination);
 };
