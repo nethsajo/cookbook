@@ -5,6 +5,7 @@ import SearchView from './views/searchView.js';
 import ResultsView from './views/resultsView.js';
 import PaginationView from './views/paginationView.js';
 import BookmarksView from './views/bookmarksView.js';
+import AddRecipeView from './views/addRecipeView.js';
 
 //Config
 import { SEARCH_POPUP_SEC } from './config.js';

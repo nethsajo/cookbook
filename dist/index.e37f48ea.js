@@ -534,6 +534,8 @@ var _paginationViewJs = require("./views/paginationView.js");
 var _paginationViewJsDefault = parcelHelpers.interopDefault(_paginationViewJs);
 var _bookmarksViewJs = require("./views/bookmarksView.js");
 var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
+var _addRecipeViewJs = require("./views/addRecipeView.js");
+var _addRecipeViewJsDefault = parcelHelpers.interopDefault(_addRecipeViewJs);
 //Config
 var _configJs = require("./config.js");
 //Polyfilling async/await
@@ -624,7 +626,7 @@ const init = function() {
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/heroView.js":"8UYUH","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./config.js":"k5Hzs","./views/paginationView.js":"6z7bi","./views/bookmarksView.js":"4Lqzq"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/heroView.js":"8UYUH","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./config.js":"k5Hzs","./views/paginationView.js":"6z7bi","./views/bookmarksView.js":"4Lqzq","./views/addRecipeView.js":"i6DNj"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -3046,6 +3048,7 @@ class BookmarkView extends _viewJsDefault.default {
     _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
     _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
     constructor(){
+        //Since this is a child class, we need to start by calling super
         super();
         this._addShowBookmarks();
         this._addHideBookmarks();
@@ -3090,6 +3093,42 @@ class BookmarkView extends _viewJsDefault.default {
 }
 exports.default = new BookmarkView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS","url:../../icons/icons.svg":"b6QPC"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS","url:../../icons/icons.svg":"b6QPC"}],"i6DNj":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class AddRecipeView extends _viewJsDefault.default {
+    _parentElement = document.querySelector('.upload');
+    _window = document.querySelector('.modal');
+    _overlay = document.querySelector('.overlay');
+    _btnOpenModal = document.querySelector('.header__menu-add');
+    _btnCloseModal = document.querySelectorAll('.btn--close-modal');
+    constructor(){
+        //Since this is a child class, we need to start by calling super
+        super();
+        this._addHandlerShowWindow();
+        this._addHandlerHideWindow();
+    }
+    toggleWindow() {
+        this._overlay.classList.toggle('hidden');
+        this._window.classList.toggle('hidden');
+    }
+    //Know that the this keyword inside of a handler function points to the element on which that listener is attached to.
+    _addHandlerShowWindow() {
+        //this.toggleWindow.bind(this) - the this keyword points to the current object (AddRecipeView)
+        this._btnOpenModal.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    _addHandlerHideWindow() {
+        this._btnCloseModal.forEach((btn)=>btn.addEventListener('click', this.toggleWindow.bind(this))
+        );
+        this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    _generateMarkup() {
+    }
+}
+exports.default = new AddRecipeView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map

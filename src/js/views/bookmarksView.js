@@ -9,6 +9,7 @@ class BookmarkView extends View {
   _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
 
   constructor() {
+    //Since this is a child class, we need to start by calling super
     super();
     this._addShowBookmarks();
     this._addHideBookmarks();

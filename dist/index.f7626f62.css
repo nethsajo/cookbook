@@ -50,6 +50,11 @@ a {
   width: 100%;
 }
 
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
 .overlay {
   position: absolute;
   top: 0;
@@ -461,8 +466,8 @@ strong {
   justify-content: space-between;
   padding: 2.4rem 3.2rem;
   gap: 3.2rem;
-  background-color: var(--color-secondary-dark);
-  color: var(--color-white-light);
+  background-color: var(--color-white-light);
+  color: var(--color-grey-light);
 }
 
 .modal__close-btn {
@@ -476,12 +481,12 @@ strong {
 .modal__close-icon {
   width: 2.4rem;
   height: 2.4rem;
-  fill: var(--color-white-light);
+  fill: var(--color-grey-light);
   transition: var(--transition);
 }
 
 .modal__close-icon:hover {
-  fill: var(--color-white-dark);
+  fill: var(--color-grey-dark);
 }
 
 .modal__title {

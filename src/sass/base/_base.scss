@@ -19,6 +19,11 @@ a {
   width: 100%;
 }
 
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
 .overlay {
   position: absolute;
   top: 0;
