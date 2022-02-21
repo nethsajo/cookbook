@@ -114,6 +114,12 @@ const contolBookmarks = function () {
   BookmarksView.render(model.state.bookmarks);
 };
 
+const controlAddRecipe = function (newRecipe) {
+  console.log(newRecipe);
+
+  //Upload the new recipe data
+};
+
 const init = function () {
   BookmarksView.addHandlerRender(contolBookmarks);
   RecipeView.addHandlerRender(controlRecipes);
@@ -121,6 +127,7 @@ const init = function () {
   RecipeView.addHandlerAddBookmark(controlAddBookmark);
   SearchView.addHandlerSearch(controlSearchResults);
   PaginationView.addHandlerClick(controlPagination);
+  AddRecipeView.addHandlerUpload(controlAddRecipe);
 };
 
 init();

@@ -1,14 +1,21 @@
 .modal {
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--color-white);
-  box-shadow: 0 0 2.4rem rgba(0, 0, 0, 0.05);
-  width: 90rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 0 2rem;
   z-index: 9999;
-  overflow: hidden;
-  border-radius: var(--b-radius-5);
+
+  &__content {
+    background-color: var(--color-white);
+    border-radius: var(--b-radius-5);
+    max-width: 80rem;
+    margin: 5rem auto;
+    overflow: hidden;
+  }
 
   &__header {
     display: flex;

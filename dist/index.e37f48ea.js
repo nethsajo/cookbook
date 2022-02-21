@@ -616,6 +616,10 @@ const controlAddBookmark = function() {
 const contolBookmarks = function() {
     _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
 };
+const controlAddRecipe = function(newRecipe) {
+    console.log(newRecipe);
+//Upload the new recipe data
+};
 const init = function() {
     _bookmarksViewJsDefault.default.addHandlerRender(contolBookmarks);
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
@@ -623,6 +627,7 @@ const init = function() {
     _recipeViewJsDefault.default.addHandlerAddBookmark(controlAddBookmark);
     _searchViewJsDefault.default.addHandlerSearch(controlSearchResults);
     _paginationViewJsDefault.default.addHandlerClick(controlPagination);
+    _addRecipeViewJsDefault.default.addHandlerUpload(controlAddRecipe);
 };
 init();
 
@@ -3100,8 +3105,8 @@ var _viewJs = require("./View.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 class AddRecipeView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.upload');
-    _window = document.querySelector('.modal');
-    _overlay = document.querySelector('.overlay');
+    _window = document.querySelector('.modal__content');
+    _overlay = document.querySelector('.modal');
     _btnOpenModal = document.querySelector('.header__menu-add');
     _btnCloseModal = document.querySelectorAll('.btn--close-modal');
     constructor(){
@@ -3123,6 +3128,17 @@ class AddRecipeView extends _viewJsDefault.default {
         this._btnCloseModal.forEach((btn)=>btn.addEventListener('click', this.toggleWindow.bind(this))
         );
         this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    addHandlerUpload(handler) {
+        this._parentElement.addEventListener('submit', function(e) {
+            e.preventDefault();
+            //In the FormData we have to pass in an element that is a form and so that form in this case is the this keyword
+            //because we are inside of a handler function and so the this keyword points to the _parentElement (upload form)
+            const data = [
+                ...new FormData(this)
+            ];
+            handler(data);
+        });
     }
     _generateMarkup() {
     }

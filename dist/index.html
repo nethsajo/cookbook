@@ -94,85 +94,86 @@
         </form>
       </div>
     </div>
-    <div class="modal hidden">
-      <div class="modal__header">
-        <div class="modal__heading">
-          <h2 class="modal__title">Add New Recipes</h2>
+    <div class="modal">
+      <div class="modal__content">
+        <div class="modal__header">
+          <div class="modal__heading">
+            <h2 class="modal__title">Add New Recipes</h2>
+          </div>
+          <button class="modal__close-btn btn--close-modal">
+            <svg class="modal__close-icon">
+              <use xlink:href="/icons.cd4ebd1a.svg#icon-x"></use>
+            </svg>
+          </button>
         </div>
-        <button class="modal__close-btn btn--close-modal">
-          <svg class="modal__close-icon">
-            <use xlink:href="/icons.cd4ebd1a.svg#icon-x"></use>
-          </svg>
-        </button>
-      </div>
-      <div class="modal__body">
-        <form class="upload">
-          <div class="upload__column">
-            <h2 class="upload__heading u-full-col-grid">Recipe Data</h2>
-            <div class="input__group">
-              <label for="" class="input__label">Title</label>
-              <input type="text" name="title" id="title" class="input__form">
+        <div class="modal__body">
+          <form class="upload">
+            <div class="upload__column">
+              <h2 class="upload__heading u-full-col-grid">Recipe Data</h2>
+              <div class="input__group">
+                <label for="" class="input__label">Title</label>
+                <input type="text" name="title" id="title" class="input__form" value="TEST">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">URL</label>
+                <input type="text" name="sourceUrl" id="sourceUrl" class="input__form" value="TEST">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Image URL</label>
+                <input type="text" name="imageURL" id="imageURL" class="input__form" value="TEST">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Publisher</label>
+                <input type="text" name="publisher" id="publisher" class="input__form" value="TEST">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Preparation Time</label>
+                <input type="text" name="prepTime" id="prepTime" class="input__form" value="23">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Servings</label>
+                <input type="text" name="servings" id="servings" class="input__form" value="23">
+              </div>
             </div>
-            <div class="input__group">
-              <label for="" class="input__label">URL</label>
-              <input type="text" name="sourceUrl" id="sourceUrl" class="input__form">
+            <div class="upload__column">
+              <h2 class="upload__heading u-full-col-grid">Ingredients</h2>
+              <div class="input__group">
+                <label for="" class="input__label">Ingredient 1</label>
+                <input type="text" name="ingredient1" id="ingredient1" class="input__form" value="0.5,kg,Rice">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Ingredient 2</label>
+                <input type="text" name="ingredient2" id="ingredient2" class="input__form" value="1,,Avocado">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Ingredient 3</label>
+                <input type="text" name="ingredient3" id="ingredient3" class="input__form" value=",,salt">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Ingredient 4</label>
+                <input type="text" name="ingredient4" id="ingredient4" class="input__form">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Ingredient 5</label>
+                <input type="text" name="ingredient5" id="ingredient5" class="input__form">
+              </div>
+              <div class="input__group">
+                <label for="" class="input__label">Ingredient 6</label>
+                <input type="text" name="ingredient6" id="ingredient6" class="input__form">
+              </div>
             </div>
-            <div class="input__group">
-              <label for="" class="input__label">Image URL</label>
-              <input type="text" name="imageURL" id="imageURL" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Publisher</label>
-              <input type="text" name="publisher" id="publisher" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Preparation Time</label>
-              <input type="text" name="prepTime" id="prepTime" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Servings</label>
-              <input type="text" name="servings" id="servings" class="input__form">
-            </div>
-          </div>
-          <div class="upload__column">
-            <h2 class="upload__heading u-full-col-grid">Ingredients</h2>
-            <div class="input__group">
-              <label for="" class="input__label">Ingredient 1</label>
-              <input type="text" name="ingredient1" id="ingredient1" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Ingredient 2</label>
-              <input type="text" name="ingredient2" id="ingredient2" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Ingredient 3</label>
-              <input type="text" name="ingredient3" id="ingredient3" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Ingredient 4</label>
-              <input type="text" name="ingredient4" id="ingredient4" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Ingredient 5</label>
-              <input type="text" name="ingredient5" id="ingredient5" class="input__form">
-            </div>
-            <div class="input__group">
-              <label for="" class="input__label">Ingredient 6</label>
-              <input type="text" name="ingredient6" id="ingredient6" class="input__form">
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal__footer">
-        <button class="btn btn--normal btn--close-modal">Cancel</button>
-        <button class="btn btn--primary btn--sm">
-          <span class="btn__text u-mr-xs">Upload</span>
-          <svg class="btn__icon">
-            <use xlink:href="/icons.cd4ebd1a.svg#icon-upload-cloud"></use>
-          </svg>
-        </button>
+          </form>
+        </div>
+        <div class="modal__footer">
+          <button class="btn btn--normal btn--close-modal">Cancel</button>
+          <button class="btn btn--primary btn--sm btn--upload">
+            <span class="btn__text u-mr-xs">Upload</span>
+            <svg class="btn__icon">
+              <use xlink:href="/icons.cd4ebd1a.svg#icon-upload-cloud"></use>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
-    <div class="overlay hidden"></div>
   </body>
 </html>
