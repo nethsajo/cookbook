@@ -597,7 +597,12 @@ const controlServings = function(newServings) {
     _recipeViewJsDefault.default.update(_modelJs.state.recipe);
 };
 const controlAddBookmark = function() {
-    _modelJs.addBookmark(_modelJs.state.recipe);
+    //When do we actually want to add a bookmark?
+    //Actually only when the recipe is not yet bookmarked
+    //So here, if the bookmarked is false, then you can add to bookmark
+    if (!_modelJs.state.recipe.bookmarked) _modelJs.addBookmark(_modelJs.state.recipe);
+    else _modelJs.removeBookmark(_modelJs.state.recipe.id);
+    console.log(_modelJs.state.recipe.bookmarked);
     _recipeViewJsDefault.default.update(_modelJs.state.recipe);
     console.log(_modelJs.state.recipe);
 };
@@ -2314,7 +2319,6 @@ class RecipeView extends _viewJsDefault.default {
         this._parentElement.addEventListener('click', function(e) {
             const btnBookmark = e.target.closest('.btn__bookmark');
             if (!btnBookmark) return;
-            console.log(btnBookmark);
             handler();
         });
     }
@@ -2666,6 +2670,8 @@ parcelHelpers.export(exports, "updateServings", ()=>updateServings
 );
 parcelHelpers.export(exports, "addBookmark", ()=>addBookmark
 );
+parcelHelpers.export(exports, "removeBookmark", ()=>removeBookmark
+);
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
 const state = {
@@ -2693,6 +2699,11 @@ const loadRecipe = async function(id) {
             cookingTime: recipe.cooking_time,
             ingredients: recipe.ingredients
         };
+        //if there is any bookmark, which has the bookmark ID equal to the id that we just received
+        //then set the bookmarked as true else set it to false
+        if (state.bookmarks.some((bookmark)=>bookmark.id === id
+        )) state.recipe.bookmarked = true;
+        else state.recipe.bookmarked = false;
         console.log(state.recipe);
     } catch (error) {
         console.error(`${error} 💥💥💥`);
@@ -2737,8 +2748,18 @@ const updateServings = function(newServings) {
 const addBookmark = function(recipe) {
     //Add bookmark
     state.bookmarks.push(recipe);
-    //Mark current recipe as bookmark
+    console.log(state.bookmarks);
+    //Mark current recipe as bookmarked
+    //This will add a new property in state.recipe if the condition is true
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+};
+const removeBookmark = function(id) {
+    const index = state.bookmarks.findIndex((element)=>element.id === id
+    );
+    //Remove bookmark
+    state.bookmarks.splice(index, 1);
+    //Mark recipe as not bookmarked
+    if (id === state.recipe.id) state.recipe.bookmarked = false;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
@@ -3011,6 +3032,9 @@ class BookmarkView {
     }
     _addHideBookmarks() {
         this._btnCloseBookmark.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    _generateMarkup() {
+        return ``;
     }
 }
 exports.default = new BookmarkView();

@@ -19,6 +19,10 @@ class BookmarkView {
   _addHideBookmarks() {
     this._btnCloseBookmark.addEventListener('click', this.toggleWindow.bind(this));
   }
+
+  _generateMarkup() {
+    return ``;
+  }
 }
 
 export default new BookmarkView();

@@ -89,7 +89,15 @@ const controlServings = function (newServings) {
 };
 
 const controlAddBookmark = function () {
-  model.addBookmark(model.state.recipe);
+  //When do we actually want to add a bookmark?
+  //Actually only when the recipe is not yet bookmarked
+  //So here, if the bookmarked is false, then you can add to bookmark
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  //else if the bookmarked is true, then you can remove a bookmark
+  else model.removeBookmark(model.state.recipe.id);
+
+  console.log(model.state.recipe.bookmarked);
+
   RecipeView.update(model.state.recipe);
   console.log(model.state.recipe);
 };

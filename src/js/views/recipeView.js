@@ -30,8 +30,6 @@ class RecipeView extends View {
 
       if (!btnBookmark) return;
 
-      console.log(btnBookmark);
-
       handler();
     });
   }
