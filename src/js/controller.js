@@ -29,14 +29,18 @@ const controlRecipes = async function () {
 
     RecipeView.renderSpinner();
 
-    //1. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
+    //1. Update bookmarks view to mark selected search result
+    BookmarksView.update(model.state.bookmarks);
+
+    //2. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
     //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
     await model.loadRecipe(id);
 
-    //2. Rendering recipe and pass the state object to the recipe view
+    //3. Rendering recipe and pass the state object to the recipe view
     RecipeView.render(model.state.recipe);
   } catch (error) {
     RecipeView.renderError();
+    console.error(error);
   }
 };
 
@@ -92,17 +96,25 @@ const controlAddBookmark = function () {
   //When do we actually want to add a bookmark?
   //Actually only when the recipe is not yet bookmarked
   //So here, if the bookmarked is false, then you can add to bookmark
+
+  //1. Add/Remove bookmark
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   //else if the bookmarked is true, then you can remove a bookmark
   else model.removeBookmark(model.state.recipe.id);
 
-  console.log(model.state.recipe.bookmarked);
-
+  //2. Update the recipe view
   RecipeView.update(model.state.recipe);
-  console.log(model.state.recipe);
+
+  //3. Render bookmarks
+  BookmarksView.render(model.state.bookmarks);
+};
+
+const contolBookmarks = function () {
+  BookmarksView.render(model.state.bookmarks);
 };
 
 const init = function () {
+  BookmarksView.addHandlerRender(contolBookmarks);
   RecipeView.addHandlerRender(controlRecipes);
   RecipeView.addHandlerUpdateServings(controlServings);
   RecipeView.addHandlerAddBookmark(controlAddBookmark);

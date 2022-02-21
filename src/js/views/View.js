@@ -7,7 +7,12 @@ export default class View {
   //this._data can be access all over the place inside of this object
   render(data) {
     //if there is no data or if there is data, but that data is an array and it is empty
-    if (!data || (Array.isArray(data.recipes) && data.recipes.length === 0)) return this.renderError();
+    if (
+      !data ||
+      (Array.isArray(data) && data.length === 0) ||
+      (Array.isArray(data.recipes) && data.recipes.length === 0)
+    )
+      return this.renderError();
 
     // if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
 
@@ -78,7 +83,7 @@ export default class View {
   renderError(message = this._errorMessage) {
     const markup = `
       <div class="message">
-        <div class="message__icon-box  u-mb-xs">
+        <div class="message__icon-box u-mb-xs">
           <svg class="message__icon message__icon--error">
             <use xlink:href="${icons}#icon-alert-triangle "></use>
           </svg>

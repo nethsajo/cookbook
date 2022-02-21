@@ -549,13 +549,16 @@ const controlRecipes = async function() {
         //If there is no id or id is false then return immediately
         if (!id) return;
         _recipeViewJsDefault.default.renderSpinner();
-        //1. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
+        //1. Update bookmarks view to mark selected search result
+        _bookmarksViewJsDefault.default.update(_modelJs.state.bookmarks);
+        //2. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
         //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
         await _modelJs.loadRecipe(id);
-        //2. Rendering recipe and pass the state object to the recipe view
+        //3. Rendering recipe and pass the state object to the recipe view
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
     } catch (error) {
         _recipeViewJsDefault.default.renderError();
+        console.error(error);
     }
 };
 const controlSearchResults = async function() {
@@ -600,13 +603,19 @@ const controlAddBookmark = function() {
     //When do we actually want to add a bookmark?
     //Actually only when the recipe is not yet bookmarked
     //So here, if the bookmarked is false, then you can add to bookmark
+    //1. Add/Remove bookmark
     if (!_modelJs.state.recipe.bookmarked) _modelJs.addBookmark(_modelJs.state.recipe);
     else _modelJs.removeBookmark(_modelJs.state.recipe.id);
-    console.log(_modelJs.state.recipe.bookmarked);
+    //2. Update the recipe view
     _recipeViewJsDefault.default.update(_modelJs.state.recipe);
-    console.log(_modelJs.state.recipe);
+    //3. Render bookmarks
+    _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
+};
+const contolBookmarks = function() {
+    _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
 };
 const init = function() {
+    _bookmarksViewJsDefault.default.addHandlerRender(contolBookmarks);
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
     _recipeViewJsDefault.default.addHandlerUpdateServings(controlServings);
     _recipeViewJsDefault.default.addHandlerAddBookmark(controlAddBookmark);
@@ -2323,6 +2332,7 @@ class RecipeView extends _viewJsDefault.default {
         });
     }
     _generateMarkup() {
+        document.title = this._data.title;
         return `
       <section class="recipe">
         <div class="recipe__header">
@@ -2572,7 +2582,7 @@ class View {
     //this._data can be access all over the place inside of this object
     render(data) {
         //if there is no data or if there is data, but that data is an array and it is empty
-        if (!data || Array.isArray(data.recipes) && data.recipes.length === 0) return this.renderError();
+        if (!data || Array.isArray(data) && data.length === 0 || Array.isArray(data.recipes) && data.recipes.length === 0) return this.renderError();
         // if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
@@ -2627,7 +2637,7 @@ class View {
     renderError(message = this._errorMessage) {
         const markup = `
       <div class="message">
-        <div class="message__icon-box  u-mb-xs">
+        <div class="message__icon-box u-mb-xs">
           <svg class="message__icon message__icon--error">
             <use xlink:href="${_iconsSvgDefault.default}#icon-alert-triangle "></use>
           </svg>
@@ -2745,6 +2755,9 @@ const updateServings = function(newServings) {
     });
     state.recipe.servings = newServings;
 };
+const persistBookmarks = function() {
+    localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
 const addBookmark = function(recipe) {
     //Add bookmark
     state.bookmarks.push(recipe);
@@ -2752,6 +2765,7 @@ const addBookmark = function(recipe) {
     //Mark current recipe as bookmarked
     //This will add a new property in state.recipe if the condition is true
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+    persistBookmarks();
 };
 const removeBookmark = function(id) {
     const index = state.bookmarks.findIndex((element)=>element.id === id
@@ -2760,7 +2774,13 @@ const removeBookmark = function(id) {
     state.bookmarks.splice(index, 1);
     //Mark recipe as not bookmarked
     if (id === state.recipe.id) state.recipe.bookmarked = false;
+    persistBookmarks();
 };
+const init = function() {
+    const storage = localStorage.getItem('bookmarks');
+    if (storage) state.bookmarks = JSON.parse(storage);
+};
+init();
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -2895,7 +2915,6 @@ class ResultsView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.main');
     _data;
     _errorMessage = 'No recipes found for your query. Please try again!';
-    _successMessage = '';
     _generateMarkup() {
         return `
       <section class="preview container">
@@ -3016,16 +3035,26 @@ exports.default = new PaginationView();
 },{"url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4Lqzq":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-class BookmarkView {
-    _parentElement = document.querySelector('.bookmarks');
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+var _iconsSvg = require("url:../../icons/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class BookmarkView extends _viewJsDefault.default {
+    _parentElement = document.querySelector('.bookmarks__list');
+    _window = document.querySelector('.bookmarks');
     _btnOpenBookmark = document.querySelector('.header__menu-bookmark');
     _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
+    _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
     constructor(){
+        super();
         this._addShowBookmarks();
         this._addHideBookmarks();
     }
+    addHandlerRender(handler) {
+        window.addEventListener('load', handler);
+    }
     toggleWindow() {
-        this._parentElement.classList.toggle('active');
+        this._window.classList.toggle('active');
     }
     _addShowBookmarks() {
         this._btnOpenBookmark.addEventListener('click', this.toggleWindow.bind(this));
@@ -3034,11 +3063,33 @@ class BookmarkView {
         this._btnCloseBookmark.addEventListener('click', this.toggleWindow.bind(this));
     }
     _generateMarkup() {
-        return ``;
+        return this._data.map(this._generateMarkupBookmark).join('');
+    }
+    _generateMarkupBookmark(bookmark) {
+        const recipeId = window.location.hash.slice(1);
+        const { id , publisher , title , image  } = bookmark;
+        return `
+      <li class="bookmarks__view">
+        <a href="#${id}" class="bookmarks__link ${id === recipeId ? 'bookmarks__link--active' : ''}">
+          <figure class="bookmarks__figure">
+            <img src="${image}" alt="${title}"/>
+          </figure>
+          <div class="bookmarks__data">
+            <h4 class="bookmarks__title">${title}</h4>
+            <p class="bookmarks__publisher">${publisher}</p>
+            <div class="bookmarks__user-generated">
+              <svg>
+                <use xlink:href="${_iconsSvgDefault.default}#icon-user"></use>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </li>
+    `;
     }
 }
 exports.default = new BookmarkView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS","url:../../icons/icons.svg":"b6QPC"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map

@@ -1,15 +1,25 @@
-class BookmarkView {
-  _parentElement = document.querySelector('.bookmarks');
+import View from './View.js';
+import icons from 'url:../../icons/icons.svg';
+
+class BookmarkView extends View {
+  _parentElement = document.querySelector('.bookmarks__list');
+  _window = document.querySelector('.bookmarks');
   _btnOpenBookmark = document.querySelector('.header__menu-bookmark');
   _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
+  _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
 
   constructor() {
+    super();
     this._addShowBookmarks();
     this._addHideBookmarks();
   }
 
+  addHandlerRender(handler) {
+    window.addEventListener('load', handler);
+  }
+
   toggleWindow() {
-    this._parentElement.classList.toggle('active');
+    this._window.classList.toggle('active');
   }
 
   _addShowBookmarks() {
@@ -21,7 +31,32 @@ class BookmarkView {
   }
 
   _generateMarkup() {
-    return ``;
+    return this._data.map(this._generateMarkupBookmark).join('');
+  }
+
+  _generateMarkupBookmark(bookmark) {
+    const recipeId = window.location.hash.slice(1);
+
+    const { id, publisher, title, image } = bookmark;
+
+    return `
+      <li class="bookmarks__view">
+        <a href="#${id}" class="bookmarks__link ${id === recipeId ? 'bookmarks__link--active' : ''}">
+          <figure class="bookmarks__figure">
+            <img src="${image}" alt="${title}"/>
+          </figure>
+          <div class="bookmarks__data">
+            <h4 class="bookmarks__title">${title}</h4>
+            <p class="bookmarks__publisher">${publisher}</p>
+            <div class="bookmarks__user-generated">
+              <svg>
+                <use xlink:href="${icons}#icon-user"></use>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </li>
+    `;
   }
 }
 

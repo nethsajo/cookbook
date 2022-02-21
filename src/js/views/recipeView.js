@@ -35,6 +35,8 @@ class RecipeView extends View {
   }
 
   _generateMarkup() {
+    document.title = this._data.title;
+
     return `
       <section class="recipe">
         <div class="recipe__header">
