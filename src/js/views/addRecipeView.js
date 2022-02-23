@@ -14,7 +14,7 @@ class AddRecipeView extends View {
     this._addHandlerHideWindow();
   }
 
-  toggleWindow(marginValue = '', overflowValue = '') {
+  toggleWindow(marginValue, overflowValue) {
     this._body.style.margin = marginValue;
     this._body.style.overflow = overflowValue;
     this._window.classList.toggle('hidden');
@@ -30,7 +30,7 @@ class AddRecipeView extends View {
   }
 
   _addHandlerHideWindow() {
-    this._btnCloseModal.forEach(btn => btn.addEventListener('click', this.toggleWindow.bind(this)));
+    this._btnCloseModal.forEach(btn => btn.addEventListener('click', this.toggleWindow.bind(this, '', '')));
   }
 
   addHandlerUpload(handler) {
