@@ -2,9 +2,11 @@ import icons from 'url:../../icons/icons.svg';
 
 class HeroView {
   _parentElement = document.querySelector('.main');
+  _year = document.querySelector('.footer__year');
 
   constructor() {
     this.render();
+    this._generateFullYear();
   }
 
   render() {
@@ -34,6 +36,11 @@ class HeroView {
         </div>
       </section>
     `;
+  }
+
+  _generateFullYear() {
+    const year = new Date().getFullYear();
+    this._year.textContent = year;
   }
 }
 

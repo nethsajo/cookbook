@@ -1,0 +1,22 @@
+.footer {
+  background-color: var(--color-white-light);
+  padding: 3.6rem 0;
+  height: var(--footer-height);
+
+  &__description {
+    font-size: 1.4rem;
+  }
+
+  &__link {
+    &:link,
+    &:visited {
+      font-weight: 600;
+      color: var(--color-primary-light);
+      transition: var(--transition);
+    }
+
+    &:hover {
+      color: darken(#fc8686, 5%);
+    }
+  }
+}

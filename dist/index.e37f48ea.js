@@ -2933,8 +2933,10 @@ var _iconsSvg = require("url:../../icons/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class HeroView {
     _parentElement = document.querySelector('.main');
+    _year = document.querySelector('.footer__year');
     constructor(){
         this.render();
+        this._generateFullYear();
     }
     render() {
         const markup = this._generateMarkup();
@@ -2961,6 +2963,10 @@ class HeroView {
         </div>
       </section>
     `;
+    }
+    _generateFullYear() {
+        const year = new Date().getFullYear();
+        this._year.textContent = year;
     }
 }
 exports.default = new HeroView();
