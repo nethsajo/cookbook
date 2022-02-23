@@ -2,6 +2,7 @@ import View from './View.js';
 
 class AddRecipeView extends View {
   _parentElement = document.querySelector('.upload');
+  _successMessage = 'Recipe was successfully uploaded!';
   _window = document.querySelector('.modal');
   _body = document.querySelector('body');
   _btnOpenModal = document.querySelector('.header__menu-add');
@@ -38,7 +39,11 @@ class AddRecipeView extends View {
       e.preventDefault();
       //In the FormData we have to pass in an element that is a form and so that form in this case is the this keyword
       //because we are inside of a handler function and so the this keyword points to the _parentElement (upload form)
-      const data = [...new FormData(this)];
+      const dataArray = [...new FormData(this)];
+
+      //Object.fromEntries method transforms a list of key-value pairs into an object
+      //So therefore, dataArray will be converted into an object and data var will handled it
+      const data = Object.fromEntries(dataArray);
       handler(data);
     });
   }

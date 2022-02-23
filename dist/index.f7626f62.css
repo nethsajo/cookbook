@@ -48,6 +48,7 @@ a {
 
 .main {
   width: 100%;
+  height: calc(100vh - var(--nav-height));
 }
 
 .hidden {
@@ -204,6 +205,8 @@ strong {
 
 .bookmarks__list {
   list-style: none;
+  overflow: auto;
+  direction: rtl;
 }
 
 .bookmarks__link:link, .bookmarks__link:visited {
@@ -213,6 +216,7 @@ strong {
   text-decoration: none;
   gap: 1.6rem;
   transition: var(--transition);
+  direction: ltr;
 }
 
 .bookmarks__link:hover {
@@ -403,10 +407,10 @@ strong {
 }
 
 .spinner {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .lds-dual-ring {
@@ -1009,7 +1013,7 @@ strong {
 }
 
 .intro {
-  height: calc(100vh - var(--nav-height));
+  height: 100%;
   background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url("hero.22dc911d.jpg");
   background-size: cover;
   background-position: center;

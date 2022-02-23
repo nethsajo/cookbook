@@ -1,4 +1,8 @@
 import * as model from './model.js';
+//Configs
+import { SEARCH_POPUP_SEC, MODAL_CLOSE_SEC } from './config.js';
+
+//Views
 import HeroView from './views/heroView.js';
 import RecipeView from './views/recipeView.js';
 import SearchView from './views/searchView.js';
@@ -7,17 +11,10 @@ import PaginationView from './views/paginationView.js';
 import BookmarksView from './views/bookmarksView.js';
 import AddRecipeView from './views/addRecipeView.js';
 
-//Config
-import { SEARCH_POPUP_SEC } from './config.js';
-
 //Polyfilling everything
 import 'core-js/stable';
 //Polyfilling async/await
 import 'regenerator-runtime/runtime';
-
-// if (module.hot) {
-//   module.hot.accept();
-// }
 
 //Recipe control
 const controlRecipes = async function () {
@@ -39,7 +36,6 @@ const controlRecipes = async function () {
 
     //3. Rendering recipe and pass the state object to the recipe view
     RecipeView.render(model.state.recipe);
-    BookmarksView.toggleWindow();
   } catch (error) {
     RecipeView.renderError();
     console.error(error);
@@ -65,9 +61,7 @@ const controlSearchResults = async function () {
     ResultsView.render(model.getSearchResultsPage());
     console.log(model.getSearchResultsPage());
 
-    setTimeout(function () {
-      SearchView.toggleWindow();
-    }, SEARCH_POPUP_SEC * 1000);
+    SearchView.toggleWindow();
 
     history.pushState({ query: model.state.search.query }, '', `/${model.state.search.query}/`);
 
@@ -115,10 +109,30 @@ const contolBookmarks = function () {
   BookmarksView.render(model.state.bookmarks);
 };
 
-const controlAddRecipe = function (newRecipe) {
-  console.log(newRecipe);
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    //Show loading spinner
+    AddRecipeView.renderSpinner();
 
-  //Upload the new recipe data
+    //Upload the new recipe data
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
+
+    //Render added recipe
+    RecipeView.render(model.state.recipe);
+
+    //Success message
+    AddRecipeView.renderSuccess();
+
+    //Close the form window
+    setTimeout(() => {
+      AddRecipeView.toggleWindow();
+      //1e3 = 1 * 10^3
+    }, MODAL_CLOSE_SEC * 1e3);
+  } catch (error) {
+    console.log('💥', error);
+    AddRecipeView.renderError(error.message);
+  }
 };
 
 const init = function () {

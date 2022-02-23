@@ -522,6 +522,9 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _modelJs = require("./model.js");
+//Configs
+var _configJs = require("./config.js");
+//Views
 var _heroViewJs = require("./views/heroView.js");
 var _heroViewJsDefault = parcelHelpers.interopDefault(_heroViewJs);
 var _recipeViewJs = require("./views/recipeView.js");
@@ -536,13 +539,8 @@ var _bookmarksViewJs = require("./views/bookmarksView.js");
 var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
 var _addRecipeViewJs = require("./views/addRecipeView.js");
 var _addRecipeViewJsDefault = parcelHelpers.interopDefault(_addRecipeViewJs);
-//Config
-var _configJs = require("./config.js");
 //Polyfilling async/await
 var _runtime = require("regenerator-runtime/runtime");
-// if (module.hot) {
-//   module.hot.accept();
-// }
 //Recipe control
 const controlRecipes = async function() {
     try {
@@ -558,7 +556,6 @@ const controlRecipes = async function() {
         await _modelJs.loadRecipe(id);
         //3. Rendering recipe and pass the state object to the recipe view
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
-        _bookmarksViewJsDefault.default.toggleWindow();
     } catch (error) {
         _recipeViewJsDefault.default.renderError();
         console.error(error);
@@ -578,9 +575,7 @@ const controlSearchResults = async function() {
         // ResultsView.render(model.state.search);
         _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
         console.log(_modelJs.getSearchResultsPage());
-        setTimeout(function() {
-            _searchViewJsDefault.default.toggleWindow();
-        }, _configJs.SEARCH_POPUP_SEC * 1000);
+        _searchViewJsDefault.default.toggleWindow();
         history.pushState({
             query: _modelJs.state.search.query
         }, '', `/${_modelJs.state.search.query}/`);
@@ -617,9 +612,26 @@ const controlAddBookmark = function() {
 const contolBookmarks = function() {
     _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
 };
-const controlAddRecipe = function(newRecipe) {
-    console.log(newRecipe);
-//Upload the new recipe data
+const controlAddRecipe = async function(newRecipe) {
+    try {
+        //Show loading spinner
+        _addRecipeViewJsDefault.default.renderSpinner();
+        //Upload the new recipe data
+        await _modelJs.uploadRecipe(newRecipe);
+        console.log(_modelJs.state.recipe);
+        //Render added recipe
+        _recipeViewJsDefault.default.render(_modelJs.state.recipe);
+        //Success message
+        _addRecipeViewJsDefault.default.renderSuccess();
+        //Close the form window
+        setTimeout(()=>{
+            _addRecipeViewJsDefault.default.toggleWindow();
+        //1e3 = 1 * 10^3
+        }, _configJs.MODAL_CLOSE_SEC * 1000);
+    } catch (error) {
+        console.log('💥', error);
+        _addRecipeViewJsDefault.default.renderError(error.message);
+    }
 };
 const init = function() {
     _bookmarksViewJsDefault.default.addHandlerRender(contolBookmarks);
@@ -2690,6 +2702,8 @@ parcelHelpers.export(exports, "addBookmark", ()=>addBookmark
 );
 parcelHelpers.export(exports, "removeBookmark", ()=>removeBookmark
 );
+parcelHelpers.export(exports, "uploadRecipe", ()=>uploadRecipe
+);
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
 const state = {
@@ -2703,20 +2717,31 @@ const state = {
     },
     bookmarks: []
 };
+const createRecipeObject = function(data) {
+    const { recipe  } = data.data;
+    return {
+        id: recipe.id,
+        title: recipe.title,
+        publisher: recipe.publisher,
+        sourceUrl: recipe.source_url,
+        image: recipe.image_url,
+        servings: recipe.servings,
+        cookingTime: recipe.cooking_time,
+        ingredients: recipe.ingredients,
+        //Remember that the AND operator short-circuits.
+        //So if recipe.key is a falsy value or if doesn't exist then nothing happens here
+        //So then the destructing here, well does basically nothing
+        //If recipe.key is some value, then the second part of the operator is executed and returned
+        //So in that case, it is the object {key: recipe.key} here basically that is going to be returned
+        ...recipe.key && {
+            key: recipe.key
+        }
+    };
+};
 const loadRecipe = async function(id) {
     try {
         const data = await _helpersJs.getJSON(`${_configJs.API_URL}${id}`);
-        const { recipe  } = data.data;
-        state.recipe = {
-            id: recipe.id,
-            title: recipe.title,
-            publisher: recipe.publisher,
-            sourceUrl: recipe.source_url,
-            image: recipe.image_url,
-            servings: recipe.servings,
-            cookingTime: recipe.cooking_time,
-            ingredients: recipe.ingredients
-        };
+        state.recipe = createRecipeObject(data);
         //if there is any bookmark, which has the bookmark ID equal to the id that we just received
         //then set the bookmarked as true else set it to false
         if (state.bookmarks.some((bookmark)=>bookmark.id === id
@@ -2789,6 +2814,36 @@ const init = function() {
     if (storage) state.bookmarks = JSON.parse(storage);
 };
 init();
+const uploadRecipe = async function(newRecipe) {
+    try {
+        const ingredients = Object.entries(newRecipe).filter((entry)=>entry[0].startsWith('ingredient') && entry[1] !== ''
+        ).map((ingredient)=>{
+            const ingredientsArray = ingredient[1].split(',');
+            if (ingredientsArray.length !== 3) throw new Error('Wrong ingredient format! Please use the correct format');
+            const [quantity, unit, description] = ingredientsArray;
+            return {
+                quantity: quantity ? +quantity : null,
+                unit,
+                description
+            };
+        });
+        const recipe = {
+            title: newRecipe.title,
+            source_url: newRecipe.sourceUrl,
+            image_url: newRecipe.imageURL,
+            publisher: newRecipe.publisher,
+            cooking_time: +newRecipe.cooking_time,
+            servings: +newRecipe.servings,
+            ingredients
+        };
+        const data = await _helpersJs.sendJSON(`${_configJs.API_URL}?key=${_configJs.API_KEY}`, recipe);
+        state.recipe = createRecipeObject(data);
+        //Call addBookmark with created recipe object
+        addBookmark(state.recipe);
+    } catch (error) {
+        throw error;
+    }
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -2797,19 +2852,27 @@ parcelHelpers.export(exports, "API_URL", ()=>API_URL
 );
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC
 );
-parcelHelpers.export(exports, "SEARCH_POPUP_SEC", ()=>SEARCH_POPUP_SEC
+parcelHelpers.export(exports, "SEARCH_WINDOW_SEC", ()=>SEARCH_WINDOW_SEC
+);
+parcelHelpers.export(exports, "MODAL_CLOSE_SEC", ()=>MODAL_CLOSE_SEC
 );
 parcelHelpers.export(exports, "RESULT_PER_PAGE", ()=>RESULT_PER_PAGE
 );
+parcelHelpers.export(exports, "API_KEY", ()=>API_KEY
+);
 const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes/';
 const TIMEOUT_SEC = 10;
-const SEARCH_POPUP_SEC = 0.5;
+const SEARCH_WINDOW_SEC = 0.5;
+const MODAL_CLOSE_SEC = 2.5;
 const RESULT_PER_PAGE = 12;
+const API_KEY = 'b3a4e221-ffda-49ac-9e23-42bcd2812891';
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON
+);
+parcelHelpers.export(exports, "sendJSON", ()=>sendJSON
 );
 var _configJs = require("./config.js");
 const timeout = function(seconds) {
@@ -2824,6 +2887,35 @@ const getJSON = async function(url) {
         const response = await Promise.race([
             fetch(url),
             timeout(_configJs.TIMEOUT_SEC)
+        ]);
+        const data = await response.json();
+        if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+        return data;
+    } catch (error) {
+        //Re-throw error
+        throw error;
+    }
+};
+const sendJSON = async function(url, uploadData) {
+    //To send data, we will need a post request.
+    //So besides the url in fetch(), we also need to pass in an object of some options
+    //1st option: is the method, and that method is a POST
+    /*2nd option: object of headers. Headers are basically some snippets of text 
+  which are like information about the request itself*/ //3rd option: the payload of the request, so basically the data that we want to send (body)
+    try {
+        const response = await Promise.race([
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    //we specify in the request that the data we're gonna send is going to be in JSON format
+                    //and so only then our API can correctly accept that data and create a new recipe in the database
+                    'Content-Type': 'application/json'
+                },
+                //body should be in JSON format. So we can use the stringy method of JSON
+                //then convert the data that we want to send
+                body: JSON.stringify(uploadData)
+            }),
+            timeout(_configJs.TIMEOUT_SEC), 
         ]);
         const data = await response.json();
         if (!response.ok) throw new Error(`${data.message} (${response.status})`);
@@ -3106,6 +3198,7 @@ var _viewJs = require("./View.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 class AddRecipeView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.upload');
+    _successMessage = 'Recipe was successfully uploaded!';
     _window = document.querySelector('.modal');
     _body = document.querySelector('body');
     _btnOpenModal = document.querySelector('.header__menu-add');
@@ -3137,9 +3230,12 @@ class AddRecipeView extends _viewJsDefault.default {
             e.preventDefault();
             //In the FormData we have to pass in an element that is a form and so that form in this case is the this keyword
             //because we are inside of a handler function and so the this keyword points to the _parentElement (upload form)
-            const data = [
+            const dataArray = [
                 ...new FormData(this)
             ];
+            //Object.fromEntries method transforms a list of key-value pairs into an object
+            //So therefore, dataArray will be converted into an object and data var will handled it
+            const data = Object.fromEntries(dataArray);
             handler(data);
         });
     }

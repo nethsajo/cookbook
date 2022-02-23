@@ -1,8 +1,8 @@
 .spinner {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .lds-dual-ring {
@@ -18,8 +18,7 @@
     margin: 8px;
     border-radius: 50%;
     border: 6px solid var(--color-primary-light);
-    border-color: var(--color-primary-light) transparent
-      var(--color-primary-light) transparent;
+    border-color: var(--color-primary-light) transparent var(--color-primary-light) transparent;
     animation: lds-dual-ring 1.2s linear infinite;
   }
 }

@@ -1,5 +1,5 @@
-import { API_URL, RESULT_PER_PAGE } from './config.js';
-import { getJSON } from './helpers.js';
+import { API_URL, API_KEY, RESULT_PER_PAGE } from './config.js';
+import { getJSON, sendJSON } from './helpers.js';
 
 //Contains an object for recipe, search and bookmarks
 export const state = {
@@ -13,23 +13,31 @@ export const state = {
   bookmarks: [],
 };
 
+const createRecipeObject = function (data) {
+  const { recipe } = data.data;
+  return {
+    id: recipe.id,
+    title: recipe.title,
+    publisher: recipe.publisher,
+    sourceUrl: recipe.source_url,
+    image: recipe.image_url,
+    servings: recipe.servings,
+    cookingTime: recipe.cooking_time,
+    ingredients: recipe.ingredients,
+    //Remember that the AND operator short-circuits.
+    //So if recipe.key is a falsy value or if doesn't exist then nothing happens here
+    //So then the destructing here, well does basically nothing
+    //If recipe.key is some value, then the second part of the operator is executed and returned
+    //So in that case, it is the object {key: recipe.key} here basically that is going to be returned
+    ...(recipe.key && { key: recipe.key }),
+  };
+};
+
 //This function will be the one responsible for actually fetching the recipe data from the api
 export const loadRecipe = async function (id) {
   try {
     const data = await getJSON(`${API_URL}${id}`);
-
-    const { recipe } = data.data;
-
-    state.recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-    };
+    state.recipe = createRecipeObject(data);
 
     //if there is any bookmark, which has the bookmark ID equal to the id that we just received
     //then set the bookmarked as true else set it to false
@@ -118,5 +126,37 @@ const init = function () {
 
   if (storage) state.bookmarks = JSON.parse(storage);
 };
-
 init();
+
+export const uploadRecipe = async function (newRecipe) {
+  try {
+    const ingredients = Object.entries(newRecipe)
+      .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
+      .map(ingredient => {
+        const ingredientsArray = ingredient[1].split(',');
+
+        if (ingredientsArray.length !== 3) throw new Error('Wrong ingredient format! Please use the correct format');
+
+        const [quantity, unit, description] = ingredientsArray;
+
+        return { quantity: quantity ? +quantity : null, unit, description };
+      });
+
+    const recipe = {
+      title: newRecipe.title,
+      source_url: newRecipe.sourceUrl,
+      image_url: newRecipe.imageURL,
+      publisher: newRecipe.publisher,
+      cooking_time: +newRecipe.cooking_time,
+      servings: +newRecipe.servings,
+      ingredients,
+    };
+
+    const data = await sendJSON(`${API_URL}?key=${API_KEY}`, recipe);
+    state.recipe = createRecipeObject(data);
+    //Call addBookmark with created recipe object
+    addBookmark(state.recipe);
+  } catch (error) {
+    throw error;
+  }
+};
