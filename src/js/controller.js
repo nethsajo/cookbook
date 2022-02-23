@@ -39,6 +39,7 @@ const controlRecipes = async function () {
 
     //3. Rendering recipe and pass the state object to the recipe view
     RecipeView.render(model.state.recipe);
+    BookmarksView.toggleWindow();
   } catch (error) {
     RecipeView.renderError();
     console.error(error);

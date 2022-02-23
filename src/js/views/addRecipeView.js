@@ -14,24 +14,22 @@ class AddRecipeView extends View {
     this._addHandlerHideWindow();
   }
 
-  toggleWindow() {
+  toggleWindow(marginValue = '', overflowValue = '') {
+    this._body.style.margin = marginValue;
+    this._body.style.overflow = overflowValue;
     this._window.classList.toggle('hidden');
   }
 
   //Know that the this keyword inside of a handler function points to the element on which that listener is attached to.
   _addHandlerShowWindow() {
-    let scrollbarWidth = window.innerWidth - this._body.offsetWidth;
-    this._body.style.margin = '0 ' + scrollbarWidth + 'px 0 0';
-    this._body.style.overflow = 'hidden';
+    let scrollBarWidth = window.innerWidth - this._body.offsetWidth;
+    let marginValue = '0 ' + scrollBarWidth + 'px 0 0';
 
     //this.toggleWindow.bind(this) - the this keyword points to the current object (AddRecipeView)
-    this._btnOpenModal.addEventListener('click', this.toggleWindow.bind(this));
+    this._btnOpenModal.addEventListener('click', this.toggleWindow.bind(this, marginValue, 'hidden'));
   }
 
   _addHandlerHideWindow() {
-    this._body.style.margin = '';
-    this._body.style.overflow = '';
-
     this._btnCloseModal.forEach(btn => btn.addEventListener('click', this.toggleWindow.bind(this)));
   }
 
