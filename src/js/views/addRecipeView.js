@@ -2,8 +2,8 @@ import View from './View.js';
 
 class AddRecipeView extends View {
   _parentElement = document.querySelector('.upload');
-  _window = document.querySelector('.modal__content');
-  _overlay = document.querySelector('.modal');
+  _window = document.querySelector('.modal');
+  _body = document.querySelector('body');
   _btnOpenModal = document.querySelector('.header__menu-add');
   _btnCloseModal = document.querySelectorAll('.btn--close-modal');
 
@@ -15,19 +15,24 @@ class AddRecipeView extends View {
   }
 
   toggleWindow() {
-    this._overlay.classList.toggle('hidden');
     this._window.classList.toggle('hidden');
   }
 
   //Know that the this keyword inside of a handler function points to the element on which that listener is attached to.
   _addHandlerShowWindow() {
+    let scrollbarWidth = window.innerWidth - this._body.offsetWidth;
+    this._body.style.margin = '0 ' + scrollbarWidth + 'px 0 0';
+    this._body.style.overflow = 'hidden';
+
     //this.toggleWindow.bind(this) - the this keyword points to the current object (AddRecipeView)
     this._btnOpenModal.addEventListener('click', this.toggleWindow.bind(this));
   }
 
   _addHandlerHideWindow() {
+    this._body.style.margin = '';
+    this._body.style.overflow = '';
+
     this._btnCloseModal.forEach(btn => btn.addEventListener('click', this.toggleWindow.bind(this)));
-    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
   }
 
   addHandlerUpload(handler) {

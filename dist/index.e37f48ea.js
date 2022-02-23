@@ -3105,8 +3105,8 @@ var _viewJs = require("./View.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 class AddRecipeView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.upload');
-    _window = document.querySelector('.modal__content');
-    _overlay = document.querySelector('.modal');
+    _window = document.querySelector('.modal');
+    _body = document.querySelector('body');
     _btnOpenModal = document.querySelector('.header__menu-add');
     _btnCloseModal = document.querySelectorAll('.btn--close-modal');
     constructor(){
@@ -3116,18 +3116,21 @@ class AddRecipeView extends _viewJsDefault.default {
         this._addHandlerHideWindow();
     }
     toggleWindow() {
-        this._overlay.classList.toggle('hidden');
         this._window.classList.toggle('hidden');
     }
     //Know that the this keyword inside of a handler function points to the element on which that listener is attached to.
     _addHandlerShowWindow() {
+        let scrollbarWidth = window.innerWidth - this._body.offsetWidth;
+        this._body.style.margin = '0 ' + scrollbarWidth + 'px 0 0';
+        this._body.style.overflow = 'hidden';
         //this.toggleWindow.bind(this) - the this keyword points to the current object (AddRecipeView)
         this._btnOpenModal.addEventListener('click', this.toggleWindow.bind(this));
     }
     _addHandlerHideWindow() {
+        this._body.style.margin = '';
+        this._body.style.overflow = '';
         this._btnCloseModal.forEach((btn)=>btn.addEventListener('click', this.toggleWindow.bind(this))
         );
-        this._overlay.addEventListener('click', this.toggleWindow.bind(this));
     }
     addHandlerUpload(handler) {
         this._parentElement.addEventListener('submit', function(e) {
@@ -3145,6 +3148,6 @@ class AddRecipeView extends _viewJsDefault.default {
 }
 exports.default = new AddRecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map
