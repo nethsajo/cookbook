@@ -138,7 +138,7 @@ body {
 }
 
 .u-d-none {
-  display: none;
+  display: none !important;
 }
 
 .t-center {
@@ -440,6 +440,7 @@ strong {
   min-height: 70vh;
   padding: 0 3.2rem;
   text-align: center;
+  direction: ltr;
 }
 
 .message__text {
@@ -659,6 +660,23 @@ strong {
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--color-grey-light);
+}
+
+.preview__user-generated {
+  background-color: var(--color-primary-light-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  margin-left: auto;
+}
+
+.preview__user-generated svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: var(--color-white-lightest);
 }
 
 .recipe__header {

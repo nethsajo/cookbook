@@ -38,7 +38,7 @@ class BookmarkView extends View {
   _generateMarkupBookmark(bookmark) {
     const recipeId = window.location.hash.slice(1);
 
-    const { id, publisher, title, image } = bookmark;
+    const { id, publisher, title, image, key } = bookmark;
 
     return `
       <li class="bookmarks__view">
@@ -49,7 +49,7 @@ class BookmarkView extends View {
           <div class="bookmarks__data">
             <h4 class="bookmarks__title">${title}</h4>
             <p class="bookmarks__publisher">${publisher}</p>
-            <div class="bookmarks__user-generated">
+            <div class="bookmarks__user-generated ${key ? '' : 'u-d-none'}">
               <svg>
                 <use xlink:href="${icons}#icon-user"></use>
               </svg>

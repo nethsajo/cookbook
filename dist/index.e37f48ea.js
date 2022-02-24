@@ -605,6 +605,7 @@ const controlAddBookmark = function() {
     //2. Update the recipe view
     _recipeViewJsDefault.default.update(_modelJs.state.recipe);
     //3. Render bookmarks
+    console.log(_modelJs.state.bookmarks);
     _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
 };
 const contolBookmarks = function() {
@@ -2384,7 +2385,7 @@ class RecipeView extends _viewJsDefault.default {
                 <span class="recipe__info-data recipe__info-data-people">${this._data.servings}</span>
                 <span class="recipe__info-text">servings</span>
               </div>
-              <div class="recipe__user-generated">
+              <div class="recipe__user-generated ${this._data.key ? '' : 'u-d-none'}">
                 <svg class="recipe__user-generated-icon">
                   <use xlink:href="${_iconsSvgDefault.default}#icon-user"></use>
                 </svg>
@@ -2714,7 +2715,6 @@ parcelHelpers.export(exports, "removeBookmark", ()=>removeBookmark
 parcelHelpers.export(exports, "uploadRecipe", ()=>uploadRecipe
 );
 var _configJs = require("./config.js");
-// import { getJSON, sendJSON } from './helpers.js';
 var _helpersJs = require("./helpers.js");
 const state = {
     recipe: {
@@ -2766,14 +2766,18 @@ const loadRecipe = async function(id) {
 const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
-        const data = await _helpersJs.AJAX(`${_configJs.API_URL}?search=${query}`);
+        const data = await _helpersJs.AJAX(`${_configJs.API_URL}?search=${query}&key=${_configJs.API_KEY}`);
+        console.log(data);
         const { recipes  } = data.data;
         state.search.results = recipes.map((recipe)=>{
             return {
                 id: recipe.id,
                 title: recipe.title,
                 publisher: recipe.publisher,
-                image: recipe.image_url
+                image: recipe.image_url,
+                ...recipe.key && {
+                    key: recipe.key
+                }
             };
         });
         state.search.page = 1;
@@ -2794,6 +2798,7 @@ const getSearchResultsPage = function(page = state.search.page) {
 };
 const updateServings = function(newServings) {
     state.recipe.ingredients.forEach((ingredient)=>{
+        // newQt = oldQt * newServings / oldServings / 2 * 8 / 4 = 4
         ingredient.quantity = ingredient.quantity * newServings / state.recipe.servings;
     });
     state.recipe.servings = newServings;
@@ -2824,11 +2829,15 @@ const init = function() {
     if (storage) state.bookmarks = JSON.parse(storage);
 };
 init();
+const clearBookmarks = function() {
+    localStorage.clear('bookmarks');
+};
 const uploadRecipe = async function(newRecipe) {
     try {
         const ingredients = Object.entries(newRecipe).filter((entry)=>entry[0].startsWith('ingredient') && entry[1] !== ''
         ).map((ingredient)=>{
-            const ingredientsArray = ingredient[1].split(',');
+            const ingredientsArray = ingredient[1].split(',').map((element)=>element.trim()
+            );
             if (ingredientsArray.length !== 3) throw new Error('Wrong ingredient format! Please use the correct format');
             const [quantity, unit, description] = ingredientsArray;
             return {
@@ -2875,7 +2884,7 @@ const TIMEOUT_SEC = 10;
 const SEARCH_WINDOW_SEC = 0.5;
 const MODAL_CLOSE_SEC = 2.5;
 const RESULT_PER_PAGE = 12;
-const API_KEY = 'b3a4e221-ffda-49ac-9e23-42bcd2812891';
+const API_KEY = 'b1461fa0-8477-4817-88a7-433f7d095570';
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -3065,7 +3074,7 @@ class ResultsView extends _viewJsDefault.default {
     `;
     }
     _generateMarkupRecipe(recipe) {
-        const { id , publisher , title , image  } = recipe;
+        const { id , publisher , title , image , key  } = recipe;
         return `
       <a href="#${id}" class="preview__link">
         <article class="preview__box">
@@ -3081,6 +3090,11 @@ class ResultsView extends _viewJsDefault.default {
                   <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-up-right"></use>
                 </svg>
                 <span class="preview__view-text">View Details</span>
+              </div>
+              <div class="preview__user-generated ${key ? '' : 'u-d-none'}">
+                <svg>
+                  <use xlink:href="${_iconsSvgDefault.default}#icon-user"></use>
+                </svg>
               </div>
             </div>
           </div>
@@ -3208,7 +3222,7 @@ class BookmarkView extends _viewJsDefault.default {
     }
     _generateMarkupBookmark(bookmark) {
         const recipeId = window.location.hash.slice(1);
-        const { id , publisher , title , image  } = bookmark;
+        const { id , publisher , title , image , key  } = bookmark;
         return `
       <li class="bookmarks__view">
         <a href="#${id}" class="bookmarks__link ${id === recipeId ? 'bookmarks__link--active' : ''}">
@@ -3218,7 +3232,7 @@ class BookmarkView extends _viewJsDefault.default {
           <div class="bookmarks__data">
             <h4 class="bookmarks__title">${title}</h4>
             <p class="bookmarks__publisher">${publisher}</p>
-            <div class="bookmarks__user-generated">
+            <div class="bookmarks__user-generated ${key ? '' : 'u-d-none'}">
               <svg>
                 <use xlink:href="${_iconsSvgDefault.default}#icon-user"></use>
               </svg>

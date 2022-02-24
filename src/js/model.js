@@ -1,5 +1,4 @@
 import { API_URL, API_KEY, RESULT_PER_PAGE } from './config.js';
-// import { getJSON, sendJSON } from './helpers.js';
 import { AJAX } from './helpers.js';
 
 //Contains an object for recipe, search and bookmarks
@@ -55,7 +54,8 @@ export const loadRecipe = async function (id) {
 export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
-    const data = await AJAX(`${API_URL}?search=${query}`);
+    const data = await AJAX(`${API_URL}?search=${query}&key=${API_KEY}`);
+    console.log(data);
 
     const { recipes } = data.data;
 
@@ -65,6 +65,7 @@ export const loadSearchResults = async function (query) {
         title: recipe.title,
         publisher: recipe.publisher,
         image: recipe.image_url,
+        ...(recipe.key && { key: recipe.key }),
       };
     });
     state.search.page = 1;
@@ -88,6 +89,7 @@ export const getSearchResultsPage = function (page = state.search.page) {
 
 export const updateServings = function (newServings) {
   state.recipe.ingredients.forEach(ingredient => {
+    // newQt = oldQt * newServings / oldServings / 2 * 8 / 4 = 4
     ingredient.quantity = (ingredient.quantity * newServings) / state.recipe.servings;
   });
 
@@ -129,12 +131,17 @@ const init = function () {
 };
 init();
 
+const clearBookmarks = function () {
+  localStorage.clear('bookmarks');
+};
+// clearBookmarks();
+
 export const uploadRecipe = async function (newRecipe) {
   try {
     const ingredients = Object.entries(newRecipe)
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(ingredient => {
-        const ingredientsArray = ingredient[1].split(',');
+        const ingredientsArray = ingredient[1].split(',').map(element => element.trim());
 
         if (ingredientsArray.length !== 3) throw new Error('Wrong ingredient format! Please use the correct format');
 

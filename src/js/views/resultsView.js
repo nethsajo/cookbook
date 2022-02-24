@@ -19,7 +19,7 @@ class ResultsView extends View {
   }
 
   _generateMarkupRecipe(recipe) {
-    const { id, publisher, title, image } = recipe;
+    const { id, publisher, title, image, key } = recipe;
     return `
       <a href="#${id}" class="preview__link">
         <article class="preview__box">
@@ -35,6 +35,11 @@ class ResultsView extends View {
                   <use xlink:href="${icons}#icon-arrow-up-right"></use>
                 </svg>
                 <span class="preview__view-text">View Details</span>
+              </div>
+              <div class="preview__user-generated ${key ? '' : 'u-d-none'}">
+                <svg>
+                  <use xlink:href="${icons}#icon-user"></use>
+                </svg>
               </div>
             </div>
           </div>

@@ -64,7 +64,7 @@ class RecipeView extends View {
                 <span class="recipe__info-data recipe__info-data-people">${this._data.servings}</span>
                 <span class="recipe__info-text">servings</span>
               </div>
-              <div class="recipe__user-generated">
+              <div class="recipe__user-generated ${this._data.key ? '' : 'u-d-none'}">
                 <svg class="recipe__user-generated-icon">
                   <use xlink:href="${icons}#icon-user"></use>
                 </svg>
