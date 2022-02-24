@@ -78,6 +78,22 @@
     margin-bottom: 3.2rem;
   }
 
+  &__user-generated {
+    width: 4.8rem;
+    height: 4.8rem;
+    background-color: var(--color-white-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--b-radius-rnd);
+  }
+
+  &__user-generated-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    fill: var(--color-primary-light);
+  }
+
   &__btn {
     background-color: transparent;
     outline: none;

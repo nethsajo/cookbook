@@ -564,10 +564,8 @@ const controlRecipes = async function() {
 const controlSearchResults = async function() {
     try {
         _resultsViewJsDefault.default.renderSpinner();
-        console.log(_resultsViewJsDefault.default);
         //1. Get search query
         const query = _searchViewJsDefault.default.getQuery();
-        console.log(query);
         if (!query) return;
         //2. Load search results
         await _modelJs.loadSearchResults(query);
@@ -623,6 +621,12 @@ const controlAddRecipe = async function(newRecipe) {
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
         //Success message
         _addRecipeViewJsDefault.default.renderSuccess();
+        //Render bookmark view
+        _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
+        //Change id in URL
+        //pushState - takes three arguments
+        //1st arg: state, 2nd arg: title, 3rd arg: url
+        window.history.pushState(null, '', `#${_modelJs.state.recipe.id}`);
         //Close the form window
         setTimeout(()=>{
             _addRecipeViewJsDefault.default.toggleWindow();
@@ -2380,6 +2384,11 @@ class RecipeView extends _viewJsDefault.default {
                 <span class="recipe__info-data recipe__info-data-people">${this._data.servings}</span>
                 <span class="recipe__info-text">servings</span>
               </div>
+              <div class="recipe__user-generated">
+                <svg class="recipe__user-generated-icon">
+                  <use xlink:href="${_iconsSvgDefault.default}#icon-user"></use>
+                </svg>
+              </div>
             </div>
             <div class="recipe__bookmark">
               <button class="btn btn--primary btn--sm btn__bookmark">
@@ -2705,6 +2714,7 @@ parcelHelpers.export(exports, "removeBookmark", ()=>removeBookmark
 parcelHelpers.export(exports, "uploadRecipe", ()=>uploadRecipe
 );
 var _configJs = require("./config.js");
+// import { getJSON, sendJSON } from './helpers.js';
 var _helpersJs = require("./helpers.js");
 const state = {
     recipe: {
@@ -2740,7 +2750,7 @@ const createRecipeObject = function(data) {
 };
 const loadRecipe = async function(id) {
     try {
-        const data = await _helpersJs.getJSON(`${_configJs.API_URL}${id}`);
+        const data = await _helpersJs.AJAX(`${_configJs.API_URL}${id}`);
         state.recipe = createRecipeObject(data);
         //if there is any bookmark, which has the bookmark ID equal to the id that we just received
         //then set the bookmarked as true else set it to false
@@ -2756,7 +2766,7 @@ const loadRecipe = async function(id) {
 const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
-        const data = await _helpersJs.getJSON(`${_configJs.API_URL}?search=${query}`);
+        const data = await _helpersJs.AJAX(`${_configJs.API_URL}?search=${query}`);
         const { recipes  } = data.data;
         state.search.results = recipes.map((recipe)=>{
             return {
@@ -2836,7 +2846,7 @@ const uploadRecipe = async function(newRecipe) {
             servings: +newRecipe.servings,
             ingredients
         };
-        const data = await _helpersJs.sendJSON(`${_configJs.API_URL}?key=${_configJs.API_KEY}`, recipe);
+        const data = await _helpersJs.AJAX(`${_configJs.API_URL}?key=${_configJs.API_KEY}`, recipe);
         state.recipe = createRecipeObject(data);
         //Call addBookmark with created recipe object
         addBookmark(state.recipe);
@@ -2870,9 +2880,7 @@ const API_KEY = 'b3a4e221-ffda-49ac-9e23-42bcd2812891';
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getJSON", ()=>getJSON
-);
-parcelHelpers.export(exports, "sendJSON", ()=>sendJSON
+parcelHelpers.export(exports, "AJAX", ()=>AJAX
 );
 var _configJs = require("./config.js");
 const timeout = function(seconds) {
@@ -2882,10 +2890,17 @@ const timeout = function(seconds) {
         }, seconds * 1000);
     });
 };
-const getJSON = async function(url) {
+const AJAX = async function(url, uploadData) {
     try {
+        const fetchPromise = uploadData ? fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(uploadData)
+        }) : fetch(url);
         const response = await Promise.race([
-            fetch(url),
+            fetchPromise,
             timeout(_configJs.TIMEOUT_SEC)
         ]);
         const data = await response.json();
@@ -2895,36 +2910,55 @@ const getJSON = async function(url) {
         //Re-throw error
         throw error;
     }
+}; /*
+export const getJSON = async function (url) {
+  try {
+    const response = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+
+    return data;
+  } catch (error) {
+    //Re-throw error
+    throw error;
+  }
 };
-const sendJSON = async function(url, uploadData) {
-    //To send data, we will need a post request.
-    //So besides the url in fetch(), we also need to pass in an object of some options
-    //1st option: is the method, and that method is a POST
-    /*2nd option: object of headers. Headers are basically some snippets of text 
-  which are like information about the request itself*/ //3rd option: the payload of the request, so basically the data that we want to send (body)
-    try {
-        const response = await Promise.race([
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    //we specify in the request that the data we're gonna send is going to be in JSON format
-                    //and so only then our API can correctly accept that data and create a new recipe in the database
-                    'Content-Type': 'application/json'
-                },
-                //body should be in JSON format. So we can use the stringy method of JSON
-                //then convert the data that we want to send
-                body: JSON.stringify(uploadData)
-            }),
-            timeout(_configJs.TIMEOUT_SEC), 
-        ]);
-        const data = await response.json();
-        if (!response.ok) throw new Error(`${data.message} (${response.status})`);
-        return data;
-    } catch (error) {
-        //Re-throw error
-        throw error;
-    }
+*/  //To send data, we will need a post request.
+ //So besides the url in fetch(), we also need to pass in an object of some options
+ //1st option: is the method, and that method is a POST
+ /*2nd option: object of headers. Headers are basically some snippets of text 
+which are like information about the request itself*/  //3rd option: the payload of the request, so basically the data that we want to send (body)
+ /*
+export const sendJSON = async function (url, uploadData) {
+  try {
+    const response = await Promise.race([
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          //we specify in the request that the data we're gonna send is going to be in JSON format
+          //and so only then our API can correctly accept that data and create a new recipe in the database
+          'Content-Type': 'application/json',
+        },
+        //body should be in JSON format. So we can use the stringy method of JSON
+        //then convert the data that we want to send
+        body: JSON.stringify(uploadData),
+      }),
+      timeout(TIMEOUT_SEC),
+    ]);
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+
+    return data;
+  } catch (error) {
+    //Re-throw error
+    throw error;
+  }
 };
+*/ 
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8UYUH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

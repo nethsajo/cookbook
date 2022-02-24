@@ -1,6 +1,6 @@
 import * as model from './model.js';
 //Configs
-import { SEARCH_POPUP_SEC, MODAL_CLOSE_SEC } from './config.js';
+import { RELOAD, MODAL_CLOSE_SEC } from './config.js';
 
 //Views
 import HeroView from './views/heroView.js';
@@ -45,11 +45,9 @@ const controlRecipes = async function () {
 const controlSearchResults = async function () {
   try {
     ResultsView.renderSpinner();
-    console.log(ResultsView);
 
     //1. Get search query
     const query = SearchView.getQuery();
-    console.log(query);
 
     if (!query) return;
 
@@ -123,6 +121,14 @@ const controlAddRecipe = async function (newRecipe) {
 
     //Success message
     AddRecipeView.renderSuccess();
+
+    //Render bookmark view
+    BookmarksView.render(model.state.bookmarks);
+
+    //Change id in URL
+    //pushState - takes three arguments
+    //1st arg: state, 2nd arg: title, 3rd arg: url
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
     //Close the form window
     setTimeout(() => {

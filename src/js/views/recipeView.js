@@ -64,6 +64,11 @@ class RecipeView extends View {
                 <span class="recipe__info-data recipe__info-data-people">${this._data.servings}</span>
                 <span class="recipe__info-text">servings</span>
               </div>
+              <div class="recipe__user-generated">
+                <svg class="recipe__user-generated-icon">
+                  <use xlink:href="${icons}#icon-user"></use>
+                </svg>
+              </div>
             </div>
             <div class="recipe__bookmark">
               <button class="btn btn--primary btn--sm btn__bookmark">

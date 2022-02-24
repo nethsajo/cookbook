@@ -8,6 +8,34 @@ const timeout = function (seconds) {
   });
 };
 
+//Set uploadData to undefined as default
+//When we call this AJAX function with only the URL, then of course there is no uploadData
+export const AJAX = async function (url, uploadData = undefined) {
+  try {
+    const fetchPromise = uploadData
+      ? fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(uploadData),
+        })
+      : fetch(url);
+
+    const response = await Promise.race([fetchPromise, timeout(TIMEOUT_SEC)]);
+
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+
+    return data;
+  } catch (error) {
+    //Re-throw error
+    throw error;
+  }
+};
+
+/*
 export const getJSON = async function (url) {
   try {
     const response = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
@@ -22,14 +50,17 @@ export const getJSON = async function (url) {
     throw error;
   }
 };
+*/
 
+//To send data, we will need a post request.
+//So besides the url in fetch(), we also need to pass in an object of some options
+//1st option: is the method, and that method is a POST
+/*2nd option: object of headers. Headers are basically some snippets of text 
+which are like information about the request itself*/
+//3rd option: the payload of the request, so basically the data that we want to send (body)
+
+/*
 export const sendJSON = async function (url, uploadData) {
-  //To send data, we will need a post request.
-  //So besides the url in fetch(), we also need to pass in an object of some options
-  //1st option: is the method, and that method is a POST
-  /*2nd option: object of headers. Headers are basically some snippets of text 
-  which are like information about the request itself*/
-  //3rd option: the payload of the request, so basically the data that we want to send (body)
   try {
     const response = await Promise.race([
       fetch(url, {
@@ -56,3 +87,4 @@ export const sendJSON = async function (url, uploadData) {
     throw error;
   }
 };
+*/

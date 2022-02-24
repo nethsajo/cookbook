@@ -75,7 +75,7 @@
     }
 
     &--active {
-      background-color: var(--color-white-light);
+      background-color: var(--color-white-lightest);
     }
   }
 
@@ -137,7 +137,7 @@
   }
 
   &__user-generated {
-    background-color: var(--color-white-light);
+    background-color: var(--color-primary-light-2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -149,7 +149,7 @@
     svg {
       width: 1.2rem;
       height: 1.2rem;
-      fill: var(--color-primary-light);
+      fill: var(--color-white-lightest);
     }
   }
 }

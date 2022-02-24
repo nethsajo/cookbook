@@ -1,6 +1,7 @@
 :root {
   --color-primary: #fa5252;
   --color-primary-light: #fc8686;
+  --color-primary-light-2: #fdbaba;
   --color-primary-dark: #f03e3e;
   --color-secondary: #ff922b;
   --color-secondary-dark: #f76707;
@@ -16,6 +17,7 @@
   --color-error: #f03e3e;
   --b-radius-5: 0.5rem;
   --b-radius-11: 1.1rem;
+  --b-radius-rnd: 50%;
   --transition: all 0.3s ease-in-out;
   --nav-height: 8rem;
   --footer-height: 5rem;
@@ -224,7 +226,7 @@ strong {
 }
 
 .bookmarks__link--active {
-  background-color: var(--color-white-light);
+  background-color: var(--color-white-lightest);
 }
 
 .bookmarks__figure {
@@ -284,7 +286,7 @@ strong {
 }
 
 .bookmarks__user-generated {
-  background-color: var(--color-white-light);
+  background-color: var(--color-primary-light-2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -297,7 +299,7 @@ strong {
 .bookmarks__user-generated svg {
   width: 1.2rem;
   height: 1.2rem;
-  fill: var(--color-primary-light);
+  fill: var(--color-white-lightest);
 }
 
 .btn, .btn:link, .btn:visited {
@@ -735,6 +737,22 @@ strong {
   align-items: center;
   justify-content: center;
   margin-bottom: 3.2rem;
+}
+
+.recipe__user-generated {
+  width: 4.8rem;
+  height: 4.8rem;
+  background-color: var(--color-white-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--b-radius-rnd);
+}
+
+.recipe__user-generated-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  fill: var(--color-primary-light);
 }
 
 .recipe__btn {
