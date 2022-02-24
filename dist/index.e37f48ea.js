@@ -576,7 +576,7 @@ const controlSearchResults = async function() {
         _searchViewJsDefault.default.toggleWindow();
         history.pushState({
             query: _modelJs.state.search.query
-        }, '', `/${_modelJs.state.search.query}/`);
+        }, '', `#/${_modelJs.state.search.query}`);
         //4. Render initial pagination buttons
         _paginationViewJsDefault.default.render(_modelJs.state.search);
     } catch (error) {

@@ -61,7 +61,7 @@ const controlSearchResults = async function () {
 
     SearchView.toggleWindow();
 
-    history.pushState({ query: model.state.search.query }, '', `/${model.state.search.query}/`);
+    history.pushState({ query: model.state.search.query }, '', `#/${model.state.search.query}`);
 
     //4. Render initial pagination buttons
     PaginationView.render(model.state.search);
