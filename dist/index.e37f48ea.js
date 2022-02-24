@@ -2608,7 +2608,14 @@ var _iconsSvg = require("url:../../icons/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
-    //Render method takes the data (state) and stores it inside of this._data
+    /**
+   * Render the received object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+   * @this {Object} View object
+   * @returns {string} A markup string is returned
+   * @author Jan Kenneth Sajo
+   * @todo Finish implementation
+   */ //Render method takes the data (state) and stores it inside of this._data
     //this._data can be access all over the place inside of this object
     render(data) {
         //if there is no data or if there is data, but that data is an array and it is empty
@@ -3147,41 +3154,29 @@ class PaginationView {
         const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
         console.log(numPages);
         //Page 1, and there are other pages
-        if (currentPage === 1 && numPages > 1) return `
-        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
-          <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
-          <svg class="pagination__icon">
-            <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-right"></use>
-          </svg>
-        </button>
-      `;
+        if (currentPage === 1 && numPages > 1) return this._generateMarkupButton('next');
         //Last Page
-        if (currentPage === numPages && numPages > 1) return `
-        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
-          <svg class="pagination__icon">
-            <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-left"></use>
-          </svg>
-          <span class="pagination__text u-ml-xs">Page ${currentPage - 1}</span>
-        </button>
-      `;
+        if (currentPage === numPages && numPages > 1) return this._generateMarkupButton('prev');
         //Other Page
-        if (currentPage < numPages) return `
-        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
-          <svg class="pagination__icon">
-            <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-left"></use>
-          </svg>
-          <span class="pagination__text u-ml-xs">Page ${currentPage - 1}</span>
-        </button>
-
-        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
-          <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
-          <svg class="pagination__icon">
-            <use xlink:href="${_iconsSvgDefault.default}#icon-arrow-right"></use>
-          </svg>
-        </button>
-      `;
+        if (currentPage < numPages) return this._generateMarkupButton('prev') + this._generateMarkupButton('next');
         //Page 1, and there are no other pages
         return '';
+    }
+    _generateMarkupButton(direction) {
+        const currentPage = this._data.page;
+        const target = direction === 'prev' ? currentPage - 1 : currentPage + 1;
+        const icon = direction === 'prev' ? 'icon-arrow-left' : 'icon-arrow-right';
+        return `
+      <button data-goto="${target}" class="pagination__btn pagination__btn--${direction}">
+        <svg class="pagination__icon ${direction === 'prev' ? '' : 'u-d-none'}">
+          <use href="${direction === 'prev' ? _iconsSvgDefault.default : ''}#${icon}"></use>
+        </svg>
+        <span class="pagination__text ${direction === 'next' ? 'u-mr-xs' : 'u-ml-xs'}">Page ${target}</span>
+        <svg class="pagination__icon ${direction === 'next' ? '' : 'u-d-none'}">
+          <use xlink:href="${direction === 'next' ? _iconsSvgDefault.default : ''}#${icon}""></use>
+        </svg>
+      </button>
+    `;
     }
 }
 exports.default = new PaginationView();

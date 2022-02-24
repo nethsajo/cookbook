@@ -47,49 +47,39 @@ class PaginationView {
 
     //Page 1, and there are other pages
     if (currentPage === 1 && numPages > 1) {
-      return `
-        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
-          <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
-          <svg class="pagination__icon">
-            <use xlink:href="${icons}#icon-arrow-right"></use>
-          </svg>
-        </button>
-      `;
+      return this._generateMarkupButton('next');
     }
 
     //Last Page
     if (currentPage === numPages && numPages > 1) {
-      return `
-        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
-          <svg class="pagination__icon">
-            <use xlink:href="${icons}#icon-arrow-left"></use>
-          </svg>
-          <span class="pagination__text u-ml-xs">Page ${currentPage - 1}</span>
-        </button>
-      `;
+      return this._generateMarkupButton('prev');
     }
 
     //Other Page
     if (currentPage < numPages) {
-      return `
-        <button data-goto="${currentPage - 1}" class="pagination__btn pagination__btn--prev">
-          <svg class="pagination__icon">
-            <use xlink:href="${icons}#icon-arrow-left"></use>
-          </svg>
-          <span class="pagination__text u-ml-xs">Page ${currentPage - 1}</span>
-        </button>
-
-        <button data-goto="${currentPage + 1}" class="pagination__btn pagination__btn--next">
-          <span class="pagination__text u-mr-xs">Page ${currentPage + 1}</span>
-          <svg class="pagination__icon">
-            <use xlink:href="${icons}#icon-arrow-right"></use>
-          </svg>
-        </button>
-      `;
+      return this._generateMarkupButton('prev') + this._generateMarkupButton('next');
     }
 
     //Page 1, and there are no other pages
     return '';
+  }
+
+  _generateMarkupButton(direction) {
+    const currentPage = this._data.page;
+    const target = direction === 'prev' ? currentPage - 1 : currentPage + 1;
+    const icon = direction === 'prev' ? 'icon-arrow-left' : 'icon-arrow-right';
+
+    return `
+      <button data-goto="${target}" class="pagination__btn pagination__btn--${direction}">
+        <svg class="pagination__icon ${direction === 'prev' ? '' : 'u-d-none'}">
+          <use href="${direction === 'prev' ? icons : ''}#${icon}"></use>
+        </svg>
+        <span class="pagination__text ${direction === 'next' ? 'u-mr-xs' : 'u-ml-xs'}">Page ${target}</span>
+        <svg class="pagination__icon ${direction === 'next' ? '' : 'u-d-none'}">
+          <use xlink:href="${direction === 'next' ? icons : ''}#${icon}""></use>
+        </svg>
+      </button>
+    `;
   }
 }
 

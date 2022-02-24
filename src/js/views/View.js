@@ -3,6 +3,15 @@ import icons from 'url:../../icons/icons.svg';
 export default class View {
   _data;
 
+  /**
+   * Render the received object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+   * @this {Object} View object
+   * @returns {string} A markup string is returned
+   * @author Jan Kenneth Sajo
+   * @todo Finish implementation
+   */
+
   //Render method takes the data (state) and stores it inside of this._data
   //this._data can be access all over the place inside of this object
   render(data) {
