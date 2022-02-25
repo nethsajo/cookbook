@@ -154,4 +154,20 @@
       fill: var(--color-white-lightest);
     }
   }
+
+  &__count {
+    position: absolute;
+    top: -0.7rem;
+    left: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-white);
+    width: 1.8rem;
+    height: 1.8rem;
+    background-color: var(--color-primary-light);
+    border-radius: var(--b-radius-rnd);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

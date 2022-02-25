@@ -305,6 +305,22 @@ strong {
   fill: var(--color-white-lightest);
 }
 
+.bookmarks__count {
+  position: absolute;
+  top: -0.7rem;
+  left: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-white);
+  width: 1.8rem;
+  height: 1.8rem;
+  background-color: var(--color-primary-light);
+  border-radius: var(--b-radius-rnd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn, .btn:link, .btn:visited {
   font-family: inherit;
   font-size: 1.6rem;
@@ -980,7 +996,7 @@ strong {
   align-items: center;
   justify-content: space-between;
   height: var(--nav-height);
-  padding: 0 5.6rem;
+  padding: 0 3.2rem;
   position: relative;
   top: 0;
   width: 100%;

@@ -61,7 +61,7 @@ const controlSearchResults = async function () {
 
     SearchView.toggleWindow();
 
-    history.pushState({ query: model.state.search.query }, '', `#/${model.state.search.query}`);
+    history.pushState({ query: model.state.search.query }, '', `/${model.state.search.query}/`);
 
     //4. Render initial pagination buttons
     PaginationView.render(model.state.search);
@@ -95,6 +95,8 @@ const controlAddBookmark = function () {
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   //else if the bookmarked is true, then you can remove a bookmark
   else model.removeBookmark(model.state.recipe.id);
+
+  BookmarksView.addShowCountBookmarks(model.state.bookmarks.length);
 
   //2. Update the recipe view
   RecipeView.update(model.state.recipe);
@@ -144,6 +146,7 @@ const controlAddRecipe = async function (newRecipe) {
 
 const init = function () {
   BookmarksView.addHandlerRender(contolBookmarks);
+  BookmarksView.addShowCountBookmarks(model.state.bookmarks.length);
   RecipeView.addHandlerRender(controlRecipes);
   RecipeView.addHandlerUpdateServings(controlServings);
   RecipeView.addHandlerAddBookmark(controlAddBookmark);

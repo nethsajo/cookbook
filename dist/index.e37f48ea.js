@@ -576,7 +576,7 @@ const controlSearchResults = async function() {
         _searchViewJsDefault.default.toggleWindow();
         history.pushState({
             query: _modelJs.state.search.query
-        }, '', `#/${_modelJs.state.search.query}`);
+        }, '', `/${_modelJs.state.search.query}/`);
         //4. Render initial pagination buttons
         _paginationViewJsDefault.default.render(_modelJs.state.search);
     } catch (error) {
@@ -602,6 +602,7 @@ const controlAddBookmark = function() {
     //1. Add/Remove bookmark
     if (!_modelJs.state.recipe.bookmarked) _modelJs.addBookmark(_modelJs.state.recipe);
     else _modelJs.removeBookmark(_modelJs.state.recipe.id);
+    _bookmarksViewJsDefault.default.addShowCountBookmarks(_modelJs.state.bookmarks.length);
     //2. Update the recipe view
     _recipeViewJsDefault.default.update(_modelJs.state.recipe);
     //3. Render bookmarks
@@ -640,6 +641,7 @@ const controlAddRecipe = async function(newRecipe) {
 };
 const init = function() {
     _bookmarksViewJsDefault.default.addHandlerRender(contolBookmarks);
+    _bookmarksViewJsDefault.default.addShowCountBookmarks(_modelJs.state.bookmarks.length);
     _recipeViewJsDefault.default.addHandlerRender(controlRecipes);
     _recipeViewJsDefault.default.addHandlerUpdateServings(controlServings);
     _recipeViewJsDefault.default.addHandlerAddBookmark(controlAddBookmark);
@@ -3191,6 +3193,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class BookmarkView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.bookmarks__list');
     _window = document.querySelector('.bookmarks');
+    _bookmarksBadge = document.querySelector('.bookmarks__count');
     _btnOpenBookmark = document.querySelector('.header__menu-bookmark');
     _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
     _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
@@ -3211,6 +3214,10 @@ class BookmarkView extends _viewJsDefault.default {
     }
     _addHideBookmarks() {
         this._btnCloseBookmark.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    addShowCountBookmarks(data) {
+        this._bookmarksBadge.textContent = data ?? 0;
+        console.log(data);
     }
     _generateMarkup() {
         return this._data.map(this._generateMarkupBookmark).join('');

@@ -4,6 +4,7 @@ import icons from 'url:../../icons/icons.svg';
 class BookmarkView extends View {
   _parentElement = document.querySelector('.bookmarks__list');
   _window = document.querySelector('.bookmarks');
+  _bookmarksBadge = document.querySelector('.bookmarks__count');
   _btnOpenBookmark = document.querySelector('.header__menu-bookmark');
   _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
   _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
@@ -29,6 +30,11 @@ class BookmarkView extends View {
 
   _addHideBookmarks() {
     this._btnCloseBookmark.addEventListener('click', this.toggleWindow.bind(this));
+  }
+
+  addShowCountBookmarks(data) {
+    this._bookmarksBadge.textContent = data ?? 0;
+    console.log(data);
   }
 
   _generateMarkup() {
