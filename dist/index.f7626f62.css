@@ -51,6 +51,7 @@ a {
 
 .main {
   width: 100%;
+  min-height: calc(100vh - var(--nav-height) - 7.2rem);
 }
 
 .hidden {
@@ -270,6 +271,8 @@ strong {
   grid-column: 1/-1;
   font-size: 1.4rem;
   font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.03rem;
   color: var(--color-primary-light);
   max-width: 25rem;
   text-overflow: ellipsis;
@@ -412,6 +415,7 @@ strong {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: inherit;
 }
 
 .lds-dual-ring {
@@ -683,7 +687,6 @@ strong {
 .recipe__header {
   display: flex;
   align-items: center;
-  border-top: 1px solid var(--color-white-darkest);
   border-bottom: 1px solid var(--color-white-darkest);
 }
 
@@ -953,6 +956,7 @@ strong {
 .footer {
   background-color: var(--color-white-light);
   padding: 3.6rem 0;
+  width: 100%;
   height: var(--footer-height);
 }
 
@@ -1061,14 +1065,14 @@ strong {
 }
 
 .intro {
-  height: calc(100vh - var(--nav-height) - 7.2rem);
+  min-height: inherit;
   background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url("hero.22dc911d.jpg");
   background-size: cover;
   background-position: center;
 }
 
 .intro__content {
-  min-height: 100%;
+  min-height: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
