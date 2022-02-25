@@ -1,9 +1,9 @@
 import View from './View.js';
 import icons from 'url:../../icons/icons.svg';
+import lazyload from 'url:../../images/lazy-img.png';
 
 class ResultsView extends View {
   _parentElement = document.querySelector('.main');
-  _data;
   _errorMessage = 'No recipes found for your query. Please try again!';
 
   _generateMarkup() {
@@ -24,7 +24,7 @@ class ResultsView extends View {
       <a href="#${id}" class="preview__link">
         <article class="preview__box">
           <div class="preview__img-box">
-            <img src="${image}" alt="${title}" class="preview__img" />
+            <img src="${lazyload}" data-src="${image}" alt="${title}" class="preview__img" />
           </div>
           <div class="preview__text-box">
             <span class="preview__publisher">${publisher}</span>

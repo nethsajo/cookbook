@@ -574,6 +574,7 @@ const controlSearchResults = async function() {
         _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
         console.log(_modelJs.getSearchResultsPage());
         _searchViewJsDefault.default.toggleWindow();
+        _resultsViewJsDefault.default.generateLazyLoadImage();
         history.pushState({
             query: _modelJs.state.search.query
         }, '', `/${_modelJs.state.search.query}/`);
@@ -586,6 +587,7 @@ const controlSearchResults = async function() {
 const controlPagination = function(goToPage) {
     //1. Render NEW results
     _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(goToPage));
+    _resultsViewJsDefault.default.generateLazyLoadImage();
     //2. Render NEW pagination buttons
     _paginationViewJsDefault.default.render(_modelJs.state.search);
 };
@@ -2701,6 +2703,26 @@ class View {
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
     }
+    generateLazyLoadImage() {
+        const imageTargets = document.querySelectorAll('img[data-src]');
+        const loadImage = function(entries, observe) {
+            const [entry] = entries;
+            if (!entry.isIntersecting) return;
+            //if entry is intersecting, replace src with data-src
+            entry.target.addEventListener('load', function() {
+                entry.target.src = entry.target.dataset.src;
+            });
+            observe.unobserve(entry.target);
+        };
+        const imageObserver = new IntersectionObserver(loadImage, {
+            root: null,
+            threshold: 0,
+            rootMargin: '0px'
+        });
+        imageTargets.forEach(function(image) {
+            imageObserver.observe(image);
+        });
+    }
 }
 exports.default = View;
 
@@ -3069,9 +3091,10 @@ var _viewJs = require("./View.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 var _iconsSvg = require("url:../../icons/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+var _lazyImgPng = require("url:../../images/lazy-img.png");
+var _lazyImgPngDefault = parcelHelpers.interopDefault(_lazyImgPng);
 class ResultsView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.main');
-    _data;
     _errorMessage = 'No recipes found for your query. Please try again!';
     _generateMarkup() {
         return `
@@ -3088,7 +3111,7 @@ class ResultsView extends _viewJsDefault.default {
       <a href="#${id}" class="preview__link">
         <article class="preview__box">
           <div class="preview__img-box">
-            <img src="${image}" alt="${title}" class="preview__img" />
+            <img src="${_lazyImgPngDefault.default}" data-src="${image}" alt="${title}" class="preview__img" />
           </div>
           <div class="preview__text-box">
             <span class="preview__publisher">${publisher}</span>
@@ -3114,7 +3137,10 @@ class ResultsView extends _viewJsDefault.default {
 }
 exports.default = new ResultsView();
 
-},{"./View.js":"5cUXS","url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6z7bi":[function(require,module,exports) {
+},{"./View.js":"5cUXS","url:../../icons/icons.svg":"b6QPC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../images/lazy-img.png":"aG6CX"}],"aG6CX":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('hWUTQ') + "lazy-img.ae2a72d3.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"6z7bi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../icons/icons.svg");

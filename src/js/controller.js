@@ -60,6 +60,7 @@ const controlSearchResults = async function () {
     console.log(model.getSearchResultsPage());
 
     SearchView.toggleWindow();
+    ResultsView.generateLazyLoadImage();
 
     history.pushState({ query: model.state.search.query }, '', `/${model.state.search.query}/`);
 
@@ -73,6 +74,7 @@ const controlSearchResults = async function () {
 const controlPagination = function (goToPage) {
   //1. Render NEW results
   ResultsView.render(model.getSearchResultsPage(goToPage));
+  ResultsView.generateLazyLoadImage();
 
   //2. Render NEW pagination buttons
   PaginationView.render(model.state.search);
