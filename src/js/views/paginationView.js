@@ -28,6 +28,8 @@ class PaginationView {
 
       const goToPage = +btnElement.dataset.goto;
 
+      this.scrollIntoView({ behavior: 'smooth' });
+
       handler(goToPage);
     });
   }

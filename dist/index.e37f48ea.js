@@ -539,6 +539,8 @@ var _bookmarksViewJs = require("./views/bookmarksView.js");
 var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
 var _addRecipeViewJs = require("./views/addRecipeView.js");
 var _addRecipeViewJsDefault = parcelHelpers.interopDefault(_addRecipeViewJs);
+var _themeViewJs = require("./views/themeView.js");
+var _themeViewJsDefault = parcelHelpers.interopDefault(_themeViewJs);
 //Polyfilling async/await
 var _runtime = require("regenerator-runtime/runtime");
 //Recipe control
@@ -641,6 +643,9 @@ const controlAddRecipe = async function(newRecipe) {
         _addRecipeViewJsDefault.default.renderError(error.message);
     }
 };
+const controlTheme = function(theme, icon) {
+    _themeViewJsDefault.default.setTheme(theme, icon);
+};
 const init = function() {
     _bookmarksViewJsDefault.default.addHandlerRender(contolBookmarks);
     _bookmarksViewJsDefault.default.addShowCountBookmarks(_modelJs.state.bookmarks.length);
@@ -650,10 +655,11 @@ const init = function() {
     _searchViewJsDefault.default.addHandlerSearch(controlSearchResults);
     _paginationViewJsDefault.default.addHandlerClick(controlPagination);
     _addRecipeViewJsDefault.default.addHandlerUpload(controlAddRecipe);
+    _themeViewJsDefault.default.addHandlerRender(controlTheme);
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/heroView.js":"8UYUH","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./config.js":"k5Hzs","./views/paginationView.js":"6z7bi","./views/bookmarksView.js":"4Lqzq","./views/addRecipeView.js":"i6DNj"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./views/recipeView.js":"l60JC","./model.js":"Y4A21","./views/heroView.js":"8UYUH","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./config.js":"k5Hzs","./views/paginationView.js":"6z7bi","./views/bookmarksView.js":"4Lqzq","./views/addRecipeView.js":"i6DNj","./views/themeView.js":"ezN7Z"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -3168,6 +3174,9 @@ class PaginationView {
             const btnElement = e.target.closest('.pagination__btn');
             if (!btnElement) return;
             const goToPage = +btnElement.dataset.goto;
+            this.scrollIntoView({
+                behavior: 'smooth'
+            });
             handler(goToPage);
         });
     }
@@ -3329,6 +3338,33 @@ class AddRecipeView extends _viewJsDefault.default {
 }
 exports.default = new AddRecipeView();
 
-},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ezN7Z":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _iconsSvg = require("url:../../icons/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class ThemeView {
+    _body = document.querySelector('body');
+    _themeBtn = document.querySelector('.header__menu-theme');
+    _themeIcon = '';
+    addHandlerRender(handler) {
+        this._themeBtn.addEventListener('click', function(e) {
+            const click = e.target.closest('.header__menu-theme-icon').querySelector('use');
+            const use = click.getAttribute('xlink:href');
+            this._themeIcon = use.slice(use.indexOf('#') + 1);
+            click.setAttribute('xlink:href', `${_iconsSvgDefault.default}#${this._themeIcon === 'icon-moon' ? 'icon-sun' : 'icon-moon'}`);
+            handler('dark', this._themeIcon);
+        });
+    }
+    getTheme() {
+    }
+    setTheme(theme, icon) {
+        localStorage.setItem('theme', theme);
+        localStorage.setItem('icon', icon);
+    }
+}
+exports.default = new ThemeView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../icons/icons.svg":"b6QPC"}]},["ddCAb","aenu9"], "aenu9", "parcelRequire4232")
 
 //# sourceMappingURL=index.e37f48ea.js.map

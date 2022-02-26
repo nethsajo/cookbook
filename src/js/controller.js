@@ -10,6 +10,7 @@ import ResultsView from './views/resultsView.js';
 import PaginationView from './views/paginationView.js';
 import BookmarksView from './views/bookmarksView.js';
 import AddRecipeView from './views/addRecipeView.js';
+import ThemeView from './views/themeView.js';
 
 //Polyfilling everything
 import 'core-js/stable';
@@ -146,6 +147,10 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+const controlTheme = function (theme, icon) {
+  ThemeView.setTheme(theme, icon);
+};
+
 const init = function () {
   BookmarksView.addHandlerRender(contolBookmarks);
   BookmarksView.addShowCountBookmarks(model.state.bookmarks.length);
@@ -155,6 +160,7 @@ const init = function () {
   SearchView.addHandlerSearch(controlSearchResults);
   PaginationView.addHandlerClick(controlPagination);
   AddRecipeView.addHandlerUpload(controlAddRecipe);
+  ThemeView.addHandlerRender(controlTheme);
 };
 
 init();
