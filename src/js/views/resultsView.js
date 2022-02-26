@@ -1,6 +1,6 @@
 import View from './View.js';
 import icons from 'url:../../icons/icons.svg';
-import lazyload from 'url:../../images/lazy-img.png';
+import lazyload from 'url:../../images/lazy-img.jpg';
 
 class ResultsView extends View {
   _parentElement = document.querySelector('.main');
@@ -46,6 +46,36 @@ class ResultsView extends View {
         </article>
       </a>
     `;
+  }
+
+  generateLazyLoadImage() {
+    const imageTargets = document.querySelectorAll('img[data-src]');
+
+    const loadImage = function (entries, observe) {
+      entries.forEach(entry => {
+        //if entry is not intersecting, return immediately
+        if (!entry.isIntersecting) return;
+
+        //if not, replace src with the original image
+        entry.target.src = entry.target.dataset.src;
+
+        entry.target.addEventListener('load', function () {
+          entry.target.style.filter = 'brightness(0.6)';
+        });
+
+        observe.unobserve(entry.target);
+      });
+    };
+
+    const imageObserver = new IntersectionObserver(loadImage, {
+      root: null,
+      threshold: 0,
+      rootMargin: '0px',
+    });
+
+    imageTargets.forEach(function (image) {
+      imageObserver.observe(image);
+    });
   }
 }
 

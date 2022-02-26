@@ -120,31 +120,4 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
-
-  generateLazyLoadImage() {
-    const imageTargets = document.querySelectorAll('img[data-src]');
-
-    const loadImage = function (entries, observe) {
-      const [entry] = entries;
-
-      if (!entry.isIntersecting) return;
-
-      //if entry is intersecting, replace src with data-src
-      entry.target.addEventListener('load', function () {
-        entry.target.src = entry.target.dataset.src;
-      });
-
-      observe.unobserve(entry.target);
-    };
-
-    const imageObserver = new IntersectionObserver(loadImage, {
-      root: null,
-      threshold: 0,
-      rootMargin: '0px',
-    });
-
-    imageTargets.forEach(function (image) {
-      imageObserver.observe(image);
-    });
-  }
 }
