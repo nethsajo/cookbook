@@ -11,6 +11,11 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  background-color: var(--color-white);
+  transition: var(--transition);
+}
+
 a {
   text-decoration: none;
 }

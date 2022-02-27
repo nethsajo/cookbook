@@ -1,25 +1,27 @@
-@import "./abstracts/mixins";
-@import "./abstracts/variables";
+@import './abstracts/mixins';
+@import './abstracts/variables';
 
-@import "./base/animations";
-@import "./base/base";
-@import "./base/typography";
-@import "./base/utilities";
+@import './base/animations';
+@import './base/base';
+@import './base/typography';
+@import './base/utilities';
 
-@import "./components/bookmark";
-@import "./components/button";
-@import "./components/input";
-@import "./components/loader";
-@import "./components/message";
-@import "./components/modal";
-@import "./components/pagination";
-@import "./components/preview";
-@import "./components/recipe";
-@import "./components/search";
-@import "./components/upload";
+@import './components/bookmark';
+@import './components/button';
+@import './components/input';
+@import './components/loader';
+@import './components/message';
+@import './components/modal';
+@import './components/pagination';
+@import './components/preview';
+@import './components/recipe';
+@import './components/search';
+@import './components/upload';
 
-@import "./layout/footer";
-@import "./layout/header";
-@import "./layout/layout";
+@import './layout/footer';
+@import './layout/header';
+@import './layout/layout';
 
-@import "./pages/home";
+@import './pages/home';
+
+@import './theme/dark';

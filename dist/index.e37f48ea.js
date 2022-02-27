@@ -643,8 +643,8 @@ const controlAddRecipe = async function(newRecipe) {
         _addRecipeViewJsDefault.default.renderError(error.message);
     }
 };
-const controlTheme = function(theme, icon) {
-    _themeViewJsDefault.default.setTheme(theme, icon);
+const controlTheme = function() {
+    _themeViewJsDefault.default.setTheme();
 };
 const init = function() {
     _bookmarksViewJsDefault.default.addHandlerRender(contolBookmarks);
@@ -656,6 +656,7 @@ const init = function() {
     _paginationViewJsDefault.default.addHandlerClick(controlPagination);
     _addRecipeViewJsDefault.default.addHandlerUpload(controlAddRecipe);
     _themeViewJsDefault.default.addHandlerRender(controlTheme);
+    _themeViewJsDefault.default.getTheme();
 };
 init();
 
@@ -3346,19 +3347,35 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class ThemeView {
     _body = document.querySelector('body');
     _themeBtn = document.querySelector('.header__menu-theme');
-    _themeIcon = '';
+    _themeIconContainer = document.querySelector('.header__menu-theme-icon');
+    _theme = 'dark';
+    _themeIcon = 'icon-sun';
     addHandlerRender(handler) {
-        this._themeBtn.addEventListener('click', function(e) {
-            const click = e.target.closest('.header__menu-theme-icon').querySelector('use');
-            const use = click.getAttribute('xlink:href');
-            this._themeIcon = use.slice(use.indexOf('#') + 1);
-            click.setAttribute('xlink:href', `${_iconsSvgDefault.default}#${this._themeIcon === 'icon-moon' ? 'icon-sun' : 'icon-moon'}`);
-            handler('dark', this._themeIcon);
-        });
+        this._themeBtn.addEventListener('click', handler);
+    }
+    getCurrentTheme() {
+        const theme = document.body.classList.contains(this._theme) ? 'light' : 'dark';
+        const use = this._themeIconContainer.querySelector('use').getAttribute('xlink:href');
+        const icon = use.slice(use.indexOf('#') + 1);
+        return {
+            icon,
+            theme
+        };
     }
     getTheme() {
+        const theme = localStorage.getItem('theme');
+        const icon = localStorage.getItem('icon');
+        console.log(this._themeIcon, icon);
+        if (theme) {
+            document.body.classList[theme === 'dark' ? 'add' : 'remove'](this._theme);
+            this._themeIconContainer.querySelector('use').setAttribute('xlink:href', `${_iconsSvgDefault.default}#icon-${this._themeIcon === icon ? 'moon' : 'sun'}`);
+        }
     }
-    setTheme(theme, icon) {
+    setTheme() {
+        const { icon , theme  } = this.getCurrentTheme();
+        console.log(this._themeIcon, icon);
+        document.body.classList.toggle(this._theme);
+        this._themeIconContainer.querySelector('use').setAttribute('xlink:href', `${_iconsSvgDefault.default}#icon-${this._themeIcon === icon ? 'moon' : 'sun'}`);
         localStorage.setItem('theme', theme);
         localStorage.setItem('icon', icon);
     }

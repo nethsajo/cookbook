@@ -1,0 +1,9 @@
+body.dark {
+  background-color: #000;
+}
+
+.dark {
+  & .header {
+    background-color: #000;
+  }
+}

@@ -45,6 +45,11 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  background-color: var(--color-white);
+  transition: var(--transition);
+}
+
 a {
   text-decoration: none;
 }
@@ -1000,6 +1005,7 @@ strong {
   top: 0;
   width: 100%;
   z-index: 10;
+  transition: var(--transition);
 }
 
 .header__nav {
@@ -1122,5 +1128,13 @@ strong {
   height: 2.4rem;
   fill: var(--color-grey-light);
   transition: var(--transition);
+}
+
+body.dark {
+  background-color: #000;
+}
+
+.dark .header {
+  background-color: #000;
 }
 /*# sourceMappingURL=index.f7626f62.css.map */

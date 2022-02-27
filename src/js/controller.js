@@ -147,8 +147,8 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
-const controlTheme = function (theme, icon) {
-  ThemeView.setTheme(theme, icon);
+const controlTheme = function () {
+  ThemeView.setTheme();
 };
 
 const init = function () {
@@ -161,6 +161,7 @@ const init = function () {
   PaginationView.addHandlerClick(controlPagination);
   AddRecipeView.addHandlerUpload(controlAddRecipe);
   ThemeView.addHandlerRender(controlTheme);
+  ThemeView.getTheme();
 };
 
 init();
