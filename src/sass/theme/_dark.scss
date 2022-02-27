@@ -1,9 +1,71 @@
 body.dark {
-  background-color: #000;
+  background-color: var(--color-black-lightest);
 }
 
 .dark {
   & .header {
-    background-color: #000;
+    background-color: var(--color-black-light);
+
+    &__menu-name {
+      color: var(--color-white-dark);
+
+      &:hover {
+        color: var(--color-primary-light);
+      }
+    }
+  }
+
+  & .footer {
+    background-color: var(--color-black-light);
+
+    &__description {
+      color: var(--color-white-dark);
+    }
+  }
+
+  & .search {
+    background-color: var(--color-black-light);
+    border-bottom: none;
+
+    &__field {
+      &,
+      &::placeholder {
+        color: var(--color-white-dark);
+      }
+    }
+
+    &__icon {
+      fill: var(--color-white-dark);
+    }
+  }
+
+  & .bookmarks {
+    background-color: var(--color-black-light);
+
+    &__btn {
+      color: var(--color-white-light);
+
+      &:hover {
+        color: var(--color-white-dark);
+      }
+    }
+
+    &__heading {
+      color: var(--color-white-dark);
+    }
+
+    &__link {
+      &:hover {
+        background-color: var(--color-black-lightest);
+      }
+    }
+
+    &__publisher {
+      color: var(--color-white-dark);
+    }
+  }
+
+  & .message {
+    color: var(--color-white-dark);
   }
 }

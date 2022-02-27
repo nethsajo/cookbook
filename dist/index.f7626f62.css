@@ -15,6 +15,9 @@
   --color-white-darkest: #ebebeb;
   --color-success: #37b24d;
   --color-error: #f03e3e;
+  --color-black-dark: #212121;
+  --color-black-light: #303030;
+  --color-black-lightest: #424242;
   --b-radius-5: 0.5rem;
   --b-radius-11: 1.1rem;
   --b-radius-rnd: 50%;
@@ -978,6 +981,7 @@ strong {
   padding: 3.6rem 0;
   width: 100%;
   height: var(--footer-height);
+  transition: var(--transition);
 }
 
 .footer__description {
@@ -1131,10 +1135,67 @@ strong {
 }
 
 body.dark {
-  background-color: #000;
+  background-color: var(--color-black-lightest);
 }
 
 .dark .header {
-  background-color: #000;
+  background-color: var(--color-black-light);
+}
+
+.dark .header__menu-name {
+  color: var(--color-white-dark);
+}
+
+.dark .header__menu-name:hover {
+  color: var(--color-primary-light);
+}
+
+.dark .footer {
+  background-color: var(--color-black-light);
+}
+
+.dark .footer__description {
+  color: var(--color-white-dark);
+}
+
+.dark .search {
+  background-color: var(--color-black-light);
+  border-bottom: none;
+}
+
+.dark .search__field, .dark .search__field::placeholder {
+  color: var(--color-white-dark);
+}
+
+.dark .search__icon {
+  fill: var(--color-white-dark);
+}
+
+.dark .bookmarks {
+  background-color: var(--color-black-light);
+}
+
+.dark .bookmarks__btn {
+  color: var(--color-white-light);
+}
+
+.dark .bookmarks__btn:hover {
+  color: var(--color-white-dark);
+}
+
+.dark .bookmarks__heading {
+  color: var(--color-white-dark);
+}
+
+.dark .bookmarks__link:hover {
+  background-color: var(--color-black-lightest);
+}
+
+.dark .bookmarks__publisher {
+  color: var(--color-white-dark);
+}
+
+.dark .message {
+  color: var(--color-white-dark);
 }
 /*# sourceMappingURL=index.f7626f62.css.map */
