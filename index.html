@@ -20,9 +20,9 @@
   <body>
     <header class="header">
       <nav class="header__nav">
-        <div class="header__logo">
-          <span>CookBook</span>
-        </div>
+        <a href="#" class="header__logo">
+          <img src="./src/images/logo-dark.png" alt="Logo" class="header__logo-img" />
+        </a>
         <div class="header__menu">
           <ul class="header__menu-list">
             <li class="header__menu-item">
@@ -94,7 +94,7 @@
     <div class="search">
       <div class="search__container">
         <form class="search__form" autocomplete="off">
-          <button class="search__btn search__find">
+          <button type="submit" class="search__btn search__find" tabindex="-1">
             <svg class="search__icon">
               <use xlink:href="./src/icons/icons.svg#icon-search"></use>
             </svg>

@@ -11,6 +11,10 @@
   z-index: 10;
   transition: var(--transition);
 
+  &__logo-img {
+    height: 2.6rem;
+  }
+
   &__nav {
     display: flex;
     align-items: center;

@@ -1,5 +1,5 @@
 body.dark {
-  background-color: var(--color-black-lightest);
+  background-color: var(--color-black-dark);
 }
 
 .dark {
@@ -56,12 +56,114 @@ body.dark {
 
     &__link {
       &:hover {
-        background-color: var(--color-black-lightest);
+        background-color: var(--color-black-dark);
+      }
+
+      &--active {
+        background-color: var(--color-black-dark);
       }
     }
 
     &__publisher {
       color: var(--color-white-dark);
+    }
+  }
+
+  & .modal {
+    &__content {
+      background-color: var(--color-black-dark);
+    }
+
+    &__header {
+      background-color: var(--color-black-light);
+      color: var(--color-white-light);
+    }
+
+    &__close-btn {
+      color: var(--color-white-light);
+
+      &:hover {
+        color: var(--color-white-dark);
+      }
+    }
+  }
+
+  & .upload {
+    &__heading {
+      color: var(--color-white-light);
+    }
+  }
+
+  & .input {
+    &__label {
+      color: var(--color-white-dark);
+    }
+
+    &__form {
+      color: var(--color-white-dark);
+      border-color: var(--color-grey-light-1);
+
+      &::placeholder {
+        color: var(--color-white-darkest);
+      }
+    }
+  }
+  & .recipe {
+    &__header {
+      background-color: var(--color-black-dark);
+    }
+
+    &__header-textbox {
+      border-top: 2px solid #3b3f43;
+      border-bottom: 2px solid #3b3f43;
+    }
+
+    &__header-content {
+      color: var(--color-white-lightest);
+    }
+
+    &__content {
+      background-color: var(--color-black-light);
+    }
+
+    &__description,
+    &__quantity,
+    &__directions {
+      color: var(--color-white-dark);
+    }
+
+    &__btn {
+      span {
+        color: var(--color-white-light);
+      }
+    }
+  }
+
+  & .preview {
+    &__box {
+      background-color: var(--color-black-light);
+    }
+
+    &__results {
+      color: var(--color-white-light);
+    }
+
+    &__text-box {
+      color: var(--color-white-dark);
+    }
+
+    &__view-text {
+      color: var(--color-white-light);
+    }
+  }
+
+  & .btn {
+    &--normal {
+      color: var(--color-white-light);
+
+      &:hover {
+        color: var(--color-white-dark);
+      }
     }
   }
 

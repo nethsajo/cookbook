@@ -6,6 +6,7 @@
   --color-secondary: #ff922b;
   --color-secondary-dark: #f76707;
   --color-grey-light: #5c5c5c;
+  --color-grey-light-1: #3b3f43;
   --color-grey-dark: #474747;
   --color-white: #fff;
   --color-white-light: #f9f7f6;
@@ -15,9 +16,9 @@
   --color-white-darkest: #ebebeb;
   --color-success: #37b24d;
   --color-error: #f03e3e;
-  --color-black-dark: #212121;
-  --color-black-light: #303030;
-  --color-black-lightest: #424242;
+  --color-black-dark: #1b2024;
+  --color-black-light: #252a2e;
+  --color-black-lightest: #292d33;
   --b-radius-5: 0.5rem;
   --b-radius-11: 1.1rem;
   --b-radius-rnd: 50%;
@@ -527,17 +528,18 @@ strong {
   cursor: pointer;
   margin-left: auto;
   align-self: flex-start;
+  color: var(--color-grey-light);
+}
+
+.modal__close-btn:hover {
+  color: var(--color-grey-dark);
 }
 
 .modal__close-icon {
   width: 2.4rem;
   height: 2.4rem;
-  fill: var(--color-grey-light);
+  fill: currentColor;
   transition: var(--transition);
-}
-
-.modal__close-icon:hover {
-  fill: var(--color-grey-dark);
 }
 
 .modal__title {
@@ -621,6 +623,7 @@ strong {
   flex-direction: column;
   border-radius: var(--b-radius-5);
   overflow: hidden;
+  background-color: var(--color-white);
   box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.07);
   cursor: pointer;
 }
@@ -709,13 +712,19 @@ strong {
 
 .recipe__header {
   display: flex;
-  align-items: center;
-  border-bottom: 1px solid var(--color-white-darkest);
 }
 
 .recipe__header-textbox {
   padding: 0 4.8rem 3.2rem;
   flex: 0 0 50%;
+}
+
+.recipe__header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .recipe__img-box {
@@ -833,6 +842,7 @@ strong {
   flex-direction: column;
   font-size: 1.6rem;
   line-height: 1.6;
+  align-items: center;
 }
 
 .recipe__ingredient-list {
@@ -840,14 +850,11 @@ strong {
   grid-template-columns: repeat(2, 1fr);
   gap: 2.4rem 3.2rem;
   list-style: none;
+  max-width: 80rem;
 }
 
 .recipe__ingredient {
   display: flex;
-}
-
-.recipe__ingredient:nth-child(odd) {
-  justify-self: end;
 }
 
 .recipe__icon {
@@ -1012,6 +1019,10 @@ strong {
   transition: var(--transition);
 }
 
+.header__logo-img {
+  height: 2.6rem;
+}
+
 .header__nav {
   display: flex;
   align-items: center;
@@ -1135,7 +1146,7 @@ strong {
 }
 
 body.dark {
-  background-color: var(--color-black-lightest);
+  background-color: var(--color-black-dark);
 }
 
 .dark .header {
@@ -1188,10 +1199,97 @@ body.dark {
 }
 
 .dark .bookmarks__link:hover {
-  background-color: var(--color-black-lightest);
+  background-color: var(--color-black-dark);
+}
+
+.dark .bookmarks__link--active {
+  background-color: var(--color-black-dark);
 }
 
 .dark .bookmarks__publisher {
+  color: var(--color-white-dark);
+}
+
+.dark .modal__content {
+  background-color: var(--color-black-dark);
+}
+
+.dark .modal__header {
+  background-color: var(--color-black-light);
+  color: var(--color-white-light);
+}
+
+.dark .modal__close-btn {
+  color: var(--color-white-light);
+}
+
+.dark .modal__close-btn:hover {
+  color: var(--color-white-dark);
+}
+
+.dark .upload__heading {
+  color: var(--color-white-light);
+}
+
+.dark .input__label {
+  color: var(--color-white-dark);
+}
+
+.dark .input__form {
+  color: var(--color-white-dark);
+  border-color: var(--color-grey-light-1);
+}
+
+.dark .input__form::placeholder {
+  color: var(--color-white-darkest);
+}
+
+.dark .recipe__header {
+  background-color: var(--color-black-dark);
+}
+
+.dark .recipe__header-textbox {
+  border-top: 2px solid #3b3f43;
+  border-bottom: 2px solid #3b3f43;
+}
+
+.dark .recipe__header-content {
+  color: var(--color-white-lightest);
+}
+
+.dark .recipe__content {
+  background-color: var(--color-black-light);
+}
+
+.dark .recipe__description, .dark .recipe__quantity, .dark .recipe__directions {
+  color: var(--color-white-dark);
+}
+
+.dark .recipe__btn span {
+  color: var(--color-white-light);
+}
+
+.dark .preview__box {
+  background-color: var(--color-black-light);
+}
+
+.dark .preview__results {
+  color: var(--color-white-light);
+}
+
+.dark .preview__text-box {
+  color: var(--color-white-dark);
+}
+
+.dark .preview__view-text {
+  color: var(--color-white-light);
+}
+
+.dark .btn--normal {
+  color: var(--color-white-light);
+}
+
+.dark .btn--normal:hover {
   color: var(--color-white-dark);
 }
 

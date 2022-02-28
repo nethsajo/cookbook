@@ -41,44 +41,46 @@ class RecipeView extends View {
       <section class="recipe">
         <div class="recipe__header">
           <div class="recipe__header-textbox">
-            <div class="recipe__heading u-mb-md">
-              <h2 class="heading__secondary u-mb-sm t-center">
-                ${this._data.title}
-              </h2>
-              <p class="recipe__publisher t-center">By: ${this._data.publisher}</p>
-            </div>
-            <div class="recipe__details u-mb-lg">
-              <div class="recipe__info">
-                <svg class="recipe__info-icon">
-                  <use xlink:href="${icons}#icon-clock"></use>
-                </svg>
-                <span class="recipe__info-data recipe__info-data-minutes"
-                  >${this._data.cookingTime}</span
-                >
-                <span class="recipe__info-text">minutes</span>
+            <div class="recipe__header-content">
+              <div class="recipe__heading u-mb-md">
+                <h2 class="heading__secondary u-mb-sm t-center">
+                  ${this._data.title}
+                </h2>
+                <p class="recipe__publisher t-center">By: ${this._data.publisher}</p>
               </div>
-              <div class="recipe__info">
-                <svg class="recipe__info-icon">
-                  <use xlink:href="${icons}#icon-users"></use>
-                </svg>
-                <span class="recipe__info-data recipe__info-data-people">${this._data.servings}</span>
-                <span class="recipe__info-text">servings</span>
+              <div class="recipe__details u-mb-lg">
+                <div class="recipe__info">
+                  <svg class="recipe__info-icon">
+                    <use xlink:href="${icons}#icon-clock"></use>
+                  </svg>
+                  <span class="recipe__info-data recipe__info-data-minutes"
+                    >${this._data.cookingTime}</span
+                  >
+                  <span class="recipe__info-text">minutes</span>
+                </div>
+                <div class="recipe__info">
+                  <svg class="recipe__info-icon">
+                    <use xlink:href="${icons}#icon-users"></use>
+                  </svg>
+                  <span class="recipe__info-data recipe__info-data-people">${this._data.servings}</span>
+                  <span class="recipe__info-text">servings</span>
+                </div>
+                <div class="recipe__user-generated ${this._data.key ? '' : 'u-d-none'}">
+                  <svg class="recipe__user-generated-icon">
+                    <use xlink:href="${icons}#icon-user"></use>
+                  </svg>
+                </div>
               </div>
-              <div class="recipe__user-generated ${this._data.key ? '' : 'u-d-none'}">
-                <svg class="recipe__user-generated-icon">
-                  <use xlink:href="${icons}#icon-user"></use>
-                </svg>
+              <div class="recipe__bookmark">
+                <button class="btn btn--primary btn--sm btn__bookmark">
+                  <svg class="btn__icon">
+                    <use xlink:href="${icons}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
+                  </svg>
+                  <span class="btn__text t-uppercase u-ml-xs">${
+                    this._data.bookmarked ? 'Added to bookmark' : 'Add to bookmark'
+                  }</span>
+                </button>
               </div>
-            </div>
-            <div class="recipe__bookmark">
-              <button class="btn btn--primary btn--sm btn__bookmark">
-                <svg class="btn__icon">
-                  <use xlink:href="${icons}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
-                </svg>
-                <span class="btn__text t-uppercase u-ml-xs">${
-                  this._data.bookmarked ? 'Added to bookmark' : 'Add to bookmark'
-                }</span>
-              </button>
             </div>
           </div>
           <figure class="recipe__img-box">

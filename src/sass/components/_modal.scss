@@ -35,17 +35,18 @@
     cursor: pointer;
     margin-left: auto;
     align-self: flex-start;
+    color: var(--color-grey-light);
+
+    &:hover {
+      color: var(--color-grey-dark);
+    }
   }
 
   &__close-icon {
     width: 2.4rem;
     height: 2.4rem;
-    fill: var(--color-grey-light);
+    fill: currentColor;
     transition: var(--transition);
-
-    &:hover {
-      fill: var(--color-grey-dark);
-    }
   }
 
   &__title {
