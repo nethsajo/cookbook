@@ -11,7 +11,7 @@ class ThemeView {
     this._themeBtn.addEventListener('click', handler);
   }
 
-  getCurrentTheme() {
+  _getCurrentTheme() {
     const theme = document.body.classList.contains(this._theme) ? 'light' : 'dark';
     const use = this._themeIconContainer.querySelector('use').getAttribute('xlink:href');
     const icon = use.slice(use.indexOf('#') + 1);
@@ -21,7 +21,6 @@ class ThemeView {
   getTheme() {
     const theme = localStorage.getItem('theme');
     const icon = localStorage.getItem('icon');
-    console.log(this._themeIcon, icon);
 
     if (theme) {
       document.body.classList[theme === 'dark' ? 'add' : 'remove'](this._theme);
@@ -32,8 +31,7 @@ class ThemeView {
   }
 
   setTheme() {
-    const { icon, theme } = this.getCurrentTheme();
-    console.log(this._themeIcon, icon);
+    const { icon, theme } = this._getCurrentTheme();
     document.body.classList.toggle(this._theme);
     this._themeIconContainer
       .querySelector('use')

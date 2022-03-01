@@ -49,6 +49,24 @@ html {
   box-sizing: border-box;
 }
 
+@media only screen and (min-width: 112.5em) {
+  html {
+    font-size: 80%;
+  }
+}
+
+@media only screen and (max-width: 62em) {
+  html {
+    font-size: 56.25%;
+  }
+}
+
+@media only screen and (max-width: 50em) {
+  html {
+    font-size: 50%;
+  }
+}
+
 body {
   background-color: var(--color-white);
   transition: var(--transition);
@@ -94,10 +112,34 @@ body {
   position: relative;
 }
 
+@media only screen and (min-width: 112.5em) {
+  .heading__primary {
+    font-size: 8rem;
+  }
+}
+
+@media only screen and (max-width: 26em) {
+  .heading__primary {
+    font-size: 4.4rem;
+  }
+}
+
 .heading__secondary {
   font-size: 4.4rem;
   line-height: 1.2;
   font-weight: 500;
+}
+
+@media only screen and (max-width: 75em) {
+  .heading__secondary {
+    font-size: 3.6rem;
+  }
+}
+
+@media only screen and (max-width: 50em) {
+  .heading__secondary {
+    font-size: 3rem;
+  }
 }
 
 .heading__tertiary {
@@ -180,6 +222,12 @@ strong {
   display: flex;
   flex-direction: column;
   z-index: 1000;
+}
+
+@media only screen and (max-width: 26em) {
+  .bookmarks {
+    max-width: 100%;
+  }
 }
 
 .bookmarks.active {
@@ -607,6 +655,12 @@ strong {
   padding-bottom: 6.4rem !important;
 }
 
+@media only screen and (max-width: 62em) {
+  .preview {
+    gap: 6.4rem 4.8rem;
+  }
+}
+
 .preview__link {
   color: inherit;
 }
@@ -642,6 +696,12 @@ strong {
 
 .preview__img:hover {
   transform: scale(1.07);
+}
+
+@media only screen and (max-width: 62em) {
+  .preview__img {
+    height: 22rem;
+  }
 }
 
 .preview__text-box {
@@ -714,8 +774,14 @@ strong {
   display: flex;
 }
 
+@media only screen and (max-width: 36em) {
+  .recipe__header {
+    flex-direction: column;
+  }
+}
+
 .recipe__header-textbox {
-  padding: 0 4.8rem 3.2rem;
+  padding: 4.8rem 3.2rem;
   flex: 0 0 50%;
 }
 
@@ -730,6 +796,12 @@ strong {
 .recipe__img-box {
   flex: 1;
   height: 50rem;
+}
+
+@media only screen and (max-width: 36em) {
+  .recipe__img-box {
+    height: 30rem;
+  }
 }
 
 .recipe__img {
@@ -790,7 +862,6 @@ strong {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 3.2rem;
 }
 
 .recipe__user-generated {
@@ -851,6 +922,12 @@ strong {
   gap: 2.4rem 3.2rem;
   list-style: none;
   max-width: 80rem;
+}
+
+@media only screen and (max-width: 36em) {
+  .recipe__ingredient-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .recipe__ingredient {
@@ -1019,8 +1096,16 @@ strong {
   transition: var(--transition);
 }
 
-.header__logo-img {
-  height: 2.6rem;
+.header__logo--img {
+  height: 2.4rem;
+}
+
+.header__logo--dark {
+  display: inline-block;
+}
+
+.header__logo--light {
+  display: none;
 }
 
 .header__nav {
@@ -1102,9 +1187,15 @@ strong {
 
 .intro {
   min-height: inherit;
-  background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url("hero.22dc911d.jpg");
+  background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url("hero-small.b51bc8ec.jpg");
   background-size: cover;
   background-position: center;
+}
+
+@media only screen and (min-resolution: 192dpi) and (min-width: 36em), only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 36em), only screen and (min-width: 125em) {
+  .intro {
+    background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url("hero.22dc911d.jpg");
+  }
 }
 
 .intro__content {
@@ -1120,6 +1211,13 @@ strong {
   font-size: 1.8rem;
   color: var(--color-white-light);
   line-height: 1.8;
+}
+
+@media only screen and (min-width: 112.5em) {
+  .intro__text {
+    max-width: 80rem;
+    font-size: 2.4rem;
+  }
 }
 
 .intro__btn-search {
@@ -1159,6 +1257,14 @@ body.dark {
 
 .dark .header__menu-name:hover {
   color: var(--color-primary-light);
+}
+
+.dark .header__logo--dark {
+  display: none;
+}
+
+.dark .header__logo--light {
+  display: inline-block;
 }
 
 .dark .footer {

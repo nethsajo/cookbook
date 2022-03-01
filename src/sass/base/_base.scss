@@ -9,6 +9,18 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+
+  @include responsive(big-desktop) {
+    font-size: 80%;
+  }
+
+  @include responsive(tab-portrait) {
+    font-size: 56.25%;
+  }
+
+  @include responsive(tab-small) {
+    font-size: 50%;
+  }
 }
 
 body {

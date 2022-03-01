@@ -11,12 +11,28 @@ body {
   line-height: 1.2;
   color: var(--color-white);
   position: relative;
+
+  @include responsive(big-desktop) {
+    font-size: 8rem;
+  }
+
+  @include responsive(phone-xs) {
+    font-size: 4.4rem;
+  }
 }
 
 .heading__secondary {
   font-size: 4.4rem;
   line-height: 1.2;
   font-weight: 500;
+
+  @include responsive(tab-landscape) {
+    font-size: 3.6rem;
+  }
+
+  @include responsive(tab-small) {
+    font-size: 3rem;
+  }
 }
 
 .heading__tertiary {

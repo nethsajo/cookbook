@@ -1,10 +1,14 @@
 .recipe {
   &__header {
     display: flex;
+
+    @include responsive(phone) {
+      flex-direction: column;
+    }
   }
 
   &__header-textbox {
-    padding: 0 4.8rem 3.2rem;
+    padding: 4.8rem 3.2rem;
     flex: 0 0 50%;
   }
 
@@ -19,6 +23,10 @@
   &__img-box {
     flex: 1;
     height: 50rem;
+
+    @include responsive(phone) {
+      height: 30rem;
+    }
   }
 
   &__img {
@@ -80,7 +88,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 3.2rem;
   }
 
   &__user-generated {
@@ -141,6 +148,10 @@
     gap: 2.4rem 3.2rem;
     list-style: none;
     max-width: 80rem;
+
+    @include responsive(phone) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__ingredient {

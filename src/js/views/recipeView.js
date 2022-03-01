@@ -93,7 +93,7 @@ class RecipeView extends View {
               <h2 class="heading__tertiary t-uppercase t-center u-mb-md">
                 Recipe Ingredients
               </h2>
-              <div class="recipe__info-button">
+              <div class="recipe__info-button u-mb-lg">
                 <button class="recipe__btn recipe__btn--decrease" data-update="${this._data.servings - 1}">
                   <svg>
                     <use

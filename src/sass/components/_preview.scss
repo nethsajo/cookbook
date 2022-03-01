@@ -6,6 +6,10 @@
   padding-top: 6.4rem !important;
   padding-bottom: 6.4rem !important;
 
+  @include responsive(tab-portrait) {
+    gap: 6.4rem 4.8rem;
+  }
+
   &__link {
     color: inherit;
   }
@@ -40,6 +44,10 @@
 
     &:hover {
       transform: scale(1.07);
+    }
+
+    @include responsive(tab-portrait) {
+      height: 22rem;
     }
   }
 

@@ -11,3 +11,45 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@mixin responsive($breakpoint) {
+  @if $breakpoint == big-desktop {
+    //1800px - higher screen
+    @media only screen and (min-width: 112.5em) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == tab-landscape {
+    //1200px
+    @media only screen and (max-width: 75em) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == tab-portrait {
+    //992px
+    @media only screen and (max-width: 62em) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == tab-small {
+    //800px
+    @media only screen and (max-width: 50em) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == phone {
+    @media only screen and (max-width: 36em) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == phone-xs {
+    @media only screen and (max-width: 26em) {
+      @content;
+    }
+  }
+}

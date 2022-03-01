@@ -11,8 +11,16 @@
   z-index: 10;
   transition: var(--transition);
 
-  &__logo-img {
-    height: 2.6rem;
+  &__logo--img {
+    height: 2.4rem;
+  }
+
+  &__logo--dark {
+    display: inline-block;
+  }
+
+  &__logo--light {
+    display: none;
   }
 
   &__nav {

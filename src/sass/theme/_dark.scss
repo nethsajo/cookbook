@@ -13,6 +13,14 @@ body.dark {
         color: var(--color-primary-light);
       }
     }
+
+    &__logo--dark {
+      display: none;
+    }
+
+    &__logo--light {
+      display: inline-block;
+    }
   }
 
   & .footer {

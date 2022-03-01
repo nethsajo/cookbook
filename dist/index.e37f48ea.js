@@ -2423,7 +2423,7 @@ class RecipeView extends _viewJsDefault.default {
               <h2 class="heading__tertiary t-uppercase t-center u-mb-md">
                 Recipe Ingredients
               </h2>
-              <div class="recipe__info-button">
+              <div class="recipe__info-button u-mb-lg">
                 <button class="recipe__btn recipe__btn--decrease" data-update="${this._data.servings - 1}">
                   <svg>
                     <use
@@ -3355,7 +3355,7 @@ class ThemeView {
     addHandlerRender(handler) {
         this._themeBtn.addEventListener('click', handler);
     }
-    getCurrentTheme() {
+    _getCurrentTheme() {
         const theme = document.body.classList.contains(this._theme) ? 'light' : 'dark';
         const use = this._themeIconContainer.querySelector('use').getAttribute('xlink:href');
         const icon = use.slice(use.indexOf('#') + 1);
@@ -3367,15 +3367,13 @@ class ThemeView {
     getTheme() {
         const theme = localStorage.getItem('theme');
         const icon = localStorage.getItem('icon');
-        console.log(this._themeIcon, icon);
         if (theme) {
             document.body.classList[theme === 'dark' ? 'add' : 'remove'](this._theme);
             this._themeIconContainer.querySelector('use').setAttribute('xlink:href', `${_iconsSvgDefault.default}#icon-${this._themeIcon === icon ? 'moon' : 'sun'}`);
         }
     }
     setTheme() {
-        const { icon , theme  } = this.getCurrentTheme();
-        console.log(this._themeIcon, icon);
+        const { icon , theme  } = this._getCurrentTheme();
         document.body.classList.toggle(this._theme);
         this._themeIconContainer.querySelector('use').setAttribute('xlink:href', `${_iconsSvgDefault.default}#icon-${this._themeIcon === icon ? 'moon' : 'sun'}`);
         localStorage.setItem('theme', theme);

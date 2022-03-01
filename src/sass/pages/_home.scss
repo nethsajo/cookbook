@@ -6,9 +6,15 @@
 
 .intro {
   min-height: inherit;
-  background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url(../images/hero.jpg);
+  background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url('../images/hero-small.jpg');
   background-size: cover;
   background-position: center;
+
+  @media only screen and (min-resolution: 192dpi) and (min-width: 36em),
+    only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 36em),
+    only screen and (min-width: 125em) {
+    background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url('../images/hero.jpg');
+  }
 
   &__content {
     min-height: inherit;
@@ -23,6 +29,11 @@
     font-size: 1.8rem;
     color: var(--color-white-light);
     line-height: 1.8;
+
+    @include responsive(big-desktop) {
+      max-width: 80rem;
+      font-size: 2.4rem;
+    }
   }
 
   &__btn-search {
