@@ -16,8 +16,12 @@ body {
     font-size: 8rem;
   }
 
-  @include responsive(phone-xs) {
+  @include responsive(phone) {
     font-size: 4.4rem;
+  }
+
+  @include responsive(phone-xs) {
+    font-size: 3.6rem;
   }
 }
 

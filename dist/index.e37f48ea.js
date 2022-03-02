@@ -3044,6 +3044,8 @@ class SearchView {
     _window = document.querySelector('.search');
     _btnOpenSearch = document.querySelectorAll('.btn__search');
     _btnCloseSearch = document.querySelector('.search__close-btn');
+    _menuButton = document.querySelector('.btn__hamburger');
+    _menuContainer = document.querySelector('.header__menu');
     constructor(){
         this._addHandlerShowSearch();
         this._addHandlerHideSearch();
@@ -3064,6 +3066,10 @@ class SearchView {
     toggleWindow() {
         this._window.classList.toggle('active');
         this._clearInput();
+        if (this._menuContainer.classList.contains('active')) {
+            this._menuButton.classList.remove('active');
+            this._menuContainer.classList.remove('active');
+        }
     }
     _addHandlerShowSearch() {
         this._btnOpenSearch.forEach((btn)=>btn.addEventListener('click', this.toggleWindow.bind(this))
@@ -3239,6 +3245,8 @@ class BookmarkView extends _viewJsDefault.default {
     _bookmarksBadge = document.querySelector('.bookmarks__count');
     _btnOpenBookmark = document.querySelector('.header__menu-bookmark');
     _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
+    _menuButton = document.querySelector('.btn__hamburger');
+    _menuContainer = document.querySelector('.header__menu');
     _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
     constructor(){
         //Since this is a child class, we need to start by calling super
@@ -3251,6 +3259,10 @@ class BookmarkView extends _viewJsDefault.default {
     }
     toggleWindow() {
         this._window.classList.toggle('active');
+        if (this._menuContainer.classList.contains('active')) {
+            this._menuButton.classList.remove('active');
+            this._menuContainer.classList.remove('active');
+        }
     }
     _addShowBookmarks() {
         this._btnOpenBookmark.addEventListener('click', this.toggleWindow.bind(this));
@@ -3302,6 +3314,8 @@ class AddRecipeView extends _viewJsDefault.default {
     _body = document.querySelector('body');
     _btnOpenModal = document.querySelector('.header__menu-add');
     _btnCloseModal = document.querySelectorAll('.btn--close-modal');
+    _menuButton = document.querySelector('.btn__hamburger');
+    _menuContainer = document.querySelector('.header__menu');
     constructor(){
         //Since this is a child class, we need to start by calling super
         super();
@@ -3312,6 +3326,10 @@ class AddRecipeView extends _viewJsDefault.default {
         this._body.style.margin = marginValue;
         this._body.style.overflow = overflowValue;
         this._window.classList.toggle('hidden');
+        if (this._menuContainer.classList.contains('active')) {
+            this._menuButton.classList.remove('active');
+            this._menuContainer.classList.remove('active');
+        }
     }
     //Know that the this keyword inside of a handler function points to the element on which that listener is attached to.
     _addHandlerShowWindow() {

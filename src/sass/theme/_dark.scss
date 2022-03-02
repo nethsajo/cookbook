@@ -178,6 +178,12 @@ body.dark {
     }
   }
 
+  & .pagination {
+    &__btn {
+      background-color: var(--color-black-light);
+    }
+  }
+
   & .btn {
     &--normal {
       color: var(--color-white-light);

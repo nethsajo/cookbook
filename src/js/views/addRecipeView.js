@@ -7,6 +7,8 @@ class AddRecipeView extends View {
   _body = document.querySelector('body');
   _btnOpenModal = document.querySelector('.header__menu-add');
   _btnCloseModal = document.querySelectorAll('.btn--close-modal');
+  _menuButton = document.querySelector('.btn__hamburger');
+  _menuContainer = document.querySelector('.header__menu');
 
   constructor() {
     //Since this is a child class, we need to start by calling super
@@ -19,6 +21,11 @@ class AddRecipeView extends View {
     this._body.style.margin = marginValue;
     this._body.style.overflow = overflowValue;
     this._window.classList.toggle('hidden');
+
+    if (this._menuContainer.classList.contains('active')) {
+      this._menuButton.classList.remove('active');
+      this._menuContainer.classList.remove('active');
+    }
   }
 
   //Know that the this keyword inside of a handler function points to the element on which that listener is attached to.

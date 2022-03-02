@@ -3,6 +3,8 @@ class SearchView {
   _window = document.querySelector('.search');
   _btnOpenSearch = document.querySelectorAll('.btn__search');
   _btnCloseSearch = document.querySelector('.search__close-btn');
+  _menuButton = document.querySelector('.btn__hamburger');
+  _menuContainer = document.querySelector('.header__menu');
 
   constructor() {
     this._addHandlerShowSearch();
@@ -28,6 +30,11 @@ class SearchView {
   toggleWindow() {
     this._window.classList.toggle('active');
     this._clearInput();
+
+    if (this._menuContainer.classList.contains('active')) {
+      this._menuButton.classList.remove('active');
+      this._menuContainer.classList.remove('active');
+    }
   }
 
   _addHandlerShowSearch() {

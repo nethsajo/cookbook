@@ -59,7 +59,6 @@
   &__list {
     list-style: none;
     overflow: auto;
-    direction: rtl;
   }
 
   &__link {
@@ -71,7 +70,6 @@
       text-decoration: none;
       gap: 1.6rem;
       transition: var(--transition);
-      direction: ltr;
     }
 
     &:hover {

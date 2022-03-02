@@ -7,6 +7,8 @@ class BookmarkView extends View {
   _bookmarksBadge = document.querySelector('.bookmarks__count');
   _btnOpenBookmark = document.querySelector('.header__menu-bookmark');
   _btnCloseBookmark = document.querySelector('.bookmarks__btn-close');
+  _menuButton = document.querySelector('.btn__hamburger');
+  _menuContainer = document.querySelector('.header__menu');
   _errorMessage = 'No bookmarks yet. Find a nice recipe and bookmark it.';
 
   constructor() {
@@ -22,6 +24,11 @@ class BookmarkView extends View {
 
   toggleWindow() {
     this._window.classList.toggle('active');
+
+    if (this._menuContainer.classList.contains('active')) {
+      this._menuButton.classList.remove('active');
+      this._menuContainer.classList.remove('active');
+    }
   }
 
   _addShowBookmarks() {

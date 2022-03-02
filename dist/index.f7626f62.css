@@ -118,9 +118,15 @@ body {
   }
 }
 
-@media only screen and (max-width: 26em) {
+@media only screen and (max-width: 36em) {
   .heading__primary {
     font-size: 4.4rem;
+  }
+}
+
+@media only screen and (max-width: 26em) {
+  .heading__primary {
+    font-size: 3.6rem;
   }
 }
 
@@ -274,7 +280,6 @@ strong {
 .bookmarks__list {
   list-style: none;
   overflow: auto;
-  direction: rtl;
 }
 
 .bookmarks__link:link, .bookmarks__link:visited {
@@ -284,7 +289,6 @@ strong {
   text-decoration: none;
   gap: 1.6rem;
   transition: var(--transition);
-  direction: ltr;
 }
 
 .bookmarks__link:hover {
@@ -1024,6 +1028,7 @@ strong {
   outline: none;
   width: 100%;
   padding: 0.8rem;
+  font-family: inherit;
   font-size: 2rem;
   font-weight: 400;
   color: var(--color-grey-dark);
@@ -1487,6 +1492,10 @@ body.dark {
 
 .dark .preview__view-text {
   color: var(--color-white-light);
+}
+
+.dark .pagination__btn {
+  background-color: var(--color-black-light);
 }
 
 .dark .btn--normal {
