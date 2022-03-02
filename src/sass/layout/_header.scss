@@ -12,7 +12,7 @@
   transition: var(--transition);
 
   &__logo--img {
-    height: 2.4rem;
+    height: 2.2rem;
   }
 
   &__logo--dark {
@@ -39,7 +39,24 @@
   }
 
   &__menu {
-    align-items: stretch;
+    @include responsive(tab-small) {
+      position: fixed;
+      width: 100%;
+      height: auto;
+      top: 8rem;
+      left: 0;
+      background-color: var(--color-white);
+      padding: 2.4rem 3.2rem;
+      border-top: 1px solid var(--color-white-darkest);
+      border-bottom: 1px solid var(--color-white-darkest);
+      transform: scale(1, 0);
+      transform-origin: top;
+      transition: var(--transition);
+    }
+
+    &.active {
+      transform: scale(1, 1);
+    }
   }
 
   &__menu-list {
@@ -47,6 +64,11 @@
     display: flex;
     align-items: center;
     gap: 3.2rem;
+
+    @include responsive(tab-small) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 
   &__menu-item {
@@ -84,6 +106,64 @@
 
     &:hover {
       color: var(--color-primary-light);
+    }
+  }
+
+  &__hamburger-btn {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    width: 3.2rem;
+    height: 3.2rem;
+    display: none;
+
+    @include responsive(tab-small) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &.active .header__hamburger-line {
+      background-color: transparent;
+    }
+
+    &.active .header__hamburger-line::before {
+      top: 0;
+      transform: rotate(-45deg);
+    }
+
+    &.active .header__hamburger-line::after {
+      top: 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &__hamburger-line {
+    position: relative;
+
+    &,
+    &::before,
+    &::after {
+      display: inline-block;
+      height: 2px;
+      width: 2.8rem;
+      background-color: var(--color-grey-dark);
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      transition: var(--transition);
+    }
+
+    &::before {
+      top: -0.7rem;
+    }
+
+    &::after {
+      top: 0.7rem;
     }
   }
 }

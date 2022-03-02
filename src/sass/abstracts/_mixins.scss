@@ -42,12 +42,14 @@
   }
 
   @if $breakpoint == phone {
+    //576px
     @media only screen and (max-width: 36em) {
       @content;
     }
   }
 
   @if $breakpoint == phone-xs {
+    //416px
     @media only screen and (max-width: 26em) {
       @content;
     }

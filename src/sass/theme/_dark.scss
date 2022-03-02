@@ -14,12 +14,25 @@ body.dark {
       }
     }
 
+    &__menu {
+      background-color: var(--color-black-light);
+      border-color: var(--color-grey-light-1);
+    }
+
     &__logo--dark {
       display: none;
     }
 
     &__logo--light {
       display: inline-block;
+    }
+
+    &__hamburger-line {
+      &,
+      &::before,
+      &::after {
+        background-color: var(--color-white-dark);
+      }
     }
   }
 
@@ -122,8 +135,8 @@ body.dark {
     }
 
     &__header-textbox {
-      border-top: 2px solid #3b3f43;
-      border-bottom: 2px solid #3b3f43;
+      border-top: 2px solid var(--color-grey-light-1);
+      border-bottom: 2px solid var(--color-grey-light-1);
     }
 
     &__header-content {

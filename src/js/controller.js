@@ -11,6 +11,7 @@ import PaginationView from './views/paginationView.js';
 import BookmarksView from './views/bookmarksView.js';
 import AddRecipeView from './views/addRecipeView.js';
 import ThemeView from './views/themeView.js';
+import MenuView from './views/menuView.js';
 
 //Polyfilling everything
 import 'core-js/stable';

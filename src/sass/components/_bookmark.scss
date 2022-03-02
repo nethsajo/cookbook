@@ -4,7 +4,7 @@
   top: 0;
   right: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   max-width: 40rem;
   background-color: var(--color-white);
   box-shadow: 0 0 1.6rem rgba(0, 0, 0, 0.15);
@@ -26,7 +26,7 @@
   &.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 
   &__heading {
