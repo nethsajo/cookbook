@@ -1,6 +1,6 @@
 import * as model from './model.js';
 //Configs
-import { RELOAD, MODAL_CLOSE_SEC } from './config.js';
+import { MODAL_CLOSE_SEC } from './config.js';
 
 //Views
 import HeroView from './views/heroView.js';
@@ -18,26 +18,51 @@ import 'core-js/stable';
 //Polyfilling async/await
 import 'regenerator-runtime/runtime';
 
+const searchResults = async function (query) {
+  ResultsView.renderSpinner();
+
+  //2. Load search results
+  await model.loadSearchResults(query);
+
+  //3. Render results
+  console.log(ResultsView);
+  ResultsView.render(model.getSearchResultsPage(), model.state.search.query);
+  console.log(model.getSearchResultsPage());
+
+  ResultsView.generateLazyLoadImage();
+  //4. Render initial pagination buttons
+  PaginationView.render(model.state.search);
+};
+
 //Recipe control
 const controlRecipes = async function () {
   try {
     //Get the id and remove the first character (#)
-    const id = window.location.hash.slice(1);
+    const query = window.location.hash.slice(2);
+    const id = query.split('/')[1];
 
     //If there is no id or id is false then return immediately
-    if (!id) return;
+    if (id) {
+      RecipeView.renderSpinner();
 
-    RecipeView.renderSpinner();
+      //1. Update bookmarks view to mark selected search result
+      BookmarksView.update(model.state.bookmarks);
 
-    //1. Update bookmarks view to mark selected search result
-    BookmarksView.update(model.state.bookmarks);
+      //2. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
+      //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
+      await model.loadRecipe(id);
 
-    //2. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
-    //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
-    await model.loadRecipe(id);
+      //3. Rendering recipe and pass the state object to the recipe view
+      RecipeView.render(model.state.recipe);
+    }
 
-    //3. Rendering recipe and pass the state object to the recipe view
-    RecipeView.render(model.state.recipe);
+    if (query === model.state.search.query) {
+      await searchResults(query);
+    }
+
+    if (query === '') {
+      HeroView.render();
+    }
   } catch (error) {
     RecipeView.renderError();
     console.error(error);
@@ -46,28 +71,14 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
-    ResultsView.renderSpinner();
-
     //1. Get search query
     const query = SearchView.getQuery();
 
     if (!query) return;
-
-    //2. Load search results
-    await model.loadSearchResults(query);
-
-    //3. Render results
-    // ResultsView.render(model.state.search);
-    ResultsView.render(model.getSearchResultsPage());
-    console.log(model.getSearchResultsPage());
-
+    await searchResults(query);
     SearchView.toggleWindow();
-    ResultsView.generateLazyLoadImage();
 
-    history.pushState({ query: model.state.search.query }, '', `/${model.state.search.query}/`);
-
-    //4. Render initial pagination buttons
-    PaginationView.render(model.state.search);
+    history.pushState({ query: model.state.search.query }, '', `#/${model.state.search.query}`);
   } catch (error) {
     console.log(error);
   }
@@ -75,7 +86,7 @@ const controlSearchResults = async function () {
 
 const controlPagination = function (goToPage) {
   //1. Render NEW results
-  ResultsView.render(model.getSearchResultsPage(goToPage));
+  ResultsView.render(model.getSearchResultsPage(goToPage), model.state.search.query);
   ResultsView.generateLazyLoadImage();
 
   //2. Render NEW pagination buttons
@@ -107,11 +118,11 @@ const controlAddBookmark = function () {
 
   //3. Render bookmarks
   console.log(model.state.bookmarks);
-  BookmarksView.render(model.state.bookmarks);
+  BookmarksView.render(model.state.bookmarks, 'bookmark');
 };
 
 const contolBookmarks = function () {
-  BookmarksView.render(model.state.bookmarks);
+  BookmarksView.render(model.state.bookmarks, 'bookmark');
 };
 
 const controlAddRecipe = async function (newRecipe) {
@@ -131,11 +142,12 @@ const controlAddRecipe = async function (newRecipe) {
 
     //Render bookmark view
     BookmarksView.render(model.state.bookmarks);
+    BookmarksView.addShowCountBookmarks(model.state.bookmarks.length);
 
     //Change id in URL
     //pushState - takes three arguments
     //1st arg: state, 2nd arg: title, 3rd arg: url
-    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+    window.history.pushState('add', '', `#${model.state.recipe.id}`);
 
     //Close the form window
     setTimeout(() => {

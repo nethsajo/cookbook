@@ -545,21 +545,37 @@ var _menuViewJs = require("./views/menuView.js");
 var _menuViewJsDefault = parcelHelpers.interopDefault(_menuViewJs);
 //Polyfilling async/await
 var _runtime = require("regenerator-runtime/runtime");
+const searchResults = async function(query) {
+    _resultsViewJsDefault.default.renderSpinner();
+    //2. Load search results
+    await _modelJs.loadSearchResults(query);
+    //3. Render results
+    console.log(_resultsViewJsDefault.default);
+    _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(), _modelJs.state.search.query);
+    console.log(_modelJs.getSearchResultsPage());
+    _resultsViewJsDefault.default.generateLazyLoadImage();
+    //4. Render initial pagination buttons
+    _paginationViewJsDefault.default.render(_modelJs.state.search);
+};
 //Recipe control
 const controlRecipes = async function() {
     try {
         //Get the id and remove the first character (#)
-        const id = window.location.hash.slice(1);
+        const query = window.location.hash.slice(2);
+        const id = query.split('/')[1];
         //If there is no id or id is false then return immediately
-        if (!id) return;
-        _recipeViewJsDefault.default.renderSpinner();
-        //1. Update bookmarks view to mark selected search result
-        _bookmarksViewJsDefault.default.update(_modelJs.state.bookmarks);
-        //2. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
-        //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
-        await _modelJs.loadRecipe(id);
-        //3. Rendering recipe and pass the state object to the recipe view
-        _recipeViewJsDefault.default.render(_modelJs.state.recipe);
+        if (id) {
+            _recipeViewJsDefault.default.renderSpinner();
+            //1. Update bookmarks view to mark selected search result
+            _bookmarksViewJsDefault.default.update(_modelJs.state.bookmarks);
+            //2. Loading recipe - this loadRecipe function is an async function and so therefore it will return a promise.
+            //So here we have to await that promise before we can move on in the next step in the execution of this async function (loadRecipe)
+            await _modelJs.loadRecipe(id);
+            //3. Rendering recipe and pass the state object to the recipe view
+            _recipeViewJsDefault.default.render(_modelJs.state.recipe);
+        }
+        if (query === _modelJs.state.search.query) await searchResults(query);
+        if (query === '') _heroViewJsDefault.default.render();
     } catch (error) {
         _recipeViewJsDefault.default.renderError();
         console.error(error);
@@ -567,30 +583,21 @@ const controlRecipes = async function() {
 };
 const controlSearchResults = async function() {
     try {
-        _resultsViewJsDefault.default.renderSpinner();
         //1. Get search query
         const query = _searchViewJsDefault.default.getQuery();
         if (!query) return;
-        //2. Load search results
-        await _modelJs.loadSearchResults(query);
-        //3. Render results
-        // ResultsView.render(model.state.search);
-        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
-        console.log(_modelJs.getSearchResultsPage());
+        await searchResults(query);
         _searchViewJsDefault.default.toggleWindow();
-        _resultsViewJsDefault.default.generateLazyLoadImage();
         history.pushState({
             query: _modelJs.state.search.query
-        }, '', `/${_modelJs.state.search.query}/`);
-        //4. Render initial pagination buttons
-        _paginationViewJsDefault.default.render(_modelJs.state.search);
+        }, '', `#/${_modelJs.state.search.query}`);
     } catch (error) {
         console.log(error);
     }
 };
 const controlPagination = function(goToPage) {
     //1. Render NEW results
-    _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(goToPage));
+    _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage(goToPage), _modelJs.state.search.query);
     _resultsViewJsDefault.default.generateLazyLoadImage();
     //2. Render NEW pagination buttons
     _paginationViewJsDefault.default.render(_modelJs.state.search);
@@ -613,10 +620,10 @@ const controlAddBookmark = function() {
     _recipeViewJsDefault.default.update(_modelJs.state.recipe);
     //3. Render bookmarks
     console.log(_modelJs.state.bookmarks);
-    _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
+    _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks, 'bookmark');
 };
 const contolBookmarks = function() {
-    _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
+    _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks, 'bookmark');
 };
 const controlAddRecipe = async function(newRecipe) {
     try {
@@ -631,10 +638,11 @@ const controlAddRecipe = async function(newRecipe) {
         _addRecipeViewJsDefault.default.renderSuccess();
         //Render bookmark view
         _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
+        _bookmarksViewJsDefault.default.addShowCountBookmarks(_modelJs.state.bookmarks.length);
         //Change id in URL
         //pushState - takes three arguments
         //1st arg: state, 2nd arg: title, 3rd arg: url
-        window.history.pushState(null, '', `#${_modelJs.state.recipe.id}`);
+        window.history.pushState('add', '', `#${_modelJs.state.recipe.id}`);
         //Close the form window
         setTimeout(()=>{
             _addRecipeViewJsDefault.default.toggleWindow();
@@ -2623,6 +2631,7 @@ var _iconsSvg = require("url:../../icons/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
+    _query;
     /**
    * Render the received object to the DOM
    * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
@@ -2632,11 +2641,12 @@ class View {
    * @todo Finish implementation
    */ //Render method takes the data (state) and stores it inside of this._data
     //this._data can be access all over the place inside of this object
-    render(data) {
+    render(data, query = '') {
         //if there is no data or if there is data, but that data is an array and it is empty
         if (!data || Array.isArray(data) && data.length === 0 || Array.isArray(data.recipes) && data.recipes.length === 0) return this.renderError();
         // if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
         this._data = data;
+        this._query = query;
         const markup = this._generateMarkup();
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
@@ -2787,8 +2797,8 @@ const loadRecipe = async function(id) {
 };
 const loadSearchResults = async function(query) {
     try {
-        state.search.query = query;
         const data = await _helpersJs.AJAX(`${_configJs.API_URL}?search=${query}&key=${_configJs.API_KEY}`);
+        state.search.query = query;
         console.log(data);
         const { recipes  } = data.data;
         state.search.results = recipes.map((recipe)=>{
@@ -3020,11 +3030,6 @@ class HeroView {
             Start by searching for a recipe or an ingredient. Discover recipes, cooks and how-to's based on the food you
             love.
           </p>
-          <button class="intro__btn-search btn__search">
-            <svg class="intro__btn-icon">
-              <use xlink:href="${_iconsSvgDefault.default}#icon-search"></use>
-            </svg>
-          </button>
         </div>
       </section>
     `;
@@ -3094,18 +3099,20 @@ class ResultsView extends _viewJsDefault.default {
     _parentElement = document.querySelector('.main');
     _errorMessage = 'No recipes found for your query. Please try again!';
     _generateMarkup() {
+        console.log(this._query);
         return `
       <section class="preview container">
         <h2 class="preview__results u-full-col-grid">${this._data.result} ${this._data.result > 1 ? 'results' : 'result'} for "${this._data.query}"
         </h2>
-        ${this._data.recipes.map(this._generateMarkupRecipe).join('')}
+        ${this._data.recipes.map((recipe)=>this._generateMarkupRecipe(recipe)
+        ).join('')}
       </section>
     `;
     }
     _generateMarkupRecipe(recipe) {
         const { id , publisher , title , image , key  } = recipe;
         return `
-      <a href="#${id}" class="preview__link">
+      <a href="#/${this._query}/${id}" class="preview__link">
         <article class="preview__box">
           <div class="preview__img-box">
             <img src="${_lazyImgJpgDefault.default}" data-src="${image}" alt="${title}" class="preview__img" />
@@ -3272,17 +3279,18 @@ class BookmarkView extends _viewJsDefault.default {
     }
     addShowCountBookmarks(data) {
         this._bookmarksBadge.textContent = data ?? 0;
-        console.log(data);
     }
     _generateMarkup() {
-        return this._data.map(this._generateMarkupBookmark).join('');
+        return this._data.map((bookmark)=>this._generateMarkupBookmark(bookmark)
+        ).join('');
     }
     _generateMarkupBookmark(bookmark) {
-        const recipeId = window.location.hash.slice(1);
+        const query = window.location.hash.slice(2);
+        const recipeId = query.split('/')[1];
         const { id , publisher , title , image , key  } = bookmark;
         return `
       <li class="bookmarks__view">
-        <a href="#${id}" class="bookmarks__link ${id === recipeId ? 'bookmarks__link--active' : ''}">
+        <a href="#/${this._query}/${id}" class="bookmarks__link ${id === recipeId ? 'bookmarks__link--active' : ''}">
           <figure class="bookmarks__figure">
             <img src="${image}" alt="${title}"/>
           </figure>

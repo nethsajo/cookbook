@@ -2,6 +2,7 @@ import icons from 'url:../../icons/icons.svg';
 
 export default class View {
   _data;
+  _query;
 
   /**
    * Render the received object to the DOM
@@ -14,7 +15,7 @@ export default class View {
 
   //Render method takes the data (state) and stores it inside of this._data
   //this._data can be access all over the place inside of this object
-  render(data) {
+  render(data, query = '') {
     //if there is no data or if there is data, but that data is an array and it is empty
     if (
       !data ||
@@ -26,6 +27,7 @@ export default class View {
     // if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
 
     this._data = data;
+    this._query = query;
     const markup = this._generateMarkup();
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);

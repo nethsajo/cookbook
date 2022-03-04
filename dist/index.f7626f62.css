@@ -78,7 +78,7 @@ a {
 
 .main {
   width: 100%;
-  min-height: calc(100vh - var(--nav-height) - 7.2rem);
+  min-height: calc(100vh - var(--nav-height) - 9.2rem);
 }
 
 .hidden {
@@ -280,6 +280,7 @@ strong {
 .bookmarks__list {
   list-style: none;
   overflow: auto;
+  direction: rtl;
 }
 
 .bookmarks__link:link, .bookmarks__link:visited {
@@ -289,6 +290,7 @@ strong {
   text-decoration: none;
   gap: 1.6rem;
   transition: var(--transition);
+  direction: ltr;
 }
 
 .bookmarks__link:hover {
@@ -334,6 +336,7 @@ strong {
   align-items: center;
   width: 100%;
   row-gap: 0.5rem;
+  justify-items: flex-start;
 }
 
 .bookmarks__title {
@@ -345,6 +348,7 @@ strong {
   color: var(--color-primary-light);
   max-width: 25rem;
   text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
 
@@ -795,6 +799,8 @@ strong {
 .recipe__header-textbox {
   padding: 4.8rem 3.2rem;
   flex: 0 0 50%;
+  border-top: 2px solid var(--color-white-light);
+  border-bottom: 2px solid var(--color-white-light);
 }
 
 .recipe__header-content {
@@ -847,6 +853,7 @@ strong {
 .recipe__details, .recipe__info {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .recipe__info {
@@ -855,7 +862,7 @@ strong {
 }
 
 .recipe__info:not(:last-child) {
-  margin-right: 3.6rem;
+  margin-right: 2.4rem;
 }
 
 .recipe__info-data {
@@ -1077,12 +1084,13 @@ strong {
   background-color: var(--color-white-light);
   padding: 3.6rem 0;
   width: 100%;
-  height: var(--footer-height);
   transition: var(--transition);
+  overflow: hidden;
 }
 
 .footer__description {
   font-size: 1.4rem;
+  line-height: 1.4;
 }
 
 .footer__link:link, .footer__link:visited {
@@ -1476,6 +1484,10 @@ body.dark {
 
 .dark .recipe__btn span {
   color: var(--color-white-light);
+}
+
+.dark .recipe__user-generated {
+  background-color: var(--color-black-light);
 }
 
 .dark .preview__box {

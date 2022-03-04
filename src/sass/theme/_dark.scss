@@ -158,6 +158,10 @@ body.dark {
         color: var(--color-white-light);
       }
     }
+
+    &__user-generated {
+      background-color: var(--color-black-light);
+    }
   }
 
   & .preview {

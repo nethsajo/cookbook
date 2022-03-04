@@ -28,11 +28,6 @@ class HeroView {
             Start by searching for a recipe or an ingredient. Discover recipes, cooks and how-to's based on the food you
             love.
           </p>
-          <button class="intro__btn-search btn__search">
-            <svg class="intro__btn-icon">
-              <use xlink:href="${icons}#icon-search"></use>
-            </svg>
-          </button>
         </div>
       </section>
     `;

@@ -59,6 +59,7 @@
   &__list {
     list-style: none;
     overflow: auto;
+    direction: rtl;
   }
 
   &__link {
@@ -70,6 +71,7 @@
       text-decoration: none;
       gap: 1.6rem;
       transition: var(--transition);
+      direction: ltr;
     }
 
     &:hover {
@@ -116,6 +118,7 @@
     align-items: center;
     width: 100%;
     row-gap: 0.5rem;
+    justify-items: flex-start;
   }
 
   &__title {
@@ -127,6 +130,7 @@
     color: var(--color-primary-light);
     max-width: 25rem;
     text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
   }
 

@@ -7,13 +7,14 @@ class ResultsView extends View {
   _errorMessage = 'No recipes found for your query. Please try again!';
 
   _generateMarkup() {
+    console.log(this._query);
     return `
       <section class="preview container">
         <h2 class="preview__results u-full-col-grid">${this._data.result} ${
       this._data.result > 1 ? 'results' : 'result'
     } for "${this._data.query}"
         </h2>
-        ${this._data.recipes.map(this._generateMarkupRecipe).join('')}
+        ${this._data.recipes.map(recipe => this._generateMarkupRecipe(recipe)).join('')}
       </section>
     `;
   }
@@ -21,7 +22,7 @@ class ResultsView extends View {
   _generateMarkupRecipe(recipe) {
     const { id, publisher, title, image, key } = recipe;
     return `
-      <a href="#${id}" class="preview__link">
+      <a href="#/${this._query}/${id}" class="preview__link">
         <article class="preview__box">
           <div class="preview__img-box">
             <img src="${lazyload}" data-src="${image}" alt="${title}" class="preview__img" />

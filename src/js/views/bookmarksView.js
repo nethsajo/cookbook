@@ -41,21 +41,21 @@ class BookmarkView extends View {
 
   addShowCountBookmarks(data) {
     this._bookmarksBadge.textContent = data ?? 0;
-    console.log(data);
   }
 
   _generateMarkup() {
-    return this._data.map(this._generateMarkupBookmark).join('');
+    return this._data.map(bookmark => this._generateMarkupBookmark(bookmark)).join('');
   }
 
   _generateMarkupBookmark(bookmark) {
-    const recipeId = window.location.hash.slice(1);
+    const query = window.location.hash.slice(2);
+    const recipeId = query.split('/')[1];
 
     const { id, publisher, title, image, key } = bookmark;
 
     return `
       <li class="bookmarks__view">
-        <a href="#${id}" class="bookmarks__link ${id === recipeId ? 'bookmarks__link--active' : ''}">
+        <a href="#/${this._query}/${id}" class="bookmarks__link ${id === recipeId ? 'bookmarks__link--active' : ''}">
           <figure class="bookmarks__figure">
             <img src="${image}" alt="${title}"/>
           </figure>
