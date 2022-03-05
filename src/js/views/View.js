@@ -7,6 +7,7 @@ export default class View {
   /**
    * Render the received object to the DOM
    * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+   * @param {string | ''} query The query to be pass in url
    * @this {Object} View object
    * @returns {string} A markup string is returned
    * @author Jan Kenneth Sajo

@@ -1,7 +1,7 @@
 class SearchView {
   _parentElement = document.querySelector('.search__form');
   _window = document.querySelector('.search');
-  _btnOpenSearch = document.querySelectorAll('.btn__search');
+  _btnOpenSearch = document.querySelector('.btn__search');
   _btnCloseSearch = document.querySelector('.search__close-btn');
   _menuButton = document.querySelector('.btn__hamburger');
   _menuContainer = document.querySelector('.header__menu');
@@ -38,7 +38,7 @@ class SearchView {
   }
 
   _addHandlerShowSearch() {
-    this._btnOpenSearch.forEach(btn => btn.addEventListener('click', this.toggleWindow.bind(this)));
+    this._btnOpenSearch.addEventListener('click', this.toggleWindow.bind(this));
   }
 
   _addHandlerHideSearch() {
