@@ -7,7 +7,7 @@ class ResultsView extends View {
   _errorMessage = 'No recipes found for your query. Please try again!';
 
   _generateMarkup() {
-    console.log(this._query);
+    // console.log(this._query);
     return `
       <section class="preview container">
         <h2 class="preview__results u-full-col-grid">${this._data.result} ${

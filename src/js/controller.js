@@ -25,9 +25,9 @@ const searchResults = async function (query) {
   await model.loadSearchResults(query);
 
   //3. Render results
-  console.log(ResultsView);
+  // console.log(ResultsView);
   ResultsView.render(model.getSearchResultsPage(), model.state.search.query);
-  console.log(model.getSearchResultsPage());
+  // console.log(model.getSearchResultsPage());
 
   ResultsView.generateLazyLoadImage();
   //4. Render initial pagination buttons
@@ -117,7 +117,7 @@ const controlAddBookmark = function () {
   RecipeView.update(model.state.recipe);
 
   //3. Render bookmarks
-  console.log(model.state.bookmarks);
+  // console.log(model.state.bookmarks);
   BookmarksView.render(model.state.bookmarks, 'bookmark');
 };
 

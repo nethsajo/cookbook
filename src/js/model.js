@@ -44,7 +44,7 @@ export const loadRecipe = async function (id) {
     if (state.bookmarks.some(bookmark => bookmark.id === id)) state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
 
-    console.log(state.recipe);
+    // console.log(state.recipe);
   } catch (error) {
     console.error(`${error} 💥💥💥`);
     throw error;
@@ -55,7 +55,7 @@ export const loadSearchResults = async function (query) {
   try {
     const data = await AJAX(`${API_URL}?search=${query}&key=${API_KEY}`);
     state.search.query = query;
-    console.log(data);
+    // console.log(data);
 
     const { recipes } = data.data;
 
@@ -103,7 +103,7 @@ const persistBookmarks = function () {
 export const addBookmark = function (recipe) {
   //Add bookmark
   state.bookmarks.push(recipe);
-  console.log(state.bookmarks);
+  // console.log(state.bookmarks);
 
   //Mark current recipe as bookmarked
   //This will add a new property in state.recipe if the condition is true
