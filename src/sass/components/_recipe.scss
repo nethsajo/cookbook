@@ -1,9 +1,10 @@
 .recipe {
   &__header {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     @include responsive(phone) {
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
   }
 
@@ -23,19 +24,20 @@
   }
 
   &__img-box {
-    flex: 1;
-    height: 50rem;
-
-    @include responsive(phone) {
-      height: 30rem;
-    }
+    position: relative;
   }
 
   &__img {
-    display: block;
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+
+    @include responsive(phone) {
+      position: relative;
+    }
   }
 
   &__heading {
